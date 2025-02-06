@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto</title>
     <link rel="stylesheet" type="text/css"
-    href="./css/default.css">
+    href="./css/form.css">
 </head>
 <body>
+    <section id="formulario">
     <h1>Contacto</h1>
     <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
         <p>
@@ -20,16 +21,19 @@
         </p>
         <h3>Motivo de la consulta:</h3>
         <p>
-            <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>
             <a>Evaluación</a>
+            <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>
+           
         </p>
         <p>
-            <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
             <a>Sugerencias</a>
+            <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
+            
         </p>
         <p>
-            <input type="radio" id="criticas" name="motivo" value="Críticas">
             <a >Críticas</a>
+            <input type="radio" id="criticas" name="motivo" value="Críticas">
+            
         </p>
         <p>
             <p>Consulta:</p>
@@ -37,5 +41,6 @@
         </p>
         <button type="submit">Enviar</button>
     </form>
+</section>
 </body>
 </html>
