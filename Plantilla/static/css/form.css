@@ -28,9 +28,9 @@ form a,p {
 input[type="text"],
 input[type="email"],
 textarea {
-    width: 90%;             /* Reduce el ancho para dejar márgenes laterales */
+    width: 90%;             
     display: block;         /* Hace que se comporte como elemento de bloque */
-    margin: 10px auto;      /* Añade margen arriba y abajo y centra horizontalmente */
+    margin: 10px auto;      
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

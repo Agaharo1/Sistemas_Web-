@@ -13,11 +13,11 @@
     <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
         <p>
             <label>Nombre:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" required oninvalid="this.setCustomValidity('Por favor, escribe tu nombre.')" oninput="this.setCustomValidity('')">
         </p>
         <p>
             <label>Email:</label>
-            <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es" required>
+            <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es" required oninvalid="this.setCustomValidity('Por favor, escribe un mail válido.')" oninput="this.setCustomValidity('')">
         </p>
         <h3>Motivo de la consulta:</h3>
         <p>
@@ -36,11 +36,11 @@
         </p>
         <p>
             <label>Consulta:</label>
-            <textarea id="message" name="message"></textarea>
+            <textarea id="message" name="message" required oninvalid="this.setCustomValidity('Por favor, escriba el mensaje que desea enviar.')" oninput="this.setCustomValidity('')"></textarea>
         </p>
         <p>
         <label>
-        <input type="checkbox" id="terminos" name="terminos" required>
+        <input type="checkbox" id="terminos" name="terminos" required oninvalid="this.setCustomValidity('Debes aceptar los terminos y condiciones.')" oninput="this.setCustomValidity('')">
         He leído y acepto los términos y condiciones del servicio.
         </label>
         </p>
