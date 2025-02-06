@@ -19,11 +19,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-form p {
-    margin-bottom: 15px;
-}
-
-form a {
+form a,p {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
@@ -32,28 +28,34 @@ form a {
 input[type="text"],
 input[type="email"],
 textarea {
-    margin-bottom: 15px;
-    
-    width: 97%;
+    width: 90%;             /* Reduce el ancho para dejar márgenes laterales */
+    display: block;         /* Hace que se comporte como elemento de bloque */
+    margin: 10px auto;      /* Añade margen arriba y abajo y centra horizontalmente */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-family: Arial, sans-serif;
+
 }
 
-input[type="radio"],
-input[type="checkbox"] {
+input[type="radio"]
+ {  
+    margin-left: 10px;
     margin-right: 5px;
 }
 
-button[type="submit"] {
+button {
     background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    margin: 10px auto;
+    margin-bottom: 10px; /* Añade margen inferior entre botones */
+    margin-right: 10px; /* Añade margen derecho entre botones */
 }
 
-button[type="submit"]:hover {
+button:hover {
     background-color: #45a049;
 }

@@ -12,34 +12,34 @@
     <h1>Contacto</h1>
     <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
         <p>
-            <a>Nombre:</a>
+            <label>Nombre:</label>
             <input type="text" id="name" name="name" required>
         </p>
         <p>
-            <a>Email:</a>
+            <label>Email:</label>
             <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es" required>
         </p>
         <h3>Motivo de la consulta:</h3>
         <p>
-            <a>Evaluación</a>
-            <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>
+            
+            <label><input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>Evaluación</label>
            
         </p>
         <p>
-            <a>Sugerencias</a>
-            <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
+            
+            <label><input type="radio" id="sugerencias" name="motivo" value="Sugerencias"> Sugerencias</label>
             
         </p>
         <p>
-            <a >Críticas</a>
-            <input type="radio" id="criticas" name="motivo" value="Críticas">
+            <label><input type="radio" id="criticas" name="motivo" value="Críticas">Críticas</label>
             
         </p>
         <p>
-            <p>Consulta:</p>
+            <label>Consulta:</label>
             <textarea id="message" name="message"></textarea>
         </p>
         <button type="submit">Enviar</button>
+        <button type="reset">Limpiar</button>
     </form>
 </section>
 </body>
