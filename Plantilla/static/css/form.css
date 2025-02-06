@@ -32,7 +32,9 @@ form a {
 input[type="text"],
 input[type="email"],
 textarea {
-    width: 100%;
+    margin-bottom: 15px;
+    
+    width: 97%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
