@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <link rel="stylesheet" type="text/css"
+    href="./css/default.css">
+</head>
+<body>
+    <h1>Contacto</h1>
+    <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
+        <p>
+            <a>Nombre:</a>
+            <input type="text" id="name" name="name" required>
+        </p>
+        <p>
+            <a>Email:</a>
+            <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es" required>
+        </p>
+        <h3>Motivo de la consulta:</h3>
+        <p>
+            <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>
+            <a>Evaluación</a>
+        </p>
+        <p>
+            <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
+            <a>Sugerencias</a>
+        </p>
+        <p>
+            <input type="radio" id="criticas" name="motivo" value="Críticas">
+            <a >Críticas</a>
+        </p>
+        <p>
+            <p>Consulta:</p>
+            <textarea id="message" name="message"></textarea>
+        </p>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
