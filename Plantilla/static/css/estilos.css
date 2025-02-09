@@ -34,9 +34,10 @@ h1 {
     size: 20px;
 }
 
+
 form a,p {
     display: block;
-    font-weight: bold;
+    /*font-weight: bold;*/
     margin-bottom: 5px;
 }
 
