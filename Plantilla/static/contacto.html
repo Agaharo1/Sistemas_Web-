@@ -16,44 +16,56 @@
         <a href="bocetos.html">Bocetos</a>
     </header>
     <section id="formulario">
-    <h1>Contacto</h1>
-    <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
-        <p>
-            <label>Nombre:</label>
-            <input type="text" id="name" name="name" required oninvalid="this.setCustomValidity('Por favor, escribe tu nombre.')" oninput="this.setCustomValidity('')">
-        </p>
-        <p>
-            <label>Email:</label>
-            <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es" required oninvalid="this.setCustomValidity('Por favor, escribe un mail válido.')" oninput="this.setCustomValidity('')">
-        </p>
-        <h3>Motivo de la consulta:</h3>
-        <p>
-            
-            <label><input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>Evaluación</label>
-           
-        </p>
-        <p>
-            
-            <label><input type="radio" id="sugerencias" name="motivo" value="Sugerencias"> Sugerencias</label>
-            
-        </p>
-        <p>
-            <label><input type="radio" id="criticas" name="motivo" value="Críticas">Críticas</label>
-            
-        </p>
-        <p>
-            <label>Consulta:</label>
-            <textarea id="message" name="message" required oninvalid="this.setCustomValidity('Por favor, escriba el mensaje que desea enviar.')" oninput="this.setCustomValidity('')"></textarea>
-        </p>
-        <p>
-        <label>
-        <input type="checkbox" id="terminos" name="terminos" required oninvalid="this.setCustomValidity('Debes aceptar los terminos y condiciones.')" oninput="this.setCustomValidity('')">
-        He leído y acepto los términos y condiciones del servicio.
-        </label>
-        </p>
-        <button type="submit">Enviar</button>
-        <button type="reset">Limpiar</button>
-    </form>
-</section>
+        <h1>Contacto</h1>
+        <form action="mailto:correo@ucm.es" method="post" enctype="text/plain">
+            <p>
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" 
+                       required
+                       oninvalid="this.setCustomValidity('Por favor, escribe tu nombre.')"
+                       oninput="this.setCustomValidity('')">
+            </p>
+            <p>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@ucm.es"
+                       required
+                       oninvalid="this.setCustomValidity('Por favor, escribe un mail válido.')"
+                       oninput="this.setCustomValidity('')">
+            </p>
+            <h3>Motivo de la consulta:</h3>
+            <p>
+                <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required
+                       oninvalid="this.setCustomValidity('Por favor, selecciona alguna de las opciones.')"
+                       oninput="this.setCustomValidity('')">
+                <label for="evaluacion">Evaluación</label>
+            </p>
+            <p>
+                <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
+                <label for="sugerencias">Sugerencias</label>
+            </p>
+            <p>
+                <input type="radio" id="criticas" name="motivo" value="Críticas">
+                <label for="criticas">Críticas</label>
+            </p>
+            <p>
+                <label for="message">Consulta:</label>
+                <textarea id="message" name="message" rows="4" 
+                          required
+                          oninvalid="this.setCustomValidity('Por favor, escribe el mensaje.')"
+                          oninput="this.setCustomValidity('')"></textarea>
+            </p>
+            <p>
+                <input type="checkbox" id="terminos" name="terminos"
+                       required
+                       oninvalid="this.setCustomValidity('Debes aceptar los términos y condiciones.')"
+                       oninput="this.setCustomValidity('')">
+                <label for="terminos">
+                    He leído y acepto los términos y condiciones del servicio.
+                </label>
+            </p>
+            <button type="submit">Enviar</button>
+            <button type="reset">Limpiar</button>
+        </form>
+    </section>
 </body>
 </html>
