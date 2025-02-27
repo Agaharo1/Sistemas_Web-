@@ -8,6 +8,14 @@ export function viewLogin(req, res) {
     res.render('pagina', params)
 }
 
+export function viewRegister(req, res) {
+    const params = {
+        contenido: './paginas/usuario/registro',
+        session: req.session
+    }
+    res.render('pagina', params)
+}
+
 export function doLogin(req, res) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
