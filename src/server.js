@@ -1,6 +1,14 @@
 import { config } from './config.js';
 import { app } from './app.js';
 
+//Para Db
+import { getConnection, checkConnection, closeConnection } from './db.js';
+import { inicializaModelos } from './modelos.js';
+
+const db = getConnection();
+checkConnection(db);
+inicializaModelos(db);
+
 const server = app.listen(config.port, (error) => {
     if (error) return console.log(`Error: ${error}`);
     const address = server.address();
@@ -15,6 +23,8 @@ const server = app.listen(config.port, (error) => {
 
 process.on('exit', () => {
     server.close();
+    closeConnection();
+    console.log('Servidor cerrado');
 });
 
 process.on('SIGHUP', () => process.exit(128 + 1));
