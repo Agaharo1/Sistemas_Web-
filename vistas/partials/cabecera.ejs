@@ -1,0 +1,9 @@
+<!-- Cabecera de la página web -->
+<h1>Mi gran página web</h1>
+<div class="saludo">
+    <% if (session.login) { %>
+        Bienvenido, <%= session.nombre %> | <a href="/usuarios/logout">Logout</a>
+    <% } else { %>
+        Usuario desconocido. <a href="/usuarios/login">Login</a>
+    <% } %>
+</div>
