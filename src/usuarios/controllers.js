@@ -1,4 +1,5 @@
 import { body } from 'express-validator';
+import { Usuario } from './Usuario';
 
 export function viewLogin(req, res) {
     const params = {
@@ -14,6 +15,20 @@ export function viewRegister(req, res) {
         session: req.session
     }
     res.render('pagina', params)
+}
+
+export function doRegister(req, res) {
+    const {username, correo, password} = req.body;
+
+    const result = Usuario.crearUsuario(username, password, correo);
+
+    if(result.success) {
+        res.redirect('/login');
+    }
+    else{
+        res.status(400).send(result.message)
+    }
+
 }
 
 export function doLogin(req, res) {

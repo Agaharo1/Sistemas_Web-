@@ -1,5 +1,5 @@
 import express from 'express';
-import { viewLogin, doLogin, doLogout, viewRegister } from './controllers.js';
+import { viewLogin, doLogin, doLogout, viewRegister, doRegister } from './controllers.js';
 
 const usuariosRouter = express.Router();
 
@@ -8,6 +8,9 @@ usuariosRouter.get('/login', viewLogin);
 
 //Pagina de registro
 usuariosRouter.get('/registro', viewRegister);
+
+//Registro de un usuario
+usuariosRouter.post('/registro', doRegister)
 
 //Procesar login
 usuariosRouter.post('/login', doLogin);
