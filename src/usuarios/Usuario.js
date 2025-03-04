@@ -14,18 +14,18 @@ export class Usuario {
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
 
-        this.#getByUsernameStmt = db.prepare('SELECT * FROM Usuarios WHERE Usuario = @usuario');
-        this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password) VALUES (@username, @password)');
-        this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @usuario, password = @contraseña WHERE id = @id');
+        this.#getByUsernameStmt = db.prepare('SELECT * FROM Usuarios WHERE username = @username');
+        this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
+        this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
     }
 
     static getUsuarioByUsername(username) {
         const usuario = this.#getByUsernameStmt.get({ username });
         if (usuario === undefined) throw new UsuarioNoEncontrado(username);
 
-        const { password, rol, id } = usuario;
+        const { password, rol, nombre, id } = usuario;
 
-        return new Usuario(username, password, rol, id);
+        return new Usuario(username, password, nombre, rol, id);
     }
 
     static #insert(usuario) {
@@ -33,7 +33,9 @@ export class Usuario {
         try {
             const username = usuario.#username;
             const password = usuario.#password;
-            const datos = {username, password};
+            const nombre = usuario.nombre;
+            const rol = usuario.rol;
+            const datos = {username, password, nombre, rol};
 
             result = this.#insertStmt.run(datos);
 
@@ -50,7 +52,9 @@ export class Usuario {
     static #update(usuario) {
         const username = usuario.#username;
         const password = usuario.#password;
-        const datos = {username, password};
+        const nombre = usuario.nombre;
+        const rol = usuario.rol;
+        const datos = {username, password, nombre, rol};
 
         const result = this.#updateStmt.run(datos);
         if (result.changes === 0) throw new UsuarioNoEncontrado(username);
@@ -76,10 +80,14 @@ export class Usuario {
     #id;
     #username;
     #password;
+    rol;
+    nombre;
 
-    constructor(username, password, id = null) {
+    constructor(username, password, nombre, rol = RolesEnum.USUARIO, id = null) {
         this.#username = username;
         this.#password = password;
+        this.nombre = nombre;
+        this.rol = rol;
         this.#id = id;
     }
 

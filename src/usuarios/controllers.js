@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import { Usuario } from './Usuario';
+import { Usuario } from './Usuario.js';
 
 export function viewLogin(req, res) {
     const params = {
@@ -35,23 +35,25 @@ export function doLogin(req, res) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
     
-    const { username, password } = req.body;
+    const username = req.body.username.trim();
+    const password = req.body.password.trim();
 
-    if (username === 'user' && password === 'userpass') {
-        req.session.nombre = "Usuario";
+    try {
+        const usuario = Usuario.login(username, password);
         req.session.login = true;
-        req.session.usuario = "Usuario";
-        req.session.esAdmin = false;
-        res.redirect('/contenido/vlogin');
-    } else if (username === "admin" && password === "adminpass") {
-        req.session.nombre = "Administrador";
-        req.session.login = true;
-        req.session.usuario = "Administrador";
-        req.session.esAdmin = true;
-        return res.redirect('/contenido/vlogin');
-    }
-    else{
-        return res.redirect('/contenido/flogin');
+        req.session.nombre = usuario.nombre;
+        req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
+
+        return res.render('pagina', {
+            contenido: 'paginas/home',
+            session: req.session
+        });
+
+    } catch (e) {
+        res.render('pagina', {
+            contenido: 'paginas/login',
+            error: 'El usuario o contraseña no son válidos'
+        })
     }
 }
 
