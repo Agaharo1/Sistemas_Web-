@@ -74,10 +74,28 @@ export class Usuario {
         // XXX: En el ej3 / P3 lo cambiaremos para usar async / await o Promises
         const hashedPassword = bcrypt.hashSync(password);
         console.log('Hashed password:', hashedPassword);
+        console.log('Hashed password from DB:', usuario.#password);
         if ( ! bcrypt.compareSync(password, usuario.#password) ) throw new UsuarioOPasswordNoValido(username);
         return usuario;
     }
 
+    static crearUsuario(username, password, nombre) {
+        const Tusuario = new Usuario(username, password, nombre);
+        Tusuario.password = password;
+        console.log('Contraseña del usuario creado:', Tusuario.#password);
+        
+        try {
+            this.getUsuarioByUsername(username);
+            throw new UsuarioYaExiste(username); // si lo anterior no lanza excepción, es que ya existe el usuario
+        } catch (e) {
+            if (e instanceof UsuarioNoEncontrado) {
+                return Tusuario.persist();
+            }
+            throw e;
+        }
+        
+        
+    }
     #id;
     #username;
     #password;

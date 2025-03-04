@@ -18,16 +18,14 @@ export function viewRegister(req, res) {
 }
 
 export function doRegister(req, res) {
-    const {username, correo, password} = req.body;
-
-    const result = Usuario.crearUsuario(username, password, correo);
-
-    if(result.success) {
-        res.redirect('/login');
+    const {nombre, username, password} = req.body;
+    try{
+    const result = Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
+    res.redirect('/usuarios/login');
+    } catch(e) {
+        res.status(400).send(e.message);
     }
-    else{
-        res.status(400).send(result.message)
-    }
+    
 
 }
 
