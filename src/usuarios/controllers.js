@@ -1,9 +1,9 @@
 import { body } from 'express-validator';
-import { Usuario } from './Usuario.js';
+import { Usuario,RolesEnum } from './Usuario.js';
 
 export function viewLogin(req, res) {
     const params = {
-        contenido: './paginas/usuario/login',
+        contenido: 'paginas/usuario/login',
         session: req.session
     }
     res.render('pagina', params)
@@ -11,7 +11,7 @@ export function viewLogin(req, res) {
 
 export function viewRegister(req, res) {
     const params = {
-        contenido: './paginas/usuario/registro',
+        contenido: 'paginas/usuario/registro',
         session: req.session
     }
     res.render('pagina', params)
@@ -45,14 +45,15 @@ export function doLogin(req, res) {
         req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
 
         return res.render('pagina', {
-            contenido: 'paginas/home',
+            contenido: 'paginas/index',
             session: req.session
         });
 
     } catch (e) {
         res.render('pagina', {
-            contenido: 'paginas/login',
-            error: 'El usuario o contraseña no son válidos'
+            contenido: 'paginas/usuario/login',
+            error: 'El usuario o contraseña no son válidos',
+            userErr : username
         })
     }
 }

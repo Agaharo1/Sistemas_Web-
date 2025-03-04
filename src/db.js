@@ -15,17 +15,6 @@ function createConnection() {
     };
     const db = new Database(join(dirname(import.meta.dirname), 'data', 'aw_sw.db'), options);
     db.pragma('journal_mode = WAL'); // Necesario para mejorar la durabilidad y el rendimiento
-
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS Usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-	        username TEXT NOT NULL UNIQUE,
-	        password TEXT NOT NULL,
-	        rol TEXT NOT NULL DEFAULT 'U' CHECK("rol" IN ('U', 'A')),
-	        nombre TEXT NOT NULL
-        );
-    `);
-
     return db;
 }
 
