@@ -9,7 +9,7 @@ export const app = express();
 // Configurar motor de vistas hhhhh
 app.set('view engine', 'ejs');
 app.set('views', config.vistas);
-print()
+
 // Middleware para manejar sesiones
 app.use(express.urlencoded({ extended: false }));
 app.use(session(config.session));
