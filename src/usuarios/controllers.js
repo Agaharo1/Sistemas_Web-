@@ -43,7 +43,7 @@ export function doLogin(req, res) {
         req.session.login = true;
         req.session.nombre = usuario.nombre;
         req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
-
+        console.log(`Usuario logueado: ${username}`);
         return res.render('pagina', {
             contenido: 'paginas/index',
             session: req.session

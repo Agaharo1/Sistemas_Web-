@@ -14,7 +14,7 @@ export class Usuario {
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
 
-        this.#getByUsernameStmt = db.prepare('SELECT * FROM Usuarios WHERE username = @username');
+        this.#getByUsernameStmt = db.prepare('SELECT id,password,nombre,rol FROM Usuarios WHERE username = @username');
         this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
         this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
     }
@@ -23,8 +23,8 @@ export class Usuario {
         const usuario = this.#getByUsernameStmt.get({ username });
         if (usuario === undefined) throw new UsuarioNoEncontrado(username);
 
-        const { password, rol, nombre, id } = usuario;
-
+        const { id, password, nombre,rol} = usuario;
+        console.log('Usuario recibido de la BD:', usuario);
         return new Usuario(username, password, nombre, rol, id);
     }
 
@@ -70,10 +70,11 @@ export class Usuario {
         } catch (e) {
             throw new UsuarioOPasswordNoValido(username, { cause: e });
         }
-
+      
         // XXX: En el ej3 / P3 lo cambiaremos para usar async / await o Promises
+        const hashedPassword = bcrypt.hashSync(password);
+        console.log('Hashed password:', hashedPassword);
         if ( ! bcrypt.compareSync(password, usuario.#password) ) throw new UsuarioOPasswordNoValido(username);
-
         return usuario;
     }
 
