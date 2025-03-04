@@ -1,7 +1,7 @@
 <nav id="sidebarDer">
-    <ul>
-        
-        <li><a href="/productos/subir">Subir producto</a></li>
-        
-    </ul>
+    <% if (typeof session !== 'undefined' && session !== null && session.login) { %>
+        <ul>
+            <li><a href="/productos/subir">Subir producto</a></li>
+        </ul>
+    <% } %>
 </nav>
