@@ -29,6 +29,9 @@ export function doRegister(req, res) {
 
 }
 
+
+
+
 export function doLogin(req, res) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
@@ -73,3 +76,4 @@ export function doLogout(req, res) {
     }
     
 }
+

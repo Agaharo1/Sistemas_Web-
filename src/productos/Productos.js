@@ -3,6 +3,18 @@ export class Producto {
     static #insertStmt = null;
     static #updateStmt = null;
 
+    #nombre;
+    #descripcion;
+    #precio;
+    #imagen;
+
+    constructor(nombre, descripcion, precio, imagen) {
+        this.#nombre = nombre;
+        this.#descripcion = descripcion;
+        this.#precio = precio;
+        this.#imagen = imagen;
+    }
+
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         // TODO
@@ -19,5 +31,14 @@ export class Producto {
             console.log('Usuario recibido de la BD:', usuario);
             return new Usuario(username, password, nombre, rol, id);
         }
+
+
+
+    static crearProducto(nombre, descripcion, precio, imagen) {
+        const Tproducto = new Producto(nombre, descripcion, precio, imagen);
+        Tproducto.nombre = nombre;
+        console.log('Producto creado:', Tproducto.#nombre);
+        return Tproducto;
+    }   
 
 }
