@@ -1,5 +1,5 @@
 <nav id="sidebarDer">
-    <% if (session && session.login) { %>
+    <% if (typeof session !== 'undefined' && session !== null && session.login) { %>
         <ul>
             <li><a href="/productos/subir">Subir producto</a></li>
         </ul>
