@@ -12,7 +12,6 @@ div#contenedor {
 
 header {
 	padding: 30px;
-	height: 100px;
 	background-color: #303030;
 	color: white;
 }
@@ -29,8 +28,8 @@ header a:hover {
 	text-decoration: underline;
 } 
 
-
-nav {
+/*
+ nav {
 	padding: 10px;
 	float: left;
 	width: 170px;
@@ -47,8 +46,8 @@ nav a, nav a:visited {
 nav a:hover {
 	color: red;
 	text-decoration: underline;
-} 
-
+}  
+*/
 
 aside {
 	padding: 10px;
@@ -100,6 +99,3 @@ label {
 	display: block;
 }
 
-button {
-	margin-left: 100px;
-} 

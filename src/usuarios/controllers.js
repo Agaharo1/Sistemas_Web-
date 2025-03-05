@@ -1,34 +1,62 @@
 import { body } from 'express-validator';
+import { Usuario,RolesEnum } from './Usuario.js';
 
 export function viewLogin(req, res) {
     const params = {
-        contenido: './paginas/usuario/login',
+        contenido: 'paginas/usuario/login',
         session: req.session
     }
     res.render('pagina', params)
 }
 
+export function viewRegister(req, res) {
+    const params = {
+        contenido: 'paginas/usuario/registro',
+        session: req.session
+    }
+    res.render('pagina', params)
+}
+
+export function doRegister(req, res) {
+    const {nombre, username, password} = req.body;
+    try{
+    const result = Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
+    res.redirect('/usuarios/login');
+    } catch(e) {
+        res.status(400).send(e.message);
+    }
+    
+
+}
+
+
+
+
 export function doLogin(req, res) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
     
-    const { username, password } = req.body;
+    const username = req.body.username.trim();
+    const password = req.body.password.trim();
 
-    if (username === 'user' && password === 'userpass') {
-        req.session.nombre = "Usuario";
+    try {
+        const usuario = Usuario.login(username, password);
         req.session.login = true;
-        req.session.usuario = "Usuario";
-        req.session.esAdmin = false;
-        res.redirect('/contenido/vlogin');
-    } else if (username === "admin" && password === "adminpass") {
-        req.session.nombre = "Administrador";
-        req.session.login = true;
-        req.session.usuario = "Administrador";
-        req.session.esAdmin = true;
-        return res.redirect('/contenido/vlogin');
-    }
-    else{
-        return res.redirect('/contenido/flogin');
+        req.session.nombre = usuario.nombre;
+        req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
+        console.log(`Usuario logueado: ${username}`);
+        req.session.user_id = usuario.id;
+        return res.render('pagina', {
+            contenido: 'paginas/index',
+            session: req.session
+        });
+
+    } catch (e) {
+        res.render('pagina', {
+            contenido: 'paginas/usuario/login',
+            error: 'El usuario o contraseña no son válidos',
+            userErr : username
+        })
     }
 }
 
@@ -48,3 +76,4 @@ export function doLogout(req, res) {
     }
     
 }
+

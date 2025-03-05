@@ -51,4 +51,10 @@ contenidoRouter.get('/admin', (req, res) => {
     }
 });
 
+contenidoRouter.get('/search', (req, res) => {
+    const search = req.query.search;
+    //TODO cambiar los productos mostrados por los que coincidan con el nombre buscado
+
+});
+
 export default contenidoRouter;

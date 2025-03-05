@@ -1,14 +1,22 @@
+<%
+function mostrarError(error){
+	if (error != null && error != ''){
+        return `<p>${error}</p>`;
+	}
+}
+%>
 <section>
     <h2>Acceso al sistema</h2>
     <div class="login-container">
         <form action="/usuarios/login" method="POST">
             <p><label for="usuario">Nombre: </label>
-            <input type="text" id="usuario" name="username" required></p>
-
+                <input type="text" id="usuario" name="username" value="<%= typeof userErr !== 'undefined' ? userErr : '' %>" required>
+            </p>
             <p><label for="password">Contraseña: </label>
             <input type="password" id="password" name="password" required></p>
-
+            <%- mostrarError(typeof error !== 'undefined' ? error : '') %>
             <p><button type="submit">Enviar</button></p>
         </form>
+        <p>¿No tienes cuenta? <a href=/usuarios/registro>Registro</a></p>
     </div>
 </section>

@@ -3,13 +3,17 @@ import session from 'express-session';
 import { config } from './config.js';
 import usuariosRouter from './usuarios/router.js';
 import contenidoRouter from './contenido/router.js';
+import productossRouter from './productos/router.js';
 
 export const app = express();
 
 // Configurar motor de vistas hhhhh
 app.set('view engine', 'ejs');
 app.set('views', config.vistas);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7a471e0690792a6f69c13bf1d99742c415d14000
 // Middleware para manejar sesiones
 app.use(express.urlencoded({ extended: false }));
 app.use(session(config.session));
@@ -29,3 +33,4 @@ app.get('/', (req, res) => {
 // Usar routers
 app.use('/usuarios', usuariosRouter);
 app.use('/contenido', contenidoRouter);
+app.use('/productos', productossRouter);
