@@ -7,13 +7,15 @@ function mostrarSaludo(session){
 
 	return `<p>Bienvenido ${session.nombre}. <a href="/usuarios/logout">(salir)</a></p>`;
 }
-%><header>
+%>
+<header>
 		<h1>TruequeHub</h1>
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
 		<nav style = "display: flex; gap:5%;">
 			<a href="/">Inicio</a>
+			<a href="/contenido/normal">Mercado</a>
 			<a href="">Mis Productos</a>
 			<a href="">Chats</a>
 			<a href="">Pujas</a>

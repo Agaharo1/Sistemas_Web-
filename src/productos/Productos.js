@@ -1,5 +1,6 @@
 export class Producto {
     static #getByUserIdStmt = null;
+    static #getAllStmt = null;
     static #insertStmt = null;
     static #updateStmt = null;
 
@@ -19,9 +20,10 @@ export class Producto {
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         // TODO
-        this.#getByUserIdStmt = db.prepare('SELECT id,id_user,nombre,descripcion,precio FROM productos WHERE id_user = @id_user');
-        this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
-        this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
+        this.#getByUserIdStmt = db.prepare('');
+        this.#insertStmt = db.prepare('');
+        this.#updateStmt = db.prepare('');
+        this.#getAllStmt = db.prepare('SELECT nombre, precio FROM productos');
     }
 
     static getProductByUserId(user_id) {
@@ -32,6 +34,10 @@ export class Producto {
             console.log('Usuario recibido de la BD:', usuario);
             return new Usuario(username, password, nombre, rol, id);
         }
+    static getProducts() {
+        const productos = this.#getAllStmt.all();
+        return productos;
+    }
 
 
 
