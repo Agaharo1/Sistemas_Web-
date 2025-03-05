@@ -20,6 +20,7 @@ function createConnection() {
 
 export function closeConnection(db = getConnection()) {
     if (db === null) return;
+    db.pragma('wal_checkpoint');
     db.close();
 }
 

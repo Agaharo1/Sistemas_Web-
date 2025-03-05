@@ -24,6 +24,7 @@ const server = app.listen(config.port, (error) => {
 process.on('exit', () => {
     server.close();
     closeConnection();
+   
     console.log('Servidor cerrado');
 });
 
