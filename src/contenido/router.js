@@ -1,4 +1,5 @@
 import express from 'express';
+import {Producto} from '../productos/Productos.js'
 
 const contenidoRouter = express.Router();
 
@@ -26,10 +27,12 @@ contenidoRouter.get('/normal', (req, res) => {
     let contenido = 'paginas/contenido/noPermisos';
     if (req.session.login) {
         contenido = 'paginas/contenido/normal';
+        productos = Producto.getProducts();
     }
     res.render('pagina', {
         contenido,
-        session: req.session
+        session: req.session,
+        productos
     });
 });
 
@@ -49,12 +52,6 @@ contenidoRouter.get('/admin', (req, res) => {
         }
         res.render('pagina', params);
     }
-});
-
-contenidoRouter.get('/search', (req, res) => {
-    const search = req.query.search;
-    //TODO cambiar los productos mostrados por los que coincidan con el nombre buscado
-
 });
 
 export default contenidoRouter;
