@@ -25,9 +25,10 @@ contenidoRouter.get('/vlogin', (req, res) => {
 
 contenidoRouter.get('/normal', (req, res) => {
     let contenido = 'paginas/contenido/noPermisos';
+    let productos = []
+    productos = Producto.getProducts();
     if (req.session.login) {
         contenido = 'paginas/contenido/normal';
-        productos = Producto.getProducts();
     }
     res.render('pagina', {
         contenido,

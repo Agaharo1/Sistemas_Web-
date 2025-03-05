@@ -1,2 +1,21 @@
 <h2>Acceso Restringido</h2>
 <p>No estás registrado. Para acceder a este contenido, debes iniciar sesión.</p>
+<div id="mercado">
+    <h2>Productos</h2>
+    <ul>
+        <% if (productos.length > 0) { %>
+            <% productos.forEach(producto => { %>
+                <li>Producto: <%= producto.nombre %> -
+                    Descripcion:
+                    <% if (!producto.descripcion) {%>
+                        Este producto no tiene descripcion -
+                    <%} else {%>
+                        <%= producto.descripcion %> - 
+                    <%}%>
+                    Precio: <%= producto.precio %></li>
+            <% }) %>
+        <% } else { %>
+            <li>No hay productos disponibles.</li>
+        <% } %>
+    </ul>
+</div>
