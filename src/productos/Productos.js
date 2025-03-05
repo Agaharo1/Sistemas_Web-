@@ -8,11 +8,12 @@ export class Producto {
     #precio;
     #imagen;
 
-    constructor(nombre, descripcion, precio, imagen) {
+    constructor(nombre, descripcion, precio,imagen) {
         this.#nombre = nombre;
         this.#descripcion = descripcion;
         this.#precio = precio;
         this.#imagen = imagen;
+
     }
 
     static initStatements(db) {
@@ -34,8 +35,9 @@ export class Producto {
 
 
 
-    static crearProducto(nombre, descripcion, precio, imagen) {
-        const Tproducto = new Producto(nombre, descripcion, precio, imagen);
+    static crearProducto(nombre, descripcion, precio,imagen) {
+        console.log('Creando producto:', nombre);
+        const Tproducto = new Producto(nombre, descripcion, precio,imagen);
         Tproducto.nombre = nombre;
         console.log('Producto creado:', Tproducto.#nombre);
         return Tproducto;
