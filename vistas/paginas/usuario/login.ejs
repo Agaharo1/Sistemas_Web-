@@ -9,7 +9,7 @@ function mostrarError(error){
     <h2>Acceso al sistema</h2>
     <div class="login-container">
         <form action="/usuarios/login" method="POST">
-            <p><label for="usuario">Nombre: </label>
+            <p><label for="usuario">Correo: </label>
                 <input type="text" id="usuario" name="username" value="<%= typeof userErr !== 'undefined' ? userErr : '' %>" required>
             </p>
             <p><label for="password">Contraseña: </label>
