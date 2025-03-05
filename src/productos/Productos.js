@@ -28,7 +28,7 @@ export class Producto {
     this.#updateStmt = db.prepare(
       "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
     );
-    this.#getAllStmt = db.prepare("SELECT nombre, precio FROM productos");
+    this.#getAllStmt = db.prepare("SELECT nombre, precio FROM productos"); //Faltra poner descripcion en la peticion
 }
 
   static getProductByUserId(id_u) {
