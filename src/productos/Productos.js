@@ -7,6 +7,7 @@ export class Producto {
   static #getAllStmt = null;
   static #insertStmt = null;
   static #updateStmt = null;
+  static #deleteStmt = null;
   
 
   nombre;
@@ -35,6 +36,7 @@ export class Producto {
       "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
     );
     this.#getAllStmt = db.prepare("SELECT id,nombre,descripcion, precio FROM productos");
+    this.#deleteStmt = db.prepare("DELETE FROM productos WHERE id = @id");
      
 }
 
@@ -92,7 +94,12 @@ export class Producto {
     return result;
   }
   
+  static eliminarProducto(id) {
+    Imagen.eliminarImagen(id);
+    const result = this.#deleteStmt.run({ id });
+    if (result.changes === 0) throw new ProductoNoEncontrado(id);
 
+  }
   persist() {
     if (this.id === null) return Producto.#insert(this);
     return Producto.#update(this);

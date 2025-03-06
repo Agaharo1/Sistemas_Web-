@@ -48,7 +48,7 @@ contenidoRouter.get('/vlogin', (req, res) => {
 })
 
 contenidoRouter.get('/normal', (req, res) => {
-    let contenido = 'paginas/contenido/noPermisos';
+    let contenido = 'paginas/contenido/normal';
     let productos = [];
     let productosImagenes = {}; // Diccionario para asociar productos con imágenes
 
@@ -60,9 +60,7 @@ contenidoRouter.get('/normal', (req, res) => {
         productosImagenes[producto.id] = imagenes;
     });
 
-    if (req.session.login) {
-        contenido = 'paginas/contenido/normal';
-    }
+   
 
     res.render('pagina', {
         contenido,

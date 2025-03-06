@@ -17,6 +17,10 @@
                         <%= producto.descripcion %> - 
                     <% } %>
                     Precio: <%= producto.precio %>
+                    <p>
+                        <a href="/productos/editarProducto/<%= producto.id %>">Editar</a> |
+                        <a href="/productos/eliminarProducto/<%= producto.id %>">Eliminar</a>
+                    </p>
                 </li>
             <% }) %>
         <% } else { %>

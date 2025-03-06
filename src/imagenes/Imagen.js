@@ -3,6 +3,7 @@ export class Imagen{
     static #getAllStmt = null;
     static #insertStmt = null;
     static #updateStmt = null;
+    static #deleteStmt = null;
 
     nombre;
     ruta;
@@ -27,7 +28,13 @@ export class Imagen{
           "UPDATE Imagenes SET nombre = @nombre, ruta = @ruta WHERE id_producto = @id_producto"
         );
         this.#getAllStmt = db.prepare("SELECT nombre,ruta, id_producto FROM Imagenes");
-    }   
+        this.#deleteStmt = db.prepare("DELETE FROM Imagenes WHERE id_producto = @id_producto");
+    }  
+    
+    static eliminarImagen(id_producto) {
+        const result = this.#deleteStmt.run({ id_producto });
+        if (result.changes === 0) throw new ImagenNoEncontrada(id_producto);
+      }
     static getImagenByProductId(id_producto) {
         const {nombre,ruta} = this.#getByImgIdStmt.get({ id_producto });
         const datos = {nombre,ruta};
