@@ -37,7 +37,7 @@ export function viewBaja(req, res) {
     res.render('pagina', params)
 }
 
-export function doBaja(req, res) {
+export function doBaja(req, res,next) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
     
@@ -47,16 +47,14 @@ export function doBaja(req, res) {
     try {
         const usuario = Usuario.eliminarUsuario(username, password);
         console.log(`Usuario dado de baja: ${username}`);
-        return res.render('pagina', {
-            contenido: 'paginas/index',
-            session: req.session
-        });
+        next();
 
     } catch (e) {
         res.render('pagina', {
             contenido: 'paginas/usuario/baja',
             error: 'Contraseña erronea',
-            userErr : username
+            userErr : username,
+            session: req.session
         })
     }
 }

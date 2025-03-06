@@ -14,7 +14,7 @@ usuariosRouter.post('/registro', doRegister)
 
 //Dar de baja un usuario
 usuariosRouter.get('/baja', viewBaja);
-usuariosRouter.post('/baja', doBaja);
+usuariosRouter.post('/baja', doBaja,doLogout);
 
 //Procesar login
 usuariosRouter.post('/login', doLogin);
