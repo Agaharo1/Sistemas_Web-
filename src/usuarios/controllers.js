@@ -29,6 +29,37 @@ export function doRegister(req, res) {
 
 }
 
+export function viewBaja(req, res) {
+    const params = {
+        contenido: 'paginas/usuario/baja',
+        session: req.session
+    }
+    res.render('pagina', params)
+}
+
+export function doBaja(req, res) {
+    body('username').escape(); // Se asegura que eliminar caracteres problemáticos
+    body('password').escape(); // Se asegura que eliminar caracteres problemáticos
+    
+    const username = req.body.username.trim();
+    const password = req.body.password.trim();
+
+    try {
+        const usuario = Usuario.eliminarUsuario(username, password);
+        console.log(`Usuario dado de baja: ${username}`);
+        return res.render('pagina', {
+            contenido: 'paginas/index',
+            session: req.session
+        });
+
+    } catch (e) {
+        res.render('pagina', {
+            contenido: 'paginas/usuario/baja',
+            error: 'Contraseña erronea',
+            userErr : username
+        })
+    }
+}
 
 
 
