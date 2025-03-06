@@ -1,19 +1,31 @@
 import express from 'express';
 import {Producto} from '../productos/Productos.js'
+import {Imagen} from '../imagenes/Imagen.js'
 
 const contenidoRouter = express.Router();
 
 contenidoRouter.get('/misProductos', (req, res) => {
     let contenido = 'paginas/contenido/noPermisos';
-    let productos = []
-    productos = Producto.getProductByUserId(req.session.user_id);
+    let productos = [];
+    let productosImagenes = {}; // Diccionario para asociar productos con imágenes
+
     if (req.session.login) {
+        productos = Producto.getProductByUserId(req.session.user_id);
+
+        // Crear el diccionario de productos e imágenes
+        productos.forEach(producto => {
+            const imagenes = Imagen.getImagenByProductId(producto.id);
+            productosImagenes[producto.id] = imagenes;
+        });
+
         contenido = 'paginas/contenido/misProductos';
     }
+
     res.render('pagina', {
         contenido,
         session: req.session,
-        productos
+        productos,
+        productosImagenes // Pasar el diccionario a la vista
     });
 });
 
@@ -37,15 +49,26 @@ contenidoRouter.get('/vlogin', (req, res) => {
 
 contenidoRouter.get('/normal', (req, res) => {
     let contenido = 'paginas/contenido/noPermisos';
-    let productos = []
+    let productos = [];
+    let productosImagenes = {}; // Diccionario para asociar productos con imágenes
+
     productos = Producto.getProducts();
+
+    // Crear el diccionario de productos e imágenes
+    productos.forEach(producto => {
+        const imagenes = Imagen.getImagenByProductId(producto.id);
+        productosImagenes[producto.id] = imagenes;
+    });
+
     if (req.session.login) {
         contenido = 'paginas/contenido/normal';
     }
+
     res.render('pagina', {
         contenido,
         session: req.session,
-        productos
+        productos,
+        productosImagenes // Pasar el diccionario a la vista
     });
 });
 

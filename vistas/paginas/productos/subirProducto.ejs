@@ -1,7 +1,7 @@
 <section>
     <h2>Acceso al sistema</h2>
     <div class="productRegist-container">
-        <form action="/productos/subir" method="POST" >
+        <form action="/productos/subir" method="POST" enctype="multipart/form-data">
             <p><label for="nombre">Nombre: </label>
                 <input type="text" id="nombre" name="nombre"required>
             </p>
@@ -11,7 +11,7 @@
                 <input type="number" id="precio" name="precio" required></p>
             <p>
                 <label for="imagen">Imagen:</label>
-                <input type="file" name="imagen" accept="image/*" required></p> 
+                <input type="file" id="imagen" name="imagen" accept="image/*" required></p> 
                 <input type="hidden" id="user_id" name="user_id" value="<%= session.user_id %>">
             <p><button type="submit">Enviar</button></p>
                 

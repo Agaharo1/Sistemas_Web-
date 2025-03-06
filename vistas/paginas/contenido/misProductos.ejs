@@ -1,17 +1,23 @@
-
 <div id="mercado">
     <h2>Mis Productos</h2>
     <ul>
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
-                <li>Producto: <%= producto.nombre %> -
+                <li>
+                    <% if (productosImagenes[producto.id]) { %>
+                        <img src="/imagenes/imagen/<%= producto.id %>/<%= productosImagenes[producto.id] %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
+                    <% } else { %>
+                        <p>No hay imágenes disponibles para este producto.</p>
+                    <% } %>
+                    Producto: <%= producto.nombre %> -
                     Descripcion:
                     <% if (!producto.descripcion) {%>
                         Este producto no tiene descripcion -
                     <%} else {%>
                         <%= producto.descripcion %> - 
-                <%  } %>
-                    Precio: <%= producto.precio %></li>
+                    <% } %>
+                    Precio: <%= producto.precio %>
+                </li>
             <% }) %>
         <% } else { %>
             <li>No hay productos disponibles.</li>
