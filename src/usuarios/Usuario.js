@@ -10,6 +10,7 @@ export class Usuario {
     static #getByUsernameStmt = null;
     static #insertStmt = null;
     static #updateStmt = null;
+    static #deleteStmt= null;
 
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
@@ -17,6 +18,7 @@ export class Usuario {
         this.#getByUsernameStmt = db.prepare('SELECT id,password,nombre,rol FROM Usuarios WHERE username = @username');
         this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
         this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
+        this.#deleteStmt = db.prepare('DELETE FROM Usuarios WHERE username = @username');
     }
 
     static getUsuarioByUsername(username) {
@@ -60,6 +62,37 @@ export class Usuario {
         if (result.changes === 0) throw new UsuarioNoEncontrado(username);
 
         return usuario;
+    }
+
+    static #delete(usuario) {
+        const usuario_d = this.getUsuarioByUsername(usuario.username);
+        const result = this.#deleteStmt.run({ username: usuario_d.username });
+
+        if (result.changes === 0) {
+            throw new UsuarioNoEncontrado(usuario.username);
+        }
+
+        return usuario;
+    }
+
+    static eliminarUsuario(username, password) {
+        try {
+            // Obtener usuario y verificar contraseña
+            const usuario = this.getUsuarioByUsername(username);
+            if (!bcrypt.compareSync(password, usuario.#password)) {
+                throw new UsuarioOPasswordNoValido(username);
+            }
+    
+            // Si la contraseña es correcta, proceder con la eliminación
+            this.#delete(usuario);
+            
+        } catch (e) {
+            // Solo relanzamos el error si no es del tipo esperado
+            if (!(e instanceof UsuarioNoEncontrado || e instanceof UsuarioOPasswordNoValido)) {
+                throw new Error('Error inesperado al eliminar usuario', { cause: e });
+            }
+            throw e;
+        }
     }
 
 
