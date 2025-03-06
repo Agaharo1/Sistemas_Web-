@@ -20,8 +20,9 @@ export function viewProductoExitoso(req, res) {
 
 
 export function doSubirProducto(req, res) {
-  const { nombre, descripcion, precio,imagen ,user_id} = req.body;
+  const { nombre, descripcion, precio ,user_id} = req.body;
   try {
+    console.log("Subiendo producto:", nombre, descripcion, precio,user_id);
     const result = Producto.crearProducto(nombre, descripcion, precio,user_id);
     res.redirect("/productos/productoExitoso");
   } catch (e) {

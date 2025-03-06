@@ -11,7 +11,7 @@ export class Producto {
   #id;
   #id_u;
 
-  constructor(nombre, descripcion, precio, id = null,id_u) {
+  constructor(nombre, descripcion, precio, id_u,id = null) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
@@ -25,7 +25,7 @@ export class Producto {
       "SELECT id, nombre, descripcion, precio FROM productos WHERE id_user = @id_u"
     );
     this.#insertStmt = db.prepare(
-      "INSERT INTO productos(nombre, descripcion, precio) VALUES (@nombre, @descripcion, @precio)"
+      "INSERT INTO productos(nombre,id_user, descripcion, precio) VALUES (@nombre,@id_u, @descripcion, @precio)"
     );
     this.#updateStmt = db.prepare(
       "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
@@ -51,7 +51,7 @@ export class Producto {
     const descripcion = producto.descripcion;
     const precio = producto.precio;
     const id_u = producto.#id_u;
-    const datos = {nombre,descripcion,precio,id_u};
+    const datos = {nombre,id_u,descripcion,precio};
     console.log("Producto insertado:", datos);
     result = this.#insertStmt.run(datos);
 
