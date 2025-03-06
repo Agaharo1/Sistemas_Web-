@@ -2,6 +2,7 @@
 import { Producto } from "./Productos.js";
 import { config } from "../config.js";
 import { Imagen } from "../imagenes/Imagen.js";
+import { body } from "express-validator";
 
 import fs from 'fs';
 import path from 'path';
@@ -52,11 +53,12 @@ export function eliminarProducto(req, res) {
 }
 export function editarProducto(req, res) {
   const { id } = req.params;
-  const producto = Producto.obtenerProducto(id);
+  const producto = Producto.getProductById(id);
   const params = {
     contenido: "paginas/productos/editarProducto",
     session: req.session,
     producto,
+    id
   };
   res.render("pagina", params);
 }
@@ -64,7 +66,7 @@ export function doEditarProducto(req, res) {
   const { id, nombre, descripcion, precio } = req.body;
   try {
     console.log("Editando producto:", id, nombre, descripcion, precio);
-    Producto.editarProducto(id, nombre, descripcion, precio);
+    Producto.editarProducto(nombre, descripcion, precio, id);
     res.redirect("/contenido/misProductos");
   } catch (e) {
     res.status(400).send(e.message);

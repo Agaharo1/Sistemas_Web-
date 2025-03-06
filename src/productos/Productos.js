@@ -8,6 +8,7 @@ export class Producto {
   static #insertStmt = null;
   static #updateStmt = null;
   static #deleteStmt = null;
+  static #getByIdStmt = null;
   
 
   nombre;
@@ -37,9 +38,24 @@ export class Producto {
     );
     this.#getAllStmt = db.prepare("SELECT id,nombre,descripcion, precio FROM productos");
     this.#deleteStmt = db.prepare("DELETE FROM productos WHERE id = @id");
+    this.#getByIdStmt = db.prepare(
+      "SELECT id, nombre, descripcion, precio, id_user FROM productos WHERE id = @id"
+    );
      
 }
 
+  static editarProducto(nombre, descripcion, precio, id) {
+    
+    const result =new Producto(nombre, descripcion, precio, null, id).persist();
+    if(result.changes === 0) throw new ProductoNoEncontrado(id);
+    return result;
+  }
+
+  static getProductById(id) {
+    const producto = this.#getByIdStmt.get({ id });
+    if (producto === undefined) throw new ProductoNoEncontrado(id);
+    return producto;
+  }
   static getProductByUserId(id_u) {
     const productos = this.#getByUserIdStmt.all({ id_u });
     if (productos === undefined) throw new ProductoNoEncontrado(nombre);
@@ -71,11 +87,11 @@ export class Producto {
     const descripcion = producto.descripcion;
     const precio = producto.precio;
     const id = producto.id;
-    const datos = { nombre, descripcion, precio };
+    const datos = { nombre, descripcion, precio,id };
 
     const result = this.#updateStmt.run(datos);
     if (result.changes === 0) throw new ProductoNoEncontrado(username);
-    return usuario;
+    return result;
   }
 
   static crearProducto(nombre, descripcion, precio, id_u, img, pathUpload) {
