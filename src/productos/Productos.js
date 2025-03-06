@@ -3,6 +3,7 @@ export class Producto {
   static #getAllStmt = null;
   static #insertStmt = null;
   static #updateStmt = null;
+  
 
   nombre;
   descripcion;
@@ -10,17 +11,18 @@ export class Producto {
   #id;
   #id_u;
 
-  constructor(nombre, descripcion, precio, id = null) {
+  constructor(nombre, descripcion, precio, id = null,id_u) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
     this.#id = id;
+    this.#id_u = id_u;
   }
 
   static initStatements(db) {
     if (this.#getByUserIdStmt !== null) return;
     this.#getByUserIdStmt = db.prepare(
-      "SELECT id, nombre, descripcion, precio FROM productos WHERE nombre = @nombre"
+      "SELECT id, nombre, descripcion, precio FROM productos WHERE id_user = @id_u"
     );
     this.#insertStmt = db.prepare(
       "INSERT INTO productos(nombre, descripcion, precio) VALUES (@nombre, @descripcion, @precio)"
@@ -28,16 +30,15 @@ export class Producto {
     this.#updateStmt = db.prepare(
       "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
     );
-    this.#getAllStmt = db.prepare("SELECT nombre,descripcion, precio FROM productos"); 
+    this.#getAllStmt = db.prepare("SELECT nombre,descripcion, precio FROM productos");
+     
 }
 
   static getProductByUserId(id_u) {
-    const producto = this.#getByUserIdStmt.get({ id_u });
-    if (producto === undefined) throw new ProductoNoEncontrado(nombre);
-
-    const { id, password, nombre, rol } = producto;
-    console.log("Producto recibido de la BD:", producto);
-    return new Producto(nombre, descripcion, precio);
+    const productos = this.#getByUserIdStmt.all({ id_u });
+    if (productos === undefined) throw new ProductoNoEncontrado(nombre);
+    
+    return productos;
   }
   static getProducts() {
     const productos = this.#getAllStmt.all();
@@ -50,7 +51,7 @@ export class Producto {
     const descripcion = producto.descripcion;
     const precio = producto.precio;
     const id_u = producto.#id_u;
-    const datos = {nombre,descripcion,precio};
+    const datos = {nombre,descripcion,precio,id_u};
     console.log("Producto insertado:", datos);
     result = this.#insertStmt.run(datos);
 
@@ -69,9 +70,9 @@ export class Producto {
     return usuario;
   }
 
-  static crearProducto(nombre, descripcion, precio) {
-    const Tproducto = new Producto(nombre, descripcion, precio);
-    Tproducto.nombre = nombre;
+  static crearProducto(nombre, descripcion, precio,id_u) {
+    const Tproducto = new Producto(nombre, descripcion, precio,id_u);
+    
     console.log("Producto creado:", Tproducto.nombre);
 
     return Tproducto.persist();

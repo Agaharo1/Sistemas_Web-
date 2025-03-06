@@ -3,7 +3,19 @@ import {Producto} from '../productos/Productos.js'
 
 const contenidoRouter = express.Router();
 
-
+contenidoRouter.get('/misProductos', (req, res) => {
+    let contenido = 'paginas/contenido/noPermisos';
+    let productos = []
+    productos = Producto.getProductByUserId(req.session.user_id);
+    if (req.session.login) {
+        contenido = 'paginas/contenido/misProductos';
+    }
+    res.render('pagina', {
+        contenido,
+        session: req.session,
+        productos
+    });
+});
 
 contenidoRouter.get('/flogin', (req, res) => {
 
