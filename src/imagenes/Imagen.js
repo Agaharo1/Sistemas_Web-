@@ -1,3 +1,7 @@
+import { config } from "../config.js";
+import fs from "fs";
+
+
 export class Imagen{
     static #getByImgIdStmt = null;
     static #getAllStmt = null;
@@ -32,7 +36,11 @@ export class Imagen{
     }  
     
     static eliminarImagen(id_producto) {
+        
         const result = this.#deleteStmt.run({ id_producto });
+        
+        fs.rmdirSync(`${config.uploads}/${id_producto}`, { recursive: true });
+        
         if (result.changes === 0) throw new ImagenNoEncontrada(id_producto);
       }
     static getImagenByProductId(id_producto) {
