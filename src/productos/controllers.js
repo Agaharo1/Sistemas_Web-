@@ -43,6 +43,11 @@ export function doSubirProducto(req, res) {
 }
 export function eliminarProducto(req, res) {
   const { id } = req.params;
+  let producto = Producto.getProductById(id);
+  if( req.session.user_id != producto.id_user){
+    res.status(400).send("No puedes eliminar un producto que no es tuyo");
+    return;
+  }
   try {
     console.log("Eliminando producto:", id);
     Producto.eliminarProducto(id);
@@ -53,7 +58,11 @@ export function eliminarProducto(req, res) {
 }
 export function editarProducto(req, res) {
   const { id } = req.params;
-  const producto = Producto.getProductById(id);
+  let producto = Producto.getProductById(id);
+  if( req.session.user_id != producto.id_user){     
+    res.status(400).send("No puedes eliminar un producto que no es tuyo");
+    return;
+  }
   const params = {
     contenido: "paginas/productos/editarProducto",
     session: req.session,
