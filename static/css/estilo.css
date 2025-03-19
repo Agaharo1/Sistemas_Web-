@@ -1,7 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-/* Reset de márgenes y paddings */
+@import url('https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');/* Reset de márgenes y paddings */
 
 
 body, html {
@@ -11,22 +10,37 @@ body, html {
 
 
 body {
-	background-color: rgb(0);
+	background-color: #FFEDFA;
 	
 
 }
 
 header{
-	background-color: #8AB2A6;
-	
+	background-color: #EC7FA9;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1%;
 }
 
 header h1 {
 	font-family: 'Pacifico', cursive;
 	font-size: 2em;
 	margin: 0;
+	color: white;
+	font-weight: 300;
+	padding: 1%;
+
 }
 
+header .saludo {
+	font-family: "Winky Sans", sans-serif;	
+	font-size: 1em;
+	margin: 0;
+	color: white;
+	font-weight: 300;
+	padding: 1%;
+}
 /*
 
 div#contenedor {
