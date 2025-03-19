@@ -1,6 +1,33 @@
-body {
-	background-color: #CDCDCD;
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+/* Reset de márgenes y paddings */
+
+
+body, html {
+    margin: 0;
+    padding: 0;
 }
+
+
+body {
+	background-color: rgb(0);
+	
+
+}
+
+header{
+	background-color: #8AB2A6;
+	
+}
+
+header h1 {
+	font-family: 'Pacifico', cursive;
+	font-size: 2em;
+	margin: 0;
+}
+
+/*
 
 div#contenedor {
 	width: 900px;
@@ -15,6 +42,8 @@ header {
 	background-color: #303030;
 	color: white;
 }
+
+
 
 header a, header a:visited {
 	color: white;

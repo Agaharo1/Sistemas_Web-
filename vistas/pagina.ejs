@@ -5,9 +5,9 @@
 </head>
 
 <body>
+  <%- include('./partials/cabecera.ejs', { session: locals.session }) %>
 
  <div id="contenedor">
-  <%- include('./partials/cabecera.ejs', { session: locals.session }) %>
   <%- include('./partials/sidebarIzq.ejs') %>
 
   <main>
