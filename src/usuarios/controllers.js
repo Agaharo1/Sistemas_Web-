@@ -12,14 +12,27 @@ export function viewLogin(req, res) {
 }
 
 export function viewRegister(req, res) {
-    const params = {
-        contenido: 'paginas/usuario/registro',
-        session: req.session
-    }
-    res.render('pagina', params)
+   
+    render(req, res, 'paginas/usuario/registro', {
+        datos: {},
+        errores: {}
+    });
 }
 
 export async function doRegister(req, res) {
+
+    const result = validationResult(req);
+    if (! result.isEmpty()) {
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        return render(req, res, 'paginas/usuario/registro', {
+            datos,
+            errores
+        });
+    }
+
+
+
     const {nombre, username, password} = req.body;
     try{
     const result = await Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico

@@ -11,7 +11,16 @@ usuariosRouter.get('/login', viewLogin);
 usuariosRouter.get('/registro', viewRegister);
 
 //Registro de un usuario
-usuariosRouter.post('/registro', doRegister)
+//usuariosRouter.post('/registro', doRegister)
+
+usuariosRouter.post('/registro'
+    , body('username', 'No puede ser vacío').trim().notEmpty()
+    , body('nombre', 'No puede ser vacío').trim().notEmpty()
+    , body('password', 'La contraseña no tiene entre 6 y 10 caracteres').trim().isLength({ min: 6, max: 10 })
+    , body('passwordConfirmacion', 'La contraseña no coincide').custom((value, { req }) => {
+        return value === req.body.password;
+    })
+    , doRegister);
 
 //Dar de baja un usuario
 usuariosRouter.get('/baja', viewBaja);
