@@ -2,6 +2,9 @@
     <h2>Registro</h2>
     <div class="Registro-container">
         <form action="/usuarios/registro" method="POST">
+            <% if (locals.error) { %>
+                <p><strong><%= locals.error %></strong></p>
+            <% } %>
             <p><label for="usuario">Nombre: </label>
             <input type="text" id="nombre" name="nombre" required></p>
 

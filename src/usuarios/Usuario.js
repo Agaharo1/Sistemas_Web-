@@ -96,7 +96,7 @@ export class Usuario {
     }
 
 
-    static login(username, password) {
+    static async login(username, password) {
         let usuario = null;
         try {
             usuario = this.getUsuarioByUsername(username);
@@ -104,18 +104,17 @@ export class Usuario {
             throw new UsuarioOPasswordNoValido(username, { cause: e });
         }
       
-        // XXX: En el ej3 / P3 lo cambiaremos para usar async / await o Promises
-        const hashedPassword = bcrypt.hashSync(password);
-        console.log('Hashed password:', hashedPassword);
-        console.log('Hashed password from DB:', usuario.#password);
-        if ( ! bcrypt.compareSync(password, usuario.#password) ) throw new UsuarioOPasswordNoValido(username);
+        
+        const isPasswordValid = await bcrypt.compare(password, usuario.#password);
+        if (!isPasswordValid) {
+            throw new UsuarioOPasswordNoValido(username);
+        }
         return usuario;
     }
 
-    static crearUsuario(username, password, nombre) {
+    static async crearUsuario(username, password, nombre) {
         const Tusuario = new Usuario(username, password, nombre);
-        Tusuario.password = password;
-        console.log('Contraseña del usuario creado:', Tusuario.#password);
+        await Tusuario.cambiaPassword(password);
         
         try {
             this.getUsuarioByUsername(username);
@@ -128,6 +127,10 @@ export class Usuario {
         }
         
         
+    }
+    async cambiaPassword(nuevoPassword) {
+            
+        this.#password = bcrypt.hashSync(nuevoPassword);    
     }
     #id;
     #username;

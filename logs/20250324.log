@@ -2,3 +2,12 @@
 {"level":30,"time":1742835864004,"pid":21864,"hostname":"TinkPad-Dani","msg":"Servidor cerrado"}
 {"level":30,"time":1742835897425,"pid":20740,"hostname":"TinkPad-Dani","msg":"Server is listening on port 3000"}
 {"level":30,"time":1742835900390,"pid":20740,"hostname":"TinkPad-Dani","msg":"Servidor cerrado\n"}
+{"level":30,"time":1742836732973,"pid":25792,"hostname":"TinkPad-Dani","msg":"Server is listening on port 3000"}
+{"level":50,"time":1742836761020,"pid":25792,"hostname":"TinkPad-Dani","err":{"type":"ReferenceError","message":"logger is not defined","stack":"ReferenceError: logger is not defined\n    at doLogin (file:///C:/Users/skate/source/Proyecto_SistemasWeb/Sistemas_Web-/src/usuarios/controllers.js:97:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"},"msg":"unhandledRejection"}
+{"level":30,"time":1742836808313,"pid":25792,"hostname":"TinkPad-Dani","msg":"Servidor cerrado"}
+{"level":30,"time":1742836829111,"pid":28600,"hostname":"TinkPad-Dani","msg":"Server is listening on port 3000"}
+{"level":50,"time":1742836848106,"pid":28600,"hostname":"TinkPad-Dani","msg":"Error en el proceso de login."}
+{"level":20,"time":1742836848106,"pid":28600,"hostname":"TinkPad-Dani","msg":"Detalles del error en login: Usuario o password no válido: a"}
+{"level":50,"time":1742836881285,"pid":28600,"hostname":"TinkPad-Dani","msg":"Error en el proceso de registro."}
+{"level":20,"time":1742836881285,"pid":28600,"hostname":"TinkPad-Dani","msg":"Detalles del error en registro: Usuario ya existe: h"}
+{"level":30,"time":1742836911389,"pid":28600,"hostname":"TinkPad-Dani","msg":"Servidor cerrado"}
