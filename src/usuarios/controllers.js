@@ -1,14 +1,14 @@
-import { body } from 'express-validator';
+
 import { Usuario,RolesEnum } from './Usuario.js';
 import { render } from '../utils/render.js';
 import { logger } from '../logger.js';
+import { body, validationResult, matchedData } from 'express-validator';
 
 export function viewLogin(req, res) {
-    const params = {
-        contenido: 'paginas/usuario/login',
-        session: req.session
-    }
-    res.render('pagina', params)
+    render(req, res, 'paginas/usuario/login', {
+        datos: {},
+        errores: {}
+    });
 }
 
 export function viewRegister(req, res) {
@@ -74,6 +74,17 @@ export function doBaja(req, res,next) {
 
 
 export async function doLogin(req, res) {
+    const result = validationResult(req);
+    if (! result.isEmpty()) {
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        return render(req, res, 'paginas/usuario/login', {
+            errores,
+            datos,
+            session: req.session
+        });
+    }
+
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
     
@@ -94,17 +105,14 @@ export async function doLogin(req, res) {
 
     } catch (e) {
 
-        // Log de nivel error
-        logger.error('Error en el proceso de login.');
-
-        // Log de nivel debug con detalles de la excepción
-        logger.debug(`Detalles del error en login: ${e.message}`);
-
-        res.render('pagina', {
-            contenido: 'paginas/usuario/login',
+        const datos = matchedData(req);
+        req.log.warn("Problemas al hacer login del usuario '%s'", username);
+        req.log.debug('El usuario %s, no ha podido logarse: %s', username, e.message);
+        render(req, res, 'paginas/usuario/login', {
             error: 'El usuario o contraseña no son válidos',
-            userErr : username
-        })
+            datos,
+            errores: {}
+        });
     }
 }
 
