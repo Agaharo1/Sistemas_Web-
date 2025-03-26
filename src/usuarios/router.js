@@ -1,5 +1,5 @@
 import express from 'express';
-import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja } from './controllers.js';
+import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body } from 'express-validator';
 const usuariosRouter = express.Router();
@@ -36,6 +36,6 @@ usuariosRouter.post('/login', autenticado(null, '/usuarios/home')
 //Procesar logout
 usuariosRouter.get('/logout', doLogout);
 
-
+usuariosRouter.get('/index', autenticado('/usuarios/index'), viewHome);
 
 export default usuariosRouter;

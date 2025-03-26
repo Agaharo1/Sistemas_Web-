@@ -3,6 +3,7 @@ import { Usuario,RolesEnum } from './Usuario.js';
 import { render } from '../utils/render.js';
 import { logger } from '../logger.js';
 import { body, validationResult, matchedData } from 'express-validator';
+import { redirige } from '../middleware/utils.js';
 
 export function viewLogin(req, res) {
     render(req, res, 'paginas/usuario/login', {
@@ -35,8 +36,12 @@ export async function doRegister(req, res) {
 
     const {nombre, username, password} = req.body;
     try{
-    const result = await Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
-    res.redirect('/usuarios/login');
+        const result = await Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
+        req.session.login = true;
+        req.session.nombre = nombre;
+        req.session.esAdmin = result.rol === RolesEnum.ADMIN;
+        req.session.user_id = result.id;
+        return res.redirect('/usuarios/index');
     } catch(e) {
           // Log de nivel error
         logger.error('Error en el proceso de registro.');
@@ -109,13 +114,9 @@ export async function doLogin(req, res) {
         req.session.login = true;
         req.session.nombre = usuario.nombre;
         req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
-        console.log(`Usuario logueado: ${username}`);
+        req.log.debug(`Usuario logueado: ${username}`);
         req.session.user_id = usuario.id;
-        return res.render('pagina', {
-            contenido: 'paginas/index',
-            session: req.session
-        });
-
+        return res.redirect('/usuarios/index');
     } catch (e) {
 
         const datos = matchedData(req);
@@ -145,4 +146,6 @@ export function doLogout(req, res) {
     }
     
 }
-
+export function viewHome(req, res) {
+    return render(req, res, 'paginas/index');
+}
