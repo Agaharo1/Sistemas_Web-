@@ -1,11 +1,9 @@
 import express from 'express';
 import multer from 'multer';
 import { config } from '../config.js';
-import { viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto} from './controllers.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { mostrarProducto,viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto} from './controllers.js';
+
+
 const productossRouter = express.Router();
 
 const multerFactory = multer({ dest: config.uploads });
@@ -21,6 +19,8 @@ productossRouter.get('/eliminarProducto/:id',eliminarProducto);
 productossRouter.get('/editarProducto/:id',editarProducto);
 
 productossRouter.post('/editar',doEditarProducto);
+
+productossRouter.get('/producto/:id',mostrarProducto);
 
 
 export default productossRouter;

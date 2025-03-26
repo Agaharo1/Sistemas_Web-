@@ -11,6 +11,7 @@ export class Usuario {
     static #insertStmt = null;
     static #updateStmt = null;
     static #deleteStmt= null;
+    static #getByIdStmt = null;
 
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
@@ -19,6 +20,13 @@ export class Usuario {
         this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
         this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
         this.#deleteStmt = db.prepare('DELETE FROM Usuarios WHERE username = @username');
+        this.#getByIdStmt = db.prepare('SELECT username,nombre FROM Usuarios WHERE id = @id');
+    }
+
+    static getUsuarioById(id) {
+        const usuario = this.#getByIdStmt.get({ id });
+        if (usuario === undefined) throw new UsuarioNoEncontrado(id);
+        return usuario;
     }
 
     static getUsuarioByUsername(username) {

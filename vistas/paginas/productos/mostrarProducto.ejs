@@ -1,0 +1,26 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Producto</title>
+    <style>
+        
+        
+    </style>
+</head>
+
+    <div class="product-container">
+        <h1>Detalles del Producto</h1>
+        <img src="/imagenes/imagen/<%= producto.id %>/<%= imagen %>" alt="Imagen del Producto" class="product-image">
+        <div class="product-details">
+            <h2><%= producto.nombre %></h2>
+            <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+            <p><strong>Precio:</strong> <%= producto.precio %> €</p>
+        </div>
+        <div class="user-info">
+            <h3>Información del Usuario</h3>
+            <p><strong>Nombre:</strong> <%= usuario.nombre %></p>
+            <p><strong>Email:</strong> <%= usuario.username %></p>
+        </div>
+    </div>
+
