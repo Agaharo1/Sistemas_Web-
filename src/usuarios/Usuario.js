@@ -11,6 +11,7 @@ export class Usuario {
     static #insertStmt = null;
     static #updateStmt = null;
     static #deleteStmt= null;
+    static #getByIdStmt = null;
 
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
@@ -19,6 +20,13 @@ export class Usuario {
         this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
         this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
         this.#deleteStmt = db.prepare('DELETE FROM Usuarios WHERE username = @username');
+        this.#getByIdStmt = db.prepare('SELECT username,nombre FROM Usuarios WHERE id = @id');
+    }
+
+    static getUsuarioById(id) {
+        const usuario = this.#getByIdStmt.get({ id });
+        if (usuario === undefined) throw new UsuarioNoEncontrado(id);
+        return usuario;
     }
 
     static getUsuarioByUsername(username) {
@@ -96,7 +104,7 @@ export class Usuario {
     }
 
 
-    static login(username, password) {
+    static async login(username, password) {
         let usuario = null;
         try {
             usuario = this.getUsuarioByUsername(username);
@@ -104,18 +112,17 @@ export class Usuario {
             throw new UsuarioOPasswordNoValido(username, { cause: e });
         }
       
-        // XXX: En el ej3 / P3 lo cambiaremos para usar async / await o Promises
-        const hashedPassword = bcrypt.hashSync(password);
-        console.log('Hashed password:', hashedPassword);
-        console.log('Hashed password from DB:', usuario.#password);
-        if ( ! bcrypt.compareSync(password, usuario.#password) ) throw new UsuarioOPasswordNoValido(username);
+        
+        const isPasswordValid = await bcrypt.compare(password, usuario.#password);
+        if (!isPasswordValid) {
+            throw new UsuarioOPasswordNoValido(username);
+        }
         return usuario;
     }
 
-    static crearUsuario(username, password, nombre) {
+    static async crearUsuario(username, password, nombre) {
         const Tusuario = new Usuario(username, password, nombre);
-        Tusuario.password = password;
-        console.log('Contraseña del usuario creado:', Tusuario.#password);
+        await Tusuario.cambiaPassword(password);
         
         try {
             this.getUsuarioByUsername(username);
@@ -128,6 +135,10 @@ export class Usuario {
         }
         
         
+    }
+    async cambiaPassword(nuevoPassword) {
+            
+        this.#password = bcrypt.hashSync(nuevoPassword);    
     }
     #id;
     #username;

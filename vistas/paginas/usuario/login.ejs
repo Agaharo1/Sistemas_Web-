@@ -9,13 +9,15 @@ function mostrarError(error){
     <h2>Acceso al sistema</h2>
     <div class="login-container">
         <form action="/usuarios/login" method="POST">
-            <p><label for="usuario">Correo: </label>
-                <input type="text" id="usuario" name="username" value="<%= typeof userErr !== 'undefined' ? userErr : '' %>" required>
-            </p>
-            <p><label for="password">Contraseña: </label>
-            <input type="password" id="password" name="password" required></p>
-            <%- mostrarError(typeof error !== 'undefined' ? error : '') %>
-            <p><button type="submit">Enviar</button></p>
+            <fieldset>
+                <% if (locals.error) { %>
+                    <p><strong><%= locals.error %></strong></p>
+                <% } %>
+                <legend>Correo y contraseña</legend>
+                <div><label>Correo:</label> <input type="text" name="username" value="<%= datos.username %>" /><%- helpers.error(errores, 'username') %></div>
+                <div><label>Contraseña:</label> <input type="password" name="password" /><%- helpers.error(errores, 'password') %></div>
+                <div><button type="submit">Enviar</button></div>
+            </fieldset>
         </form>
         <p>¿No tienes cuenta? <a href=/usuarios/registro>Registro</a></p>
     </div>

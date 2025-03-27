@@ -2,16 +2,36 @@
     <h2>Registro</h2>
     <div class="Registro-container">
         <form action="/usuarios/registro" method="POST">
-            <p><label for="usuario">Nombre: </label>
-            <input type="text" id="nombre" name="nombre" required></p>
+            <% if (locals.error) { %>
+                <p><strong><%= locals.error %></strong></p>
+            <% } %>
+            <div>
+                <label for="usuario">Nombre: </label>
+                <input type="text" name="nombre" value="<%= datos.nombre %>" />
+                <%- helpers.error(errores, 'nombre') %>
+            </div>
 
-            <p><label for="correo"> Correo electrónico: </label>
-            <input type="text" id="username" name="username" required></p>
+            <div>
+                <label>Correo:</label>
+                <input type="email" name="username" value="<%= datos.username %>" />
+                <%- helpers.error(errores, 'username') %>
+            </div>
 
-            <p><label for="contraseña">Contraseña: </label>
-            <input type="password" id="password" name="password" required></p>
+            <div>
+                <label for="contraseña">Contraseña: </label>
+                <input type="password" name="password" />
+                <%- helpers.error(errores, 'password') %>
+            </div>
 
-            <p><button type="submit">Enviar</button></p>
+            <div>
+                <label>Repetir contraseña:</label>
+                <input type="password" name="passwordConfirmacion" />
+                <%- helpers.error(errores, 'passwordConfirmacion') %>
+            </div>
+
+            <div>
+                <button type="submit">Enviar</button>
+            </div>
         </form>
     </div>
 </section>

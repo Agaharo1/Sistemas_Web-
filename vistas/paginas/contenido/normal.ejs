@@ -6,21 +6,27 @@
             <% productos.forEach(producto => { %>
                 <p>
                     <% if (productosImagenes[producto.id]) { %>
+                        <a href = "/productos/producto/<%= producto.id %>">
                         <img src="/imagenes/imagen/<%= producto.id %>/<%= productosImagenes[producto.id] %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
+                        </a>
                     <% } else { %>
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>
                     <p>
-                    Producto: <%= producto.nombre %> -
-                    Descripcion:
-                    <% if (!producto.descripcion) {%>
-                        Este producto no tiene descripcion -
-                    <%} else {%>
-                        <%= producto.descripcion %> - 
-                    <% } %>
-                    Precio: <%= producto.precio %>
+                        Producto:<a href = "/productos/producto/<%= producto.id %>"> <%= producto.nombre %> </a> -
+                        Precio: <%= producto.precio %>
+                    </p>
+                    <p>
+                        Descripcion:
+                        <% if (!producto.descripcion) {%>
+                            Este producto no tiene descripcion -
+                        <%} else {%>
+                            <%= producto.descripcion %>
+                        <% } %>
+                    </p>
+                
+                
                 </p>
-            </p>
             <% }) %>
         <% } else { %>
             <li>No hay productos disponibles.</li>
