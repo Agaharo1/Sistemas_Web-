@@ -3,6 +3,8 @@ import { Producto } from "./Productos.js";
 import { config } from "../config.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { body } from "express-validator";
+import { Usuario } from "../usuarios/Usuario.js";
+import { ProductoNoEncontrado } from "./Productos.js";
 
 import fs from 'fs';
 import path from 'path';
@@ -10,7 +12,20 @@ import path from 'path';
 
 
 
-
+export function mostrarProducto(req, res) {
+  const { id } = req.params;
+  const producto = Producto.getProductById(id);
+  const usuario = Usuario.getUsuarioById(producto.id_user);
+  const imagen = Imagen.getImagenByProductId(id);
+  const params = {
+    contenido: "paginas/productos/mostrarProducto",
+    session: req.session,
+    producto,
+    usuario,
+    imagen
+  };
+  res.render("pagina", params);
+}
 export function viewSubirProducto(req, res) {
   const params = {
     contenido: "paginas/productos/subirProducto",
