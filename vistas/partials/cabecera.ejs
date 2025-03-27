@@ -9,15 +9,15 @@ function mostrarSaludo(session){
 }
 function mostrarMenu(session){
 	if (session == null || ! session.login){
-		return `<nav style = "display: flex; gap:5%;">
+		return `<nav>
 		<a href="/">Inicio</a>
 		<a href="/contenido/normal">Mercado</a>
-		<a href="/usuarios/login">Login</a>
+		
 		<a href="/usuarios/registro">Registro</a>
 	</nav>`;
 	}
 
-	return `<nav style = "display: flex; gap:5%;">
+	return `
 		<a href="/">Inicio</a>
 		<a href="/contenido/normal">Mercado</a>
 		<a href="/contenido/misProductos">Mis Productos</a>
@@ -25,7 +25,7 @@ function mostrarMenu(session){
 		<a href="/">Pujas</a>
 		<a href="/productos/subir">Subir producto</a>
 		<a href="/usuarios/baja">Darme de baja</a>
-	</nav>`;
+		`;
 }
 
 %>
@@ -34,7 +34,7 @@ function mostrarMenu(session){
 		<h1>TruequeHub</h1>
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
-		</div>
+		
 		<%- mostrarMenu(session) %>
-
+	</div>
 </header>

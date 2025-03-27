@@ -5,3 +5,26 @@
 {"level":30,"time":1743063106058,"pid":17520,"hostname":"TinkPad-Dani","msg":"Server is listening on port 3000"}
 {"level":20,"time":1743063183356,"pid":17520,"hostname":"TinkPad-Dani","req":{"id":23,"method":"POST","url":"/usuarios/login","query":{},"params":{},"headers":{"host":"localhost:3000","connection":"keep-alive","content-length":"21","cache-control":"max-age=0","sec-ch-ua":"\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"","sec-ch-ua-mobile":"?0","sec-ch-ua-platform":"\"Windows\"","origin":"http://localhost:3000","content-type":"application/x-www-form-urlencoded","upgrade-insecure-requests":"1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36","accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","sec-fetch-site":"same-origin","sec-fetch-mode":"navigate","sec-fetch-user":"?1","sec-fetch-dest":"document","referer":"http://localhost:3000/usuarios/login","accept-encoding":"gzip, deflate, br, zstd","accept-language":"es-ES,es;q=0.9","cookie":"connect.sid=s%3APioDpCPqosNgTv_f0-9vkfB_FCMXKfNx.Td6ry7Yr5z9wmuYOw93T0oJjjGXbPis0JsHtTXMmp%2FE"},"remoteAddress":"::1","remotePort":52675},"msg":"Usuario logueado: h"}
 {"level":30,"time":1743064401557,"pid":17520,"hostname":"TinkPad-Dani","msg":"Servidor cerrado"}
+{"level":30,"time":1743065738255,"pid":7420,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743067335750,"pid":13432,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743067974262,"pid":13432,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743067977114,"pid":1960,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068014403,"pid":1960,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068016704,"pid":16292,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068033815,"pid":16292,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068035706,"pid":5800,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068069175,"pid":5800,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068071434,"pid":17248,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068100415,"pid":17248,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068102710,"pid":8408,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068145573,"pid":8408,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068148831,"pid":6036,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068164334,"pid":6036,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068166632,"pid":14924,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068303549,"pid":14924,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068305254,"pid":2268,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068331475,"pid":2268,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068334044,"pid":13604,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068362901,"pid":13604,"hostname":"PTO0413","msg":"Servidor cerrado"}
+{"level":30,"time":1743068365054,"pid":16020,"hostname":"PTO0413","msg":"Server is listening on port 3000"}
+{"level":30,"time":1743068387428,"pid":16020,"hostname":"PTO0413","msg":"Servidor cerrado"}

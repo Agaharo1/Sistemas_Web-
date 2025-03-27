@@ -20,7 +20,7 @@ header{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1%;
+	
 }
 
 header h1 {
@@ -29,7 +29,7 @@ header h1 {
 	margin: 0;
 	color: white;
 	font-weight: 300;
-	padding: 1%;
+	/*padding: 1%;*/
 
 }
 
@@ -39,8 +39,11 @@ header .saludo {
 	margin: 0;
 	color: white;
 	font-weight: 300;
-	padding: 1%;
+	
 }
+
+
+
 /*
 
 div#contenedor {
@@ -71,7 +74,7 @@ header a:hover {
 	text-decoration: underline;
 } 
 
-/*
+
  nav {
 	padding: 10px;
 	float: left;
