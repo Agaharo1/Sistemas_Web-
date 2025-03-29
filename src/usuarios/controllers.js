@@ -21,7 +21,10 @@ export function viewRegister(req, res) {
 }
 
 export function viewProfile(req, res) {
-    render(req, res, 'paginas/usuario/profile', {
+    render(req, res, 'pagina', {
+        contenido: 'paginas/usuario/profile',
+        session: req.session,
+        esPerfil: true,
         datos: {},
         errores: {}
     });

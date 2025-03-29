@@ -1,5 +1,5 @@
 import express from 'express';
-import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome } from './controllers.js';
+import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome, viewProfile } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body } from 'express-validator';
 const usuariosRouter = express.Router();
@@ -9,6 +9,9 @@ usuariosRouter.get('/login', viewLogin);
 
 //Pagina de registro
 usuariosRouter.get('/registro', viewRegister);
+
+//Perfil del usuario
+usuariosRouter.get('/profile', viewProfile)
 
 //Registro de un usuario
 //usuariosRouter.post('/registro', doRegister)
