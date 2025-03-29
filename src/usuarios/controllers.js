@@ -20,6 +20,13 @@ export function viewRegister(req, res) {
     });
 }
 
+export function viewProfile(req, res) {
+    render(req, res, 'paginas/usuario/profile', {
+        datos: {},
+        errores: {}
+    });
+}
+
 export async function doRegister(req, res) {
 
     const result = validationResult(req);
