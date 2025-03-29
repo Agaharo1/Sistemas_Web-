@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { config } from '../config.js';
-import { mostrarProducto,viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto} from './controllers.js';
+import { mostrarProducto,viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto,envioProducto} from './controllers.js';
 
 
 const productossRouter = express.Router();
@@ -21,6 +21,8 @@ productossRouter.get('/editarProducto/:id',editarProducto);
 productossRouter.post('/editar',doEditarProducto);
 
 productossRouter.get('/producto/:id',mostrarProducto);
+
+productossRouter.get('/envioProducto', envioProducto);
 
 
 export default productossRouter;

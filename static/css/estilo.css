@@ -125,3 +125,16 @@ a.boton {
 	padding: 1px 6px;
 	margin: 1px 5px;
 }
+
+
+
+/*Estilo para el formulario del envio "modificar" */
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option input[type="radio"] {
+    margin-right: 10px; 
+}

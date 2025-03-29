@@ -33,7 +33,15 @@ export function viewSubirProducto(req, res) {
   };
   res.render("pagina", params);
 }
+export function envioProducto(req, res) {
 
+  const params = {
+    contenido: "paginas/productos/envioProducto",
+    session: req.session,
+   
+  };
+  res.render("pagina", params);
+}
 
 export function viewProductoExitoso(req, res) {
   const params = {
