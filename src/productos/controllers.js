@@ -10,7 +10,19 @@ import fs from 'fs';
 import path from 'path';
 
 
-
+export function pagoProducto(req, res) {
+  const { id } = req.params;
+  const producto = Producto.getProductById(id);
+  const usuario = Usuario.getUsuarioById(producto.id_user);
+ 
+  const params = {
+    contenido: "paginas/productos/pagoProducto",
+    session: req.session,
+    producto,
+    usuario
+  };
+  res.render("pagina", params);
+}
 
 export function mostrarProducto(req, res) {
   const { id } = req.params;
@@ -26,6 +38,20 @@ export function mostrarProducto(req, res) {
   };
   res.render("pagina", params);
 }
+export function envioProducto(req, res) {
+  const { id } = req.params;
+  const producto = Producto.getProductById(id);
+  const usuario = Usuario.getUsuarioById(producto.id_user);
+  const imagen = Imagen.getImagenByProductId(id);
+  const params = {
+    contenido: "paginas/productos/envioProducto",
+    session: req.session,
+    producto,
+    usuario,
+    imagen
+  };
+  res.render("pagina", params);
+}
 export function viewSubirProducto(req, res) {
   const params = {
     contenido: "paginas/productos/subirProducto",
@@ -33,15 +59,7 @@ export function viewSubirProducto(req, res) {
   };
   res.render("pagina", params);
 }
-export function envioProducto(req, res) {
 
-  const params = {
-    contenido: "paginas/productos/envioProducto",
-    session: req.session,
-   
-  };
-  res.render("pagina", params);
-}
 
 export function viewProductoExitoso(req, res) {
   const params = {

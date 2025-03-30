@@ -1,10 +1,4 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrega del Producto</title>
-    <link rel="stylesheet" href="/css/estilo.css">
-</head>
-<body>
+
     <div class="send-container">
         <h1>Entrega del Producto</h1>
         <div class="delivery-options">
@@ -19,10 +13,21 @@
             </div>
             <div class="option">
                 <input type="radio" id="in-person" name="delivery" value="in-person">
-                <label for="in-person">En persona <span class="price">Gratiss</span></label>
+                <label for="in-person">En persona <span class="price">Gratuito</span></label>
                 
             </div>
         </div>
-        <button class="continue-button">Continuar</button>
+        <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
     </div>
-</body>
+
+
+    <div class="product-container">
+        <h1>Detalles del Producto</h1>
+        <img src="/imagenes/imagen/<%= producto.id %>/<%= imagen %>" alt="Imagen del Producto" class="product-image">
+        <div class="product-details">
+            <h2><%= producto.nombre %></h2>
+            <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+            <p><strong>Precio:</strong> <%= producto.precio %> €</p>
+        </div>
+        
+    </div>
