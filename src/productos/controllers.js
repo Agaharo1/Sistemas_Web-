@@ -24,6 +24,29 @@ export function pagoProducto(req, res) {
   res.render("pagina", params);
 }
 
+export function formularioEnvioProducto(req, res) {
+  const { id } = req.params;
+  const params = {
+    contenido: "paginas/productos/formEnvioProducto",
+    session: req.session,
+    id
+  };
+  res.render("pagina", params);
+
+}
+
+
+export function formularioPuntoRecogida(req, res) {
+  const { id } = req.params;
+  const params = {
+    contenido: "paginas/productos/formPuntoRecogida",
+    session: req.session,
+    id
+  };
+  res.render("pagina", params);
+
+}
+
 export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);

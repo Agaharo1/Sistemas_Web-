@@ -1,33 +1,71 @@
-
-    <div class="send-container">
-        <h1>Entrega del Producto</h1>
-        <div class="delivery-options">
-            <h2>Opciones de Entrega</h2>
-            <div class="option">
-                <input type="radio" id="pickup" name="delivery" value="pickup" checked>
-                <label for="pickup">Punto de recogida <span class="price">9,49 €</span></label>
-            </div>
-            <div class="option">
-                <input type="radio" id="home" name="delivery" value="home">
-                <label for="home">Mi dirección <span class="price">11,49 €</span></label>
-            </div>
-            <div class="option">
-                <input type="radio" id="in-person" name="delivery" value="in-person">
-                <label for="in-person">En persona <span class="price">Gratuito</span></label>
-                
-            </div>
+<div class="send-container">
+    <h1>Entrega del Producto</h1>
+    <div class="delivery-options">
+        <h2>Opciones de Entrega</h2>
+        <div class="option">
+            <input type="radio" id="pickup" name="delivery" value="9.49" checked onchange="updateDeliveryOption()">
+            <label for="pickup">Punto de recogida <span class="price">9,49 €</span></label>
         </div>
-        <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
+        <div class="option">
+            <input type="radio" id="home" name="delivery" value="11.49" onchange="updateDeliveryOption()">
+            <label for="home">Mi dirección <span class="price">11,49 €</span></label>
+        </div>
+        <div class="option">
+            <input type="radio" id="in-person" name="delivery" value="0" onchange="updateDeliveryOption()">
+            <label for="in-person">En persona <span class="price">Gratuito</span></label>
+        </div>
     </div>
 
+    <!-- Contenedor para los enlaces dinámicos -->
+    <div id="dynamic-links" class="dynamic-links">
+        <!-- Los enlaces se mostrarán aquí dinámicamente -->
+    </div>
 
-    <div class="product-container">
-        <h1>Detalles del Producto</h1>
-        <img src="/imagenes/imagen/<%= producto.id %>/<%= imagen %>" alt="Imagen del Producto" class="product-image">
-        <div class="product-details">
-            <h2><%= producto.nombre %></h2>
-            <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
-            <p><strong>Precio:</strong> <%= producto.precio %> €</p>
-        </div>
+    <div class="total-summary">
+        <h2>Resumen del Pedido</h2>
+        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
+        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">9.49</span> €</p>
+        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio + 9.49 %></span> €</p>
+    </div>
+
+    <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
+</div>
+
+<div class="product-container">
+    <h1>Detalles del Producto</h1>
+    <img src="/imagenes/imagen/<%= producto.id %>/<%= imagen %>" alt="Imagen del Producto" class="product-image">
+    <div class="product-details">
+        <h2><%= producto.nombre %></h2>
+        <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+        <p><strong>Precio:</strong> <%= producto.precio %> €</p>
+    </div>
+</div>
+
+<script>
+    function updateDeliveryOption() {
+        const selectedOption = document.querySelector('input[name="delivery"]:checked');
+        const deliveryCost = parseFloat(selectedOption.value);
+        const productPrice = parseFloat(<%= producto.precio %>);
+        const dynamicLinks = document.getElementById('dynamic-links');
+
         
-    </div>
+        document.getElementById('delivery-cost').textContent = deliveryCost.toFixed(2);
+        document.getElementById('total-price').textContent = (productPrice + deliveryCost).toFixed(2);
+
+        dynamicLinks.innerHTML = '';
+
+        if (selectedOption.id === 'pickup') {
+            dynamicLinks.innerHTML = `
+                <a href="/productos/formPuntoRecogida" class="envio-button">Añadir punto de recogida</a>
+                <a href="/productos/modificarPuntoRecogida" class="modPunto-button">Modificar</a>
+            `;
+        } else if (selectedOption.id === 'home') {
+            dynamicLinks.innerHTML = `
+                <a href="/productos/formEnvioProducto" class="envio-button">Añadir dirección de envío</a>
+                <a href="/productos/modificarDireccion" class="modDirec-button">Modificar</a>
+            `;
+        } 
+    }
+
+    updateDeliveryOption();
+</script>

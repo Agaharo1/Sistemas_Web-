@@ -1,0 +1,35 @@
+<section>
+    <h2>Añadir Dirección de Envío</h2>
+    <div class="address-form-container">
+        <form action="/productos/guardarDireccion" method="POST">
+            <p>
+                <label for="nombre">Nombre: </label>
+                <input type="text" id="nombre" name="nombre" required>
+            </p>
+            <p>
+                <label for="direccion">Dirección: </label>
+                <input type="text" id="direccion" name="direccion" required>
+            </p>
+            <p>
+                <label for="ciudad">Ciudad: </label>
+                <input type="text" id="ciudad" name="ciudad" required>
+            </p>
+            <p>
+                <label for="estado">Estado/Provincia: </label>
+                <input type="text" id="estado" name="estado" required>
+            </p>
+            <p>
+                <label for="codigo_postal">Código Postal: </label>
+                <input type="text" id="codigo_postal" name="codigo_postal" required>
+            </p>
+            <p>
+                <label for="telefono">Teléfono: </label>
+                <input type="tel" id="telefono" name="telefono" required>
+            </p>
+            <input type="hidden" id="user_id" name="user_id" value="<%= session.user_id %>">
+            <p>
+                <button type="submit">Guardar Dirección</button>
+            </p>
+        </form>
+    </div>
+</section>

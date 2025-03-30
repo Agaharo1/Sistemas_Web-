@@ -138,3 +138,12 @@ a.boton {
 .option input[type="radio"] {
     margin-right: 10px; 
 }
+
+.modDirec-button {
+    margin-left: 10px; /* Ajusta el valor según el espacio que desees */
+}
+
+
+.modPunto-button {
+    margin-left: 10px; /* Ajusta el valor según el espacio que desees */
+}
