@@ -13,10 +13,6 @@ contenidoRouter.get('/misProductos', (req, res) => {
         productos = Producto.getProductByUserId(req.session.user_id);
 
         // Crear el diccionario de productos e imágenes
-        productos.forEach(producto => {
-            const imagenes = Imagen.getImagenByProductId(producto.id);
-            productosImagenes[producto.id] = imagenes;
-        });
 
         contenido = 'paginas/contenido/misProductos';
     }
@@ -24,8 +20,7 @@ contenidoRouter.get('/misProductos', (req, res) => {
     res.render('pagina', {
         contenido,
         session: req.session,
-        productos,
-        productosImagenes // Pasar el diccionario a la vista
+        productos
     });
 });
 
@@ -53,20 +48,11 @@ contenidoRouter.get('/normal', (req, res) => {
     let productosImagenes = {}; // Diccionario para asociar productos con imágenes
 
     productos = Producto.getProducts();
-
-    // Crear el diccionario de productos e imágenes
-    productos.forEach(producto => {
-        const imagenes = Imagen.getImagenByProductId(producto.id);
-        productosImagenes[producto.id] = imagenes;
-    });
-
-   
-
+    console.log(productos);
     res.render('pagina', {
         contenido,
         session: req.session,
-        productos,
-        productosImagenes // Pasar el diccionario a la vista
+        productos
     });
 });
 

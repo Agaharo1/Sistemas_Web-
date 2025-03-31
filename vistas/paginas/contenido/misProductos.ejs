@@ -4,8 +4,8 @@
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <p>
-                    <% if (productosImagenes[producto.id]) { %>
-                        <img src="/imagenes/imagen/<%= producto.id %>/<%= productosImagenes[producto.id] %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
+                    <% if (producto.imagen) { %>
+                        <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
                     <% } else { %>
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>

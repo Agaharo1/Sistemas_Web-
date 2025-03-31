@@ -28,7 +28,10 @@ export class Producto {
   static initStatements(db) {
     if (this.#getByUserIdStmt !== null) return;
     this.#getByUserIdStmt = db.prepare(
-      "SELECT id, nombre, descripcion, precio FROM productos WHERE id_user = @id_u"
+      `SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+      FROM productos p 
+      JOIN usuarios u ON p.id_user = u.id 
+      JOIN Imagenes i ON i.id_producto = p.id WHERE id_user = @id_u`
     );
     this.#insertStmt = db.prepare(
       "INSERT INTO productos(nombre,id_user, descripcion, precio) VALUES (@nombre,@id_u, @descripcion, @precio)"
@@ -36,10 +39,18 @@ export class Producto {
     this.#updateStmt = db.prepare(
       "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
     );
-    this.#getAllStmt = db.prepare("SELECT id,nombre,descripcion, precio FROM productos");
+    this.#getAllStmt = db.prepare(`SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+    FROM productos p 
+    JOIN usuarios u ON p.id_user = u.id 
+    JOIN Imagenes i ON i.id_producto = p.id 
+    `);
     this.#deleteStmt = db.prepare("DELETE FROM productos WHERE id = @id");
     this.#getByIdStmt = db.prepare(
-      "SELECT id, nombre, descripcion, precio, id_user FROM productos WHERE id = @id"
+    `SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+    FROM productos p 
+    JOIN usuarios u ON p.id_user = u.id 
+    JOIN Imagenes i ON i.id_producto = p.id 
+    WHERE p.id = @id`
     );
      
 }
@@ -64,6 +75,9 @@ export class Producto {
   }
   static getProducts() {
     const productos = this.#getAllStmt.all();
+    if (productos === undefined) throw new ProductoNoEncontrado(nombre);
+    console.log("Productos obtenidos:", productos);
+    
     return productos;
   }
 
