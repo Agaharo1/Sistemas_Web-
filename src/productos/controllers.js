@@ -35,18 +35,6 @@ export function formularioEnvioProducto(req, res) {
 
 }
 
-
-export function formularioPuntoRecogida(req, res) {
-  const { id } = req.params;
-  const params = {
-    contenido: "paginas/productos/formPuntoRecogida",
-    session: req.session,
-    id
-  };
-  res.render("pagina", params);
-
-}
-
 export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);

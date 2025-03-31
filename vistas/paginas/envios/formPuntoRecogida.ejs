@@ -1,0 +1,21 @@
+<div id="mercado">
+    <h2>Puntos de Recogida</h2>
+    <form action="/envios/seleccionarPunto" method="POST">
+        <ul>
+            <% if (puntoRecogida.length > 0) { %>
+                <% puntoRecogida.forEach(punto => { %>
+                    <li>
+                        <label>
+                            <input type="radio" name="puntoId" value="<%= punto.id %>" required>
+                            <strong>Provincia:</strong> <%= punto.provincia %> - 
+                            <strong>Dirección:</strong> <%= punto.direccion %>
+                        </label>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>No hay puntos de recogida disponibles.</li>
+            <% } %>
+        </ul>
+        <button type="submit">Seleccionar Punto de Recogida</button>
+    </form>
+</div>

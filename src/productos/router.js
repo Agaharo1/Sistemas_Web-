@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { config } from '../config.js';
-import { mostrarProducto,viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto,envioProducto,pagoProducto,formularioEnvioProducto,formularioPuntoRecogida} from './controllers.js';
+import { mostrarProducto,viewSubirProducto, doSubirProducto, viewProductoExitoso,eliminarProducto,editarProducto,doEditarProducto,envioProducto,pagoProducto,formularioEnvioProducto/*,formularioPuntoRecogida*/} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 
 const productossRouter = express.Router();
@@ -28,5 +28,4 @@ productossRouter.get('/pagoProducto/:id', autenticado('/usuarios/login'), pagoPr
 
 productossRouter.get('/formEnvioProducto', autenticado('/usuarios/login'), formularioEnvioProducto);
 
-productossRouter.get('/formPuntoRecogida', autenticado('/usuarios/login'), formularioPuntoRecogida);
 export default productossRouter;

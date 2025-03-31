@@ -5,6 +5,7 @@ import usuariosRouter from './usuarios/router.js';
 import contenidoRouter from './contenido/router.js';
 import productossRouter from './productos/router.js';
 import imagenRouter from './imagenes/router.js';
+import envioRouter from './envio/router.js';
 import { logger } from './logger.js';
 import pinoHttp  from 'pino-http';
 const pinoMiddleware = pinoHttp(config.logger.http(logger));
@@ -41,4 +42,5 @@ app.use('/usuarios', usuariosRouter);
 app.use('/contenido', contenidoRouter);
 app.use('/productos', productossRouter);
 app.use('/imagenes', imagenRouter);
+app.use('/envios', envioRouter);
 app.use(errorHandler)
