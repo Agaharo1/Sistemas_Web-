@@ -13,7 +13,7 @@
             <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
             <p><strong>Precio:</strong> <%= producto.precio %> €</p>
             <% if (producto.id_user !== session.user_id) { %>  <!--Esto es para que si el producto es de un usuario no tenga la opcion de comprarlo -->
-                <a href="/productos/envioProducto/<%= producto.id %>">Comprar</a>
+                <a href="/envios/resumenProducto/<%= producto.id %>">Comprar</a>
             <% } %>
         </div>
         <div class="user-info">

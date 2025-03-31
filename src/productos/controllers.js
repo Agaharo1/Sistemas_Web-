@@ -24,16 +24,6 @@ export function pagoProducto(req, res) {
   res.render("pagina", params);
 }
 
-export function formularioEnvioProducto(req, res) {
-  const { id } = req.params;
-  const params = {
-    contenido: "paginas/productos/formEnvioProducto",
-    session: req.session,
-    id
-  };
-  res.render("pagina", params);
-
-}
 
 export function mostrarProducto(req, res) {
   const { id } = req.params;
@@ -47,20 +37,7 @@ export function mostrarProducto(req, res) {
   };
   res.render("pagina", params);
 }
-export function envioProducto(req, res) {
-  const { id } = req.params;
-  const producto = Producto.getProductById(id);
-  const usuario = Usuario.getUsuarioById(producto.id_user);
-  const imagen = Imagen.getImagenByProductId(id);
-  const params = {
-    contenido: "paginas/productos/envioProducto",
-    session: req.session,
-    producto,
-    usuario,
-    imagen
-  };
-  res.render("pagina", params);
-}
+
 export function viewSubirProducto(req, res) {
   const params = {
     contenido: "paginas/productos/subirProducto",
