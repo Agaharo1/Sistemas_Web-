@@ -147,3 +147,44 @@ a.boton {
 .modPunto-button {
     margin-left: 10px; /* Ajusta el valor según el espacio que desees */
 }
+
+
+/*Estilos para los chats */
+.chat-container {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	font-family: Arial, sans-serif;
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.message {
+	padding: 10px;
+	border-radius: 10px;
+	max-width: 70%;
+}
+
+.message.sent {
+	background-color: #d1f7c4;
+	align-self: flex-end;
+	text-align: right;
+}
+
+.message.received {
+	background-color: #f1f1f1;
+	align-self: flex-start;
+	text-align: left;
+}
+
+.timestamp {
+	display: block;
+	font-size: 0.8em;
+	color: #888;
+	margin-top: 5px;
+}

@@ -1,0 +1,13 @@
+<div class="chat-container">
+    <h3>Producto: <%= productName %></h3>
+    <h2>Chat con <%= otherUserName %></h2>
+    <div class="messages">
+        <% messages.forEach(message => { %>
+            <div class="message <%= message.senderId === currentUserId ? 'sent' : 'received' %>">
+                <p><%= message.text %></p>
+                <span class="timestamp"><%= message.timestamp %></span>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
