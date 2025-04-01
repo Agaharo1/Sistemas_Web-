@@ -2,6 +2,7 @@ import { logger } from '../logger.js';
 export class Chat{
     static #getByUserIdStmt = null;
     static #getMessagesStmt = null;
+    static #getChatByProductIdStmt = null;
     static #getAllStmt = null;
     static #insertStmt = null;
     static #updateStmt = null;
@@ -9,6 +10,8 @@ export class Chat{
     static #deleteUserFromChatStmt = null;
     static #insertMensajeStmt = null;
     static #deleteMensajeStmt = null;
+    static #lastMensajeChatIdStmt = null;
+    static #chatByIdStmt = null;
     id_2;
     id_1;
     #id;
@@ -23,7 +26,20 @@ export class Chat{
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         this.#getByUserIdStmt = db.prepare(
-          "SELECT id, usuario1, usuario2 FROM Chats WHERE (usuario1 = @idUsuario OR usuario2 = @idUsuario)"
+          `SELECT c.id as chatId, 
+              CASE 
+            WHEN c.usuario1 = @idUsuario THEN u2.nombre 
+            ELSE u1.nombre 
+              END AS nombre,
+              (SELECT contenido 
+               FROM Mensajes m 
+               WHERE m.chatId = c.id 
+               ORDER BY m.id DESC 
+               LIMIT 1) AS lastMensaje
+           FROM Chats c
+           LEFT JOIN Usuarios u1 ON c.usuario1 = u1.id
+           LEFT JOIN Usuarios u2 ON c.usuario2 = u2.id
+           WHERE (c.usuario1 = @idUsuario OR c.usuario2 = @idUsuario)`
         );
         this.#insertStmt = db.prepare(
           "INSERT INTO Chats(producto, usuario1, usuario2) VALUES (@producto, @usuario1, @usuario2)"
@@ -49,7 +65,15 @@ export class Chat{
         this.#deleteMensajeStmt = db.prepare(
             "DELETE FROM Mensajes WHERE chatId = @id_chat AND chatId IN (SELECT id FROM Chats WHERE usuario1 = 0 AND usuario2 = 0)"
         );
-
+        this.#lastMensajeChatIdStmt = db.prepare(
+            "SELECT id FROM Mensajes WHERE chatId = @id_chat ORDER BY id DESC LIMIT 1"
+        );
+        this.#getChatByProductIdStmt = db.prepare(
+            "SELECT id FROM Chats WHERE producto = @id_producto AND (usuario1 = @id_usuario OR usuario2 = @id_usuario)"
+        );
+        this.#chatByIdStmt = db.prepare(
+            "SELECT id, usuario1, usuario2, producto FROM Chats WHERE id = @id_chat"
+        );
     }  
     
     static eliminarChat(chatId, usuarioId) {
@@ -62,15 +86,39 @@ export class Chat{
         else{
             //Eliminar el chat de la tabla Chats (borrar el chat si los dos usuarios lo han eliminado)
             const result = this.#deleteStmt.run({ chatId });
+            if (result.changes === 0) throw new ChatNoEncontrado(chatId);
+            logger.debug("Chat eliminado:", result.changes);
         }
       }
-
-    static getChatsByUserId() {
-        const Chats = this.#getByUserIdStmt.all();
+    static getChatByUsers(id_user_producto, id_user_sesion, id_producto) {
+        const chat = this.#getChatByProductIdStmt.all({id_usuario:id_user_producto, id_producto});
+        if (chat === undefined)return null;
+        const chatExistente = chat.find(
+            (chat) =>
+              ((chat.usuario1 === id_user_producto && chat.usuario2 === id_user_sesion) ||
+              (chat.usuario1 === id_user_sesion && chat.usuario2 === id_user_producto))
+              
+          );
+        if (chatExistente) {
+            logger.debug("Chat existente:", chatExistente);
+            return chatExistente;
+        } else {
+            return null;
+        }
+      }
+    static getChatById(id_chat) {
+        const chat = this.#chatByIdStmt.get({ id_chat });
+        if (chat === undefined) throw new ChatNoEncontrado(id_chat);
+        logger.debug("Chat encontrado:", chat);
+        return chat;
+      }
+    static getChatsByUserId(id_usuario) {
+        const Chats = this.#getByUserIdStmt.all(id_usuario);
         if (Chats === undefined) throw new ChatNoEncontrado(id_usuario);
         logger.debug("Chats encontrados:", Chats);
         return Chats;
       }
+   
     static getMensajesByChatId(id_chat) {
         const Mensajes = this.#getMessagesStmt.all({ id_chat });
         if (Mensajes === undefined) throw new ChatNoEncontrado(id_chat);

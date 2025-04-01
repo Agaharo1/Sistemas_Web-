@@ -11,6 +11,8 @@ import pinoHttp  from 'pino-http';
 const pinoMiddleware = pinoHttp(config.logger.http(logger));
 import { flashMessages } from './middleware/flash.js';
 import { errorHandler } from './middleware/error.js';
+import chatRouter from './chat/router.js';
+
 
 export const app = express();
 
@@ -43,4 +45,5 @@ app.use('/contenido', contenidoRouter);
 app.use('/productos', productossRouter);
 app.use('/imagenes', imagenRouter);
 app.use('/envios', envioRouter);
+app.use('/chats', chatRouter);
 app.use(errorHandler)
