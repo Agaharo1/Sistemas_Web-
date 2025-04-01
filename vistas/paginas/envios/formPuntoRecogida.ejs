@@ -1,6 +1,8 @@
 <div id="mercado">
     <h2>Puntos de Recogida</h2>
-    <form action="/envios/seleccionarPunto" method="POST">
+
+    <form action="/envios/formPuntoRecogida/<%= producto.id %>" method="POST">
+        <input type="hidden" name="productoId" value="<%= producto.id %>">
         <ul>
             <% if (puntoRecogida.length > 0) { %>
                 <% puntoRecogida.forEach(punto => { %>
