@@ -1,0 +1,31 @@
+<section>
+    <h2>Editar perfil</h2>
+    <div class="UserPerfil-container">
+        <form action="/usuarios/editarPerfil" method="POST">
+            <div>
+                <label for="usuario">Nombre: </label>
+                <input type="text" name="nombre"/>
+            </div>
+
+            <div>
+                <label>Correo:</label>
+                <input type="email" name="username"/>
+            </div>
+
+            <div>
+                <label for="contraseña">Contraseña: </label>
+                <input type="password" name="password" />
+            </div>
+
+            <div>
+                <label>Repetir contraseña:</label>
+                <input type="password" name="passwordConfirmacion" />
+            </div>
+
+            <div>
+                <button type="submit">Enviar</button>
+            </div>
+                
+        </form>
+    </div>
+</section>

@@ -83,6 +83,12 @@ export class Usuario {
         return usuario;
     }
 
+    static editarPerfil(nombre, username, password, id){
+        const result =new Usuario(nombre, username, password, id).persist();
+        if(result.changes === 0) throw new UsuarioNoEncontrado(id);
+        return result;
+    }
+
     static eliminarUsuario(username, password) {
         try {
             // Obtener usuario y verificar contraseña

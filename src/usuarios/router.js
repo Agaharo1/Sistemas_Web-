@@ -1,5 +1,5 @@
 import express from 'express';
-import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome, viewProfile } from './controllers.js';
+import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome, viewProfile, viewEditarPerfil, doEditarPerfil } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body } from 'express-validator';
 const usuariosRouter = express.Router();
@@ -11,7 +11,12 @@ usuariosRouter.get('/login', viewLogin);
 usuariosRouter.get('/registro', viewRegister);
 
 //Perfil del usuario
-usuariosRouter.get('/profile', viewProfile)
+usuariosRouter.get('/profile', viewProfile);
+
+//Edicion perfil del usuario
+usuariosRouter.get('/editarPerfil', viewEditarPerfil);
+
+usuariosRouter.post('/editarPerfil', doEditarPerfil)
 
 //Registro de un usuario
 //usuariosRouter.post('/registro', doRegister)
