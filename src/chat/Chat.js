@@ -114,7 +114,8 @@ export class Chat{
         return chat;
       }
     static getChatsByUserId(id_usuario) {
-        const Chats = this.#getByUserIdStmt.all(id_usuario);
+        const id = id_usuario;
+        const Chats = this.#getByUserIdStmt.all({idUsuario:id});
         if (Chats === undefined) throw new ChatNoEncontrado(id_usuario);
         logger.debug("Chats encontrados:", Chats);
         return Chats;

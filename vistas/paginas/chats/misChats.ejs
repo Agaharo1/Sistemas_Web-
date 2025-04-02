@@ -4,7 +4,7 @@
             <ul>
                 <% chats.forEach(chat => { %>
                     <li class="chat-item">
-                        <a href="/chat/<%= chat.id %>">
+                        <a href="/chats/chat/<%= chat.chatId %>">
                             <div class="chat-info"></div>
                                 <h4><%= chat.nombre %></h4>
                                 <p><%= chat.lastMensaje %></p>
