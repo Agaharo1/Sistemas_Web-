@@ -61,6 +61,7 @@ const imagenes = Imagen.getImagenByProductId(chat.producto);
     chat,
     otherUserName : usuario.nombre,
     productName : producto.nombre,
+    productId : producto.id,
     imagenes,
     mensajes
   };

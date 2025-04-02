@@ -1,5 +1,6 @@
 <div class="chat-container">
     <h3>Producto: <%= productName %></h3>
+    <img src="/imagenes/imagen/<%= productId%>/<%= imagenes %>" alt="Imagen del Producto" class="product-image">
     <h2>Chat con <%= otherUserName %></h2>
     <div class="messages">
         <% mensajes.forEach(message => { %>
