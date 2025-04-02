@@ -69,11 +69,12 @@ export class Chat{
             "SELECT id FROM Mensajes WHERE chatId = @id_chat ORDER BY id DESC LIMIT 1"
         );
         this.#getChatByProductIdStmt = db.prepare(
-            "SELECT id FROM Chats WHERE producto = @id_producto AND (usuario1 = @id_usuario OR usuario2 = @id_usuario)"
+            "SELECT id, usuario1, usuario2, producto FROM Chats WHERE producto = @id_producto AND (usuario1 = @id_usuario OR usuario2 = @id_usuario)"
         );
         this.#chatByIdStmt = db.prepare(
             "SELECT id, usuario1, usuario2, producto FROM Chats WHERE id = @id_chat"
         );
+        logger.debug("Statements de Chat inicializados");
     }  
     
     static eliminarChat(chatId, usuarioId) {
@@ -121,7 +122,6 @@ export class Chat{
    
     static getMensajesByChatId(id_chat) {
         const Mensajes = this.#getMessagesStmt.all({ id_chat });
-        if (Mensajes === undefined) throw new ChatNoEncontrado(id_chat);
         logger.debug("Mensajes encontrados:", Mensajes);
         return Mensajes;
       }
@@ -130,7 +130,7 @@ export class Chat{
         const producto = chat.#id_p;
         const usuario1 = chat.id_1;
         const usuario2 = chat.id_2;
-        const { lastInsertRowid } = chat.#insertStmt.run({ producto, usuario1, usuario2 });
+        const { lastInsertRowid } = Chat.#insertStmt.run({ producto:producto, usuario1:usuario1, usuario2:usuario2 });
         chat.#id = lastInsertRowid;
         return chat;
       }
@@ -156,8 +156,8 @@ export class Chat{
         return nuevoMensaje;
       }
     persist() {
-        if (this.#id === null) return Imagen.#insert(this);
-        return Imagen.#update(this);
+        if (this.#id === null) return this.#insert(this);
+        return this.#update(this);
       }
 
 }

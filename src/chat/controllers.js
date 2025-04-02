@@ -29,11 +29,12 @@ export function nuevoChat(req, res) {
 export function viewChat(req, res) {
   const { id } = req.params;
   const chat = Chat.getChatById(id);
+  let otherUserId = req.session.user_id;
   if(!chat) {
     return res.status(404).send("Chat no encontrado");
   }
-  if(chat.usuario1 !== req.session.user.id) {
-    otherUserId = chat.usuario1;
+  if(chat.usuario1 !== req.session.user_id) {
+     otherUserId = chat.usuario1;
   }else{
     otherUserId = chat.usuario2;
   }
@@ -41,18 +42,18 @@ const usuario = Usuario.getUsuarioById(otherUserId);
     if(!usuario) {
         return res.status(404).send("Usuario no encontrado");
     }
-const producto = Producto.getProductoById(chat.id_producto);
+const producto = Producto.getProductById(chat.producto);
     if(!producto) {
         return res.status(404).send("Producto no encontrado");
     }
-const imagenes = Imagen.getImagenesByIdProducto(chat.id_producto);
+const imagenes = Imagen.getImagenByProductId(chat.producto);
     if(!imagenes) {
         return res.status(404).send("Imagenes no encontradas");
     }
 
   const mensajes = Chat.getMensajesByChatId(id);
     if(!mensajes) {
-        return res.status(404).send("Mensajes no encontrados");
+        return mensajes=[];
     }
   const params = {
     contenido: "paginas/chats/chat",
@@ -77,8 +78,7 @@ export function viewMisChats(req, res) {
   res.render("pagina", params);
 }
 export function enviarMensaje(req, res) {
-  const { mensaje, id_chat } = req.body;
-  const senderId = req.session.user.id;
+  const { mensaje, id_chat,senderId } = req.body;
   const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
   res.redirect(`/chats/chat/${id_chat}`);
 }
