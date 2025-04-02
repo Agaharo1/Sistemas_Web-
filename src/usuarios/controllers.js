@@ -30,6 +30,26 @@ export function viewProfile(req, res) {
     });
 }
 
+export function viewEditarPerfil(req, res) {
+
+    const params = {
+        contenido: "paginas/usuario/editarPerfil",
+        session: req.session,
+    };
+    res.render("pagina", params);
+}
+
+export function doEditarPerfil(req, res) {
+    const { id, nombre, username, password } = req.body;
+    try {
+        console.log("Editando perfil:", id, nombre, username, password);
+        Usuario.editarPerfil(nombre, username, password, id);
+        res.redirect("/contenido/normal");
+    } catch (e) {
+        res.status(400).send(e.message);
+    }
+}
+
 export async function doRegister(req, res) {
 
     const result = validationResult(req);

@@ -26,6 +26,13 @@
         <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
         <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">9.49</span> €</p>
         <p><strong>Total:</strong> <span id="total-price"><%= producto.precio + 9.49 %></span> €</p>
+        <p><strong>Punto de Recogida:</strong> 
+            <% if (puntoRecogida) { %>
+                <%= puntoRecogida.direccion %>, <%= puntoRecogida.provincia %>
+            <% } else { %>
+                No seleccionado
+            <% } %>
+        </p>
     </div>
 
     <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
@@ -56,7 +63,7 @@
 
         if (selectedOption.id === 'pickup') {
             dynamicLinks.innerHTML = `
-                <a href="/envios/formPuntoRecogida" class="envio-button">Añadir punto de recogida</a>
+                <a href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
                 <a href="/productos/modificarPuntoRecogida" class="modPunto-button">Modificar</a>
             `;
         } else if (selectedOption.id === 'home') {

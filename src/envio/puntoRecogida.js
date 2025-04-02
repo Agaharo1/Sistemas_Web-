@@ -44,6 +44,10 @@ export class PuntoRecogida {
     }
 
 
+    static getPuntoRecogidaByOneId(id) {
+      return this.#getByIdStmt.get({ id });
+  }
+
     
 }
 
