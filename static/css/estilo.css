@@ -146,8 +146,7 @@ a.boton {
 
 /*Estilos para los chats */
 .chat-container {
-	width: 100%;
-	max-width: 600px;
+    max-width: 60%;
 	margin: 0 auto;
 	font-family: Arial, sans-serif;
 }
@@ -156,10 +155,11 @@ a.boton {
 	max-height: 400px; /* Ajusta la altura máxima según sea necesario */
 	overflow-y: scroll; /* Habilita el scroll solo hacia abajo */
 	overflow-x: hidden; /* Oculta el scroll horizontal */
-	border: 1px solid #ccc; /* Opcional: para visualizar mejor el área */
+	/*border: 1px solid #ccc; /* Opcional: para visualizar mejor el área */
 	padding: 10px; /* Opcional: para un mejor diseño */
 	display: flex;
 	flex-direction: column;
+	min-height: 400px
 }
 
 .message {
@@ -189,11 +189,41 @@ a.boton {
 	margin-top: 5px;
 }
 
+.message-form {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.message-form textarea {
+	flex: 1;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	resize: none;
+}
+
+.message-form button {
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.message-form button:hover {
+	background-color: #0056b3;
+}
+
 /*Estilos imagen producto de chat  de chat*/
 .product-info {
 	display: flex;
-	
+	align-items: center;
 	margin-bottom: 10px;
+	margin-top: 10px;
 	flex-direction: row;
 }
 
@@ -207,4 +237,23 @@ a.boton {
 
 .product-info h3 {
 	margin: 0;
+}
+
+
+
+
+/*Estilo form login */
+.section-login {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+	flex-direction: column;
+}
+.login-container {
+    max-width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
