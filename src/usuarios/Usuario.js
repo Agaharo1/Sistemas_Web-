@@ -83,10 +83,27 @@ export class Usuario {
         return usuario;
     }
 
-    static editarPerfil(nombre, username, password, id){
-        const result =new Usuario(nombre, username, password, id).persist();
-        if(result.changes === 0) throw new UsuarioNoEncontrado(id);
-        return result;
+    static async editarPerfil(nombre, username, password, id) {
+        const usuario = this.getUsuarioById(id);
+    
+        if (!usuario) {
+            throw new UsuarioNoEncontrado(id);
+        }
+    
+        usuario.nombre = nombre;
+        usuario.#username = username;
+    
+        if (password) {
+            usuario.password = password;
+        }
+    
+        const result = usuario.persist();
+    
+        if (result.changes === 0) {
+            throw new UsuarioNoEncontrado(id);
+        }
+    
+        return usuario;
     }
 
     static eliminarUsuario(username, password) {

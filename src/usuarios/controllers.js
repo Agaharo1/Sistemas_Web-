@@ -31,19 +31,22 @@ export function viewProfile(req, res) {
 }
 
 export function viewEditarPerfil(req, res) {
-
+    const { id } = req.params;
+    const usuario = Usuario.getUsuarioById(id);
     const params = {
         contenido: "paginas/usuario/editarPerfil",
-        session: req.session,
+        usuario,
+        session: req.session
     };
     res.render("pagina", params);
 }
 
 export function doEditarPerfil(req, res) {
-    const { id, nombre, username, password } = req.body;
+    const userId = req.session.user_id;
+    const {nombre, username, password } = req.body;
     try {
-        console.log("Editando perfil:", id, nombre, username, password);
-        Usuario.editarPerfil(nombre, username, password, id);
+        console.log("Editando perfil:", userId, nombre, username, password);
+        Usuario.editarPerfil(nombre, username, password, userId);
         res.redirect("/contenido/normal");
     } catch (e) {
         res.status(400).send(e.message);
