@@ -1,13 +1,14 @@
 body {
 	background-color: #CDCDCD;
+	margin: 0;
 }
 
 div#contenedor {
-	width: 900px;
-	margin: auto;
+	
+	margin: 0;
 	border: 1px solid black;
 	background-color: #aaaaaa;
-	margin-top: 30px;
+	margin-top: 0;
 }
 
 header {
@@ -72,10 +73,10 @@ aside {
 }
 
 main {
-	padding: 10px;
+	
 	float: left;
 	min-height: 600px;
-	width: 500px;
+	width: 100%;
 	background-color: white;
 }
 
@@ -152,16 +153,21 @@ a.boton {
 }
 
 .messages {
+	max-height: 400px; /* Ajusta la altura máxima según sea necesario */
+	overflow-y: scroll; /* Habilita el scroll solo hacia abajo */
+	overflow-x: hidden; /* Oculta el scroll horizontal */
+	border: 1px solid #ccc; /* Opcional: para visualizar mejor el área */
+	padding: 10px; /* Opcional: para un mejor diseño */
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	margin-top: 20px;
 }
 
 .message {
 	padding: 10px;
 	border-radius: 10px;
-	max-width: 70%;
+	max-width: 60%;
+	word-wrap: break-word; /* Permite el salto de línea si el texto es muy largo */
+	overflow-wrap: break-word; /* Compatibilidad adicional para el salto de línea */
 }
 
 .message.sent {
@@ -181,4 +187,24 @@ a.boton {
 	font-size: 0.8em;
 	color: #888;
 	margin-top: 5px;
+}
+
+/*Estilos imagen producto de chat  de chat*/
+.product-info {
+	display: flex;
+	
+	margin-bottom: 10px;
+	flex-direction: row;
+}
+
+.product-image-circle {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 10px;
+	object-fit: cover;
+}
+
+.product-info h3 {
+	margin: 0;
 }
