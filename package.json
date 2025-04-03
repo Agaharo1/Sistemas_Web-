@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --inspect ./src/server.js",
-    "dev:watch": "nodemon -w ./src ./src/server.js"
+    "start": "node  ./src/server.js",
+    "dev:watch": "nodemon -w  ./src ./src/server.js",
+    "debug": "node --inspect ./src/server.js"
   },
   "author": "",
   "license": "Apache-2.0",
