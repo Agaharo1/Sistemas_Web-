@@ -1,35 +1,33 @@
 
 <div id="mercado">
     <h2>Productos</h2>
-    <ul>
+    <div class="productos-container">
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
-                <p>
+                <div class="producto">
                     <% if (producto.imagen) { %>
-                        <a href = "/productos/producto/<%= producto.id %>">
-                        <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
+                        <a href="/productos/producto/<%= producto.id %>">
+                            <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" class="product-image">
                         </a>
                     <% } else { %>
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>
                     <p>
-                        Producto:<a href = "/productos/producto/<%= producto.id %>"> <%= producto.nombre %> </a> -
+                        Producto: <a href="/productos/producto/<%= producto.id %>"><%= producto.nombre %></a> -
                         Precio: <%= producto.precio %>
                     </p>
                     <p>
-                        Descripcion:
-                        <% if (!producto.descripcion) {%>
-                            Este producto no tiene descripcion -
-                        <%} else {%>
+                        Descripción:
+                        <% if (!producto.descripcion) { %>
+                            Este producto no tiene descripción -
+                        <% } else { %>
                             <%= producto.descripcion %>
                         <% } %>
                     </p>
-                
-                
-                </p>
+                </div>
             <% }) %>
         <% } else { %>
-            <li>No hay productos disponibles.</li>
+            <p>No hay productos disponibles.</p>
         <% } %>
-    </ul>
+    </div>
 </div>

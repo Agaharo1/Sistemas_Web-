@@ -14,11 +14,11 @@ export class Chat{
     static #chatByIdStmt = null;
     id_2;
     id_1;
-    #id;
+    id;
     #id_p;
 
     constructor(id_producto, id = null, id_1 = null, id_2 = null) {
-        this.#id = id;
+        this.id = id;
         this.#id_p = id_producto;
         this.id_1 = id_1;
         this.id_2 = id_2;
@@ -132,7 +132,7 @@ export class Chat{
         const usuario1 = chat.id_1;
         const usuario2 = chat.id_2;
         const { lastInsertRowid } = Chat.#insertStmt.run({ producto:producto, usuario1:usuario1, usuario2:usuario2 });
-        chat.#id = lastInsertRowid;
+        chat.id = lastInsertRowid;
         return chat;
       }
 
@@ -157,7 +157,7 @@ export class Chat{
         return nuevoMensaje;
       }
     persist() {
-        if (this.#id === null) return this.#insert(this);
+        if (this.id === null) return this.#insert(this);
         return this.#update(this);
       }
 

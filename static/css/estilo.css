@@ -173,7 +173,7 @@ a.boton {
 .message.sent {
 	background-color: #d1f7c4;
 	align-self: flex-end;
-	text-align: right;
+	text-align: left;
 }
 
 .message.received {
@@ -256,4 +256,55 @@ a.boton {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/*Estilos pagina de productos*/
+.productos-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 10px;
+	justify-content: flex-start
+}
+
+.producto {
+	flex: 0 0 calc(33.333% - 20px); /* Ensure each product takes 1/3 of the container */
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	padding: 15px;
+	text-align: center;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.producto img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+	margin-bottom: 10px;
+}
+
+.producto p {
+	margin: 10px 0;
+	font-size: 14px;
+	color: #333;
+}
+
+.producto a {
+	text-decoration: none;
+	color: #007bff;
+	font-weight: bold;
+}
+
+.producto a:hover {
+	text-decoration: underline;
 }
