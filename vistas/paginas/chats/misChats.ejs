@@ -1,23 +1,23 @@
 <% function mostrarChats(chats) { %>
     <div class="chat-list">
         <% if (chats && chats.length > 0) { %>
-            <ul>
-                <% chats.forEach(chat => { %>
-                    <li class="chat-item">
-                        <a href="/chats/chat/<%= chat.chatId %>">
-                            <div class="chat-info"></div>
-                                <h4><%= chat.nombre %></h4>
-                                <p><%= chat.lastMensaje %></p>
-                            </div>
-                            
-                        </a>
-                    </li>
-                <% }); %>
-            </ul>
+            <% chats.forEach(chat => { %>
+                <a href="/chats/chat/<%= chat.chatId %>" class="chat-item">
+                    <div class="chat-info">
+                        <div class="chat-left">
+                            <img src="/imagenes/imagen/<%= chat.producto %>/<%= chat.imagen %>" alt="Imagen del producto" class="product-image-circle">
+                            <h4><%= chat.nombre %></h4>
+                        </div>
+                        <p class="chat-last-message"><%= chat.lastMensaje %></p>
+                    </div>
+                </a>
+            <% }); %>
         <% } else { %>
             <p>No tienes chats disponibles.</p>
         <% } %>
     </div>
 <% } %>
+
+
 
 <% mostrarChats(chats); %>

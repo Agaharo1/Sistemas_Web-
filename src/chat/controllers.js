@@ -70,11 +70,12 @@ const imagenes = Imagen.getImagenByProductId(chat.producto);
 export function viewMisChats(req, res) {
   const { id } = req.params;
   const chats = Chat.getChatsByUserId(id);
-  
+ 
   const params = {
     contenido: "paginas/chats/misChats",
     session: req.session,
     chats
+    
   };
   res.render("pagina", params);
 }

@@ -1,4 +1,5 @@
 import { logger } from '../logger.js';
+import { Imagen } from '../imagenes/Imagen.js';
 export class Chat{
     static #getByUserIdStmt = null;
     static #getMessagesStmt = null;
@@ -26,7 +27,7 @@ export class Chat{
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         this.#getByUserIdStmt = db.prepare(
-          `SELECT c.id as chatId, 
+          `SELECT c.id as chatId,c.producto as producto, 
               CASE 
             WHEN c.usuario1 = @idUsuario THEN u2.nombre 
             ELSE u1.nombre 
@@ -115,10 +116,13 @@ export class Chat{
       }
     static getChatsByUserId(id_usuario) {
         const id = id_usuario;
-        const Chats = this.#getByUserIdStmt.all({idUsuario:id});
-        if (Chats === undefined) throw new ChatNoEncontrado(id_usuario);
-        logger.debug("Chats encontrados:", Chats);
-        return Chats;
+        let chats = this.#getByUserIdStmt.all({idUsuario:id});
+        if (chats === undefined) throw new ChatNoEncontrado(id_usuario);
+        chats.forEach(chat => {
+            chat.imagen = Imagen.getImagenByProductId(chat.producto);
+        });
+        logger.debug("Chats encontrados:", chats);
+        return chats;
       }
    
     static getMensajesByChatId(id_chat) {
