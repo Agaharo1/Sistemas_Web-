@@ -13,18 +13,18 @@ div#contenedor {
 
 header {
 	padding: 30px;
-	background-color: #303030;
-	color: white;
+	background-color: white;
+	color: black;
 }
 
 header a, header a:visited {
-	color: white;
+	color: black;
 	font-weight: bold;
 	text-decoration: none;
 } 
 
 header a:hover {
-	color: red;
+	color: #6bb88a;
 	font-weight: bold;
 	text-decoration: underline;
 } 
@@ -88,10 +88,6 @@ footer	 {
 	text-align: center;
 }
 
-div.saludo {
-	width: 100%;
-	text-align: right;
-}
 
 fieldset {
 	border: 1px solid black;

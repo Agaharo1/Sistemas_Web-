@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de la búsqueda</title>
+</head>
+<body>
+    <%- include('partials/cabecera') %>
+
+    <h2>Resultados para "<%= query %>"</h2>
+
+    <% if (resultados.length > 0) { %>
+        <ul>
+            <% resultados.forEach(resultado => { %>
+                <li><%= resultado.nombre %> - $<%= resultado.precio %></li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No se encontraron resultados.</p>
+    <% } %>
+</body>
+</html>

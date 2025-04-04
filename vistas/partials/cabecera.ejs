@@ -30,10 +30,80 @@ function mostrarMenu(session){
 %>
 
 <header>
+	<!-- Contenedor principal -->
+	<div class="contenido_cabecera">
+		<!-- Título -->
 		<h1>TruequeHub</h1>
+
+		<!-- Barra de búsqueda -->
+		<div class="barra_busqueda">
+			<form action="/buscar" method="GET">
+				<input type="text" name="query" placeholder="Busca un producto" required>
+				<button type="submit">Buscar</button>
+			</form>
+		</div>
+
+		<!-- Saludo + login -->
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
-		<%- mostrarMenu(session) %>
+	</div>
+
+	<!-- Menú -->
+	<%- mostrarMenu(session) %>
+
+		
 
 </header>
+
+<style>
+	.contenido_cabecera {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 5%; ;
+		/*padding: 10px;*/
+		border-bottom: 1px solid #ccc; 
+		
+	}
+
+	.contenido_cabecera h1{
+		font-family: Pacifico, cursive;
+		font-weight: 400;
+  		font-style: normal;
+		color: #6bb88a
+
+	}
+
+	.barra_busqueda {
+		flex-grow: 1; /* Permite que la barra de búsqueda ocupe el espacio restante */
+	}
+
+	.barra_busqueda input[type="text"] {
+		width: 100%; /* Hace que el campo de texto ocupe todo el ancho disponible */
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+	}
+
+	.barra_busqueda button {
+		padding: 10px 15px;
+		background-color: #007BFF;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		margin-left: 5px; /* Espacio entre el campo de texto y el botón */
+	}
+
+	.barra_busqueda button:hover {
+		background-color: #0056b3; /* Color al pasar el ratón por encima */
+	}
+
+	.saludo {
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+	
+
+</style>
