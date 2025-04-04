@@ -8,11 +8,11 @@
   <% var esPerfil = typeof esPerfil !== 'undefined' ? esPerfil : false; %>
  <div id="contenedor">
   <%- include('./partials/cabecera.ejs', { session: locals.session }) %>
-  <% if (locals.session && esPerfil) { %>
+  <!--<% if (locals.session && esPerfil) { %>
     <%- include('./partials/sidebarIzqProfile.ejs') %>
   <% } else { %>
     <%- include('./partials/sidebarIzq.ejs') %>
-  <% } %>
+  <% } %>-->
 
   <main>
     <article>
