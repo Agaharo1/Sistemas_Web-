@@ -37,10 +37,17 @@ export function formularioPuntoRecogida(req, res) {
 
   export function formularioEnvioProducto(req, res) {
     const { id } = req.params;
+    console.log("ID del producto recibido:", id);
+    const producto = Producto.getProductById(id);
+    console.log(producto);
+
+    if (!producto) {
+        return res.status(404).send("Producto no encontrado");
+    }
     const params = {
       contenido: "paginas/envios/formEnvioProducto",
       session: req.session,
-      id
+      producto,
     };
     res.render("pagina", params);
   
@@ -55,6 +62,8 @@ export function formularioPuntoRecogida(req, res) {
 
     const puntoRecogida = req.session.puntoRecogidaSeleccionado;
     console.log("Punto de recogida seleccionado:", puntoRecogida);
+
+    const direcciones = DirEnvio.getDireccionesByUsuarioId(req.session.user_id);
   
     const params = {
       contenido: "paginas/envios/resumenProducto",
@@ -62,7 +71,8 @@ export function formularioPuntoRecogida(req, res) {
       producto,
       usuario,
       imagen,
-      puntoRecogida
+      puntoRecogida,
+      direcciones,
     };
     res.render("pagina", params);
   }
@@ -71,7 +81,15 @@ export function formularioPuntoRecogida(req, res) {
 
   export async function crearDireccion(req, res) {
     const { nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida, productoId } = req.body;
-
+console.log("Datos recibidos:", {
+        nombre,
+        codigo_postal,
+        telefono,
+        dni,
+        direccion_entrega,
+        punto_recogida,
+        productoId
+    });
     try {
         const usuario_id = req.session.user_id;
         console.log("Creando dirección:", {

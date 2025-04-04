@@ -7,10 +7,10 @@
         <input type="hidden" id="direccion_entrega" name="direccion_entrega" value="<%= puntoRecogida.length > 0 ? puntoRecogida[0].direccion : '' %>">
 
         <label for="puntoId">Selecciona un punto de recogida:</label>
-        <select name="puntoId" id="puntoId" required>
+        <select name="puntoId" id="puntoId" required onchange="updateDireccionEntrega()">
             <% if (puntoRecogida.length > 0) { %>
                 <% puntoRecogida.forEach((punto, index) => { %>
-                    <option value="<%= punto.id %>" <%= index === 0 ? 'selected' : '' %>>
+                    <option value="<%= punto.id %>" data-direccion="<%= punto.direccion %>" <%= index === 0 ? 'selected' : '' %>>
                         <%= punto.provincia %> - <%= punto.direccion %>
                     </option>
                 <% }) %>
@@ -43,3 +43,16 @@
         <button type="submit">Confirmar Envío</button>
     </form>
 </div>
+
+<script>
+    
+    function updateDireccionEntrega() {
+        const selectElement = document.getElementById('puntoId');
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const direccionEntrega = selectedOption.getAttribute('data-direccion');
+        document.getElementById('direccion_entrega').value = direccionEntrega;
+    }
+
+    
+    updateDireccionEntrega();
+</script>

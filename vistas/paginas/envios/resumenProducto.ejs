@@ -16,10 +16,7 @@
         </div>
     </div>
 
-    <!-- Contenedor para los enlaces dinámicos -->
-    <div id="dynamic-links" class="dynamic-links">
-        <!-- Los enlaces se mostrarán aquí dinámicamente -->
-    </div>
+    <div id="dynamic-links" class="dynamic-links"></div>
 
     <div class="total-summary">
         <h2>Resumen del Pedido</h2>
@@ -33,6 +30,23 @@
                 No seleccionado
             <% } %>
         </p>
+    </div>
+
+    <div class="address-container">
+        <h2>Direcciones Guardadas</h2>
+        <% if (direcciones && direcciones.length > 0) { %>
+            <select id="direccion-guardada" name="direccion_guardada">
+                <% direcciones.forEach(direccion => { %>
+                    <option value="<%= direccion.id %>">
+                        <%= direccion.nombre %>, <%= direccion.direccion_entrega %>, 
+                        <%= direccion.codigo_postal %>, <%= direccion.provincia %>, 
+                        Teléfono: <%= direccion.telefono %>, DNI: <%= direccion.dni %>
+                    </option>
+                <% }) %>
+            </select>
+        <% } else { %>
+            <p>No tienes direcciones guardadas.</p>
+        <% } %>
     </div>
 
     <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
@@ -55,7 +69,6 @@
         const productPrice = parseFloat(<%= producto.precio %>);
         const dynamicLinks = document.getElementById('dynamic-links');
 
-        
         document.getElementById('delivery-cost').textContent = deliveryCost.toFixed(2);
         document.getElementById('total-price').textContent = (productPrice + deliveryCost).toFixed(2);
 
@@ -68,7 +81,7 @@
             `;
         } else if (selectedOption.id === 'home') {
             dynamicLinks.innerHTML = `
-                <a href="/envios/formEnvioProducto" class="envio-button">Añadir dirección de envío</a>
+                <a href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
                 <a href="/productos/modificarDireccion" class="modDirec-button">Modificar</a>
             `;
         } 
