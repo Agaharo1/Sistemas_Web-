@@ -2,6 +2,7 @@ import { PuntoRecogida } from "./puntoRecogida.js";
 import { Producto } from "../productos/Productos.js";
 import { Usuario } from "../usuarios/Usuario.js";
 import { Imagen } from "../imagenes/Imagen.js";
+import { DirEnvio } from "./direccionEnt.js";
 
 
 
@@ -65,3 +66,29 @@ export function formularioPuntoRecogida(req, res) {
     };
     res.render("pagina", params);
   }
+
+
+
+  export async function crearDireccion(req, res) {
+    const { nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida, productoId } = req.body;
+
+    try {
+        const usuario_id = req.session.user_id;
+        console.log("Creando dirección:", {
+            usuario_id,
+            nombre,
+            codigo_postal,
+            telefono,
+            dni,
+            direccion_entrega,
+            punto_recogida,
+            productoId
+        });
+
+        await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
+        return res.redirect(`/envios/resumenProducto/${productoId}`);
+    } catch (e) {
+        console.error("Error al crear la dirección:", e.message);
+        return res.status(500).send("Error al crear la dirección.");
+    }
+}

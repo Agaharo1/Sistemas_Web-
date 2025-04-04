@@ -3,21 +3,43 @@
 
     <form action="/envios/formPuntoRecogida/<%= producto.id %>" method="POST">
         <input type="hidden" name="productoId" value="<%= producto.id %>">
-        <ul>
+        <input type="hidden" name="punto_recogida" value="1">
+        <input type="hidden" id="direccion_entrega" name="direccion_entrega" value="<%= puntoRecogida.length > 0 ? puntoRecogida[0].direccion : '' %>">
+
+        <label for="puntoId">Selecciona un punto de recogida:</label>
+        <select name="puntoId" id="puntoId" required>
             <% if (puntoRecogida.length > 0) { %>
-                <% puntoRecogida.forEach(punto => { %>
-                    <li>
-                        <label>
-                            <input type="radio" name="puntoId" value="<%= punto.id %>" required>
-                            <strong>Provincia:</strong> <%= punto.provincia %> - 
-                            <strong>Dirección:</strong> <%= punto.direccion %>
-                        </label>
-                    </li>
+                <% puntoRecogida.forEach((punto, index) => { %>
+                    <option value="<%= punto.id %>" <%= index === 0 ? 'selected' : '' %>>
+                        <%= punto.provincia %> - <%= punto.direccion %>
+                    </option>
                 <% }) %>
             <% } else { %>
-                <li>No hay puntos de recogida disponibles.</li>
+                <option value="" disabled>No hay puntos de recogida disponibles</option>
             <% } %>
-        </ul>
-        <button type="submit">Seleccionar Punto de Recogida</button>
+        </select>
+
+        <h3>Datos del Destinatario</h3>
+        <div>
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+        </div>
+
+        <div>
+            <label for="codigo_postal">Código Postal:</label>
+            <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Código Postal" required>
+        </div>
+
+        <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Teléfono de contacto" required>
+        </div>
+
+        <div>
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" placeholder="DNI" required>
+        </div>
+
+        <button type="submit">Confirmar Envío</button>
     </form>
 </div>

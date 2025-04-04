@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 
 export class PuntoRecogida {
   static #getAllStmt = null;
@@ -41,7 +39,7 @@ export class PuntoRecogida {
 
    static getPuntoRecogidaById(id) {
     return this.#getAllStmt.all();
-    }
+  }
 
 
     static getPuntoRecogidaByOneId(id) {
