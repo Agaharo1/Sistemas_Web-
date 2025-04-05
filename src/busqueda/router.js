@@ -12,7 +12,7 @@ export default busquedaRouter;
 
 
 /*
-
+adfad
 app.get('/buscar', (req, res) => {
     const query = req.query.query; // Obtiene el término de búsqueda desde el formulario
     // Aquí puedes implementar la lógica para buscar en tu base de datos o lista de elementos
