@@ -134,6 +134,13 @@ export class Producto {
     if (this.id === null) return Producto.#insert(this);
     return Producto.#update(this);
   }
+
+  static buscarProducto(nombre) {
+    const productos = this.#getAllStmt.all();
+    const productosFiltrados = productos.filter((p) => p.nombre.toLowerCase().includes(nombre.toLowerCase()));
+    if (productosFiltrados.length === 0) throw new ProductoNoEncontrado(nombre);
+    return productosFiltrados;
+  }
 }
 
 export class ProductoNoEncontrado extends Error {
@@ -147,3 +154,4 @@ export class ProductoNoEncontrado extends Error {
     this.name = "ProductoNoEncontrado";
   }
 }
+
