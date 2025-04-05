@@ -1,4 +1,18 @@
 import express from 'express';
+import {mostrarResultados} from './controllers.js';
+
+const busquedaRouter = express.Router();
+
+busquedaRouter.get('/buscar', mostrarResultados);
+export default busquedaRouter;
+
+
+
+
+
+
+/*
+
 app.get('/buscar', (req, res) => {
     const query = req.query.query; // Obtiene el término de búsqueda desde el formulario
     // Aquí puedes implementar la lógica para buscar en tu base de datos o lista de elementos
@@ -19,4 +33,4 @@ app.get('/buscar', (req, res) => {
 
     // Renderiza una vista con los resultados
     res.render('resultados', { query, resultados });
-});
+});*/
