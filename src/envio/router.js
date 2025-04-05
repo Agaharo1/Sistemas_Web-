@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { config } from '../config.js';
-import { formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostrarPuntoRecogida,crearDireccion} from './controllers.js';
+import { formularioPuntoRecogida,formularioEnvioProducto,envioProducto,formularioTarjeta,crearDireccion,crearTarjeta} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 
 const envioRouter = express.Router();
@@ -12,5 +12,7 @@ envioRouter.get('/formEnvioProducto/:id', autenticado('/usuarios/login'), formul
 envioRouter.get('/resumenProducto/:id', autenticado('/usuarios/login'), envioProducto); 
 envioRouter.post('/formPuntoRecogida/:id', autenticado('/usuarios/login'),crearDireccion);
 envioRouter.post('/formEnvioProducto/:id', autenticado('/usuarios/login'), crearDireccion);
+envioRouter.get('/formTarjeta/:id', autenticado('/usuarios/login'), formularioTarjeta);
+envioRouter.post('/formTarjeta/:id', autenticado('/usuarios/login'), crearTarjeta);
 
 export default envioRouter;

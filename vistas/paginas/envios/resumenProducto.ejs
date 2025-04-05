@@ -6,6 +6,7 @@
         <div class="add-address-links">
             <a href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
             <a href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
+            <a href="/envios/formTarjeta/<%= producto.id %>" class="envio-button">Añadir tarjeta de crédito</a>
         </div>
     </div>
 
@@ -45,11 +46,29 @@
    
     </div>
 
+  
+    <div class="pay-summary">
+        <h2>Tarjetas Guardadas</h2>
+        <% if (tarjetas && tarjetas.length > 0) { %>
+            <select id="tarjeta-guardada" name="tarjeta_guardada">
+                <% tarjetas.forEach(tarjeta => { %>
+                    <option value="<%= tarjeta.id %>">
+                        **** **** **** <%= tarjeta.numero_tarjeta.slice(-4) %> - <%= tarjeta.nombre_titular %>
+                    </option>
+                <% }) %>
+            </select>
+            <button type="button" onclick="usarTarjeta()">Usar esta tarjeta</button>
+        <% } else { %>
+            <p>No tienes tarjetas guardadas.</p>
+           
+        <% } %>
+    </div>
+
     <div class="send-summary">
         <h2>Dirección seleccionada</h2>
         <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
     </div>
-
+    
     <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
 </div>
 

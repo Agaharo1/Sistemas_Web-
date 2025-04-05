@@ -4,6 +4,7 @@ import { Imagen } from "./imagenes/Imagen.js";
 import { PuntoRecogida } from './envio/puntoRecogida.js';
 import { Chat } from "./chat/Chat.js";
 import { DirEnvio } from "./envio/direccionEnt.js";
+import { Tarjeta } from "./envio/tarjeta.js";
 
 
 export function inicializaModelos(db) {
@@ -13,4 +14,5 @@ export function inicializaModelos(db) {
     PuntoRecogida.initStatements(db);
     Chat.initStatements(db);
     DirEnvio.initStatements(db);
+    Tarjeta.initStatements(db);
 }
