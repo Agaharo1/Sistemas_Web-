@@ -84,11 +84,14 @@ export class Usuario {
     }
 
     static async editarPerfil(nombre, username, password, id) {
+        console.log('Intentando editar el perifl con ID: ', id);
         const usuario = this.getUsuarioById(id);
     
         if (!usuario) {
             throw new UsuarioNoEncontrado(id);
         }
+
+        console.log('Usuario encontrado');
     
         usuario.nombre = nombre;
         usuario.#username = username;
@@ -96,9 +99,13 @@ export class Usuario {
         if (password) {
             usuario.password = password;
         }
+
+        console.log("Usuario después de la actualización:", usuario);
     
         const result = usuario.persist();
     
+        console.log("Resultado de persistencia en BD:", result);
+
         if (result.changes === 0) {
             throw new UsuarioNoEncontrado(id);
         }
