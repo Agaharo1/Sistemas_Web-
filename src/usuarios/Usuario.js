@@ -108,7 +108,7 @@ export class Usuario {
         usuario.setUsername(username);
     
         if (password) {
-            usuario.setPassword(password);
+            usuario.cambiaPassword(password);
         }
 
         console.log("Usuario después de la actualización:", usuario);
