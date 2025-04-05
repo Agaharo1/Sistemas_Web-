@@ -26,7 +26,9 @@ export class Usuario {
     static getUsuarioById(id) {
         const usuario = this.#getByIdStmt.get({ id });
         if (usuario === undefined) throw new UsuarioNoEncontrado(id);
-        return usuario;
+    
+        const { username, nombre } = usuario;
+        return new Usuario(username, null, nombre, RolesEnum.USUARIO, id);
     }
 
     static getUsuarioByUsername(username) {
@@ -60,11 +62,12 @@ export class Usuario {
     }
 
     static #update(usuario) {
+        const id = usuario.#id
         const username = usuario.#username;
         const password = usuario.#password;
         const nombre = usuario.nombre;
         const rol = usuario.rol;
-        const datos = {username, password, nombre, rol};
+        const datos = {id, username, password, nombre, rol};
 
         const result = this.#updateStmt.run(datos);
         if (result.changes === 0) throw new UsuarioNoEncontrado(username);
@@ -83,6 +86,14 @@ export class Usuario {
         return usuario;
     }
 
+    setUsername(username) {
+        this.#username = username;
+    }
+
+    setPassword(password) {
+        this.#password = password;
+    }
+
     static async editarPerfil(nombre, username, password, id) {
         console.log('Intentando editar el perifl con ID: ', id);
         const usuario = this.getUsuarioById(id);
@@ -94,10 +105,10 @@ export class Usuario {
         console.log('Usuario encontrado');
     
         usuario.nombre = nombre;
-        usuario.#username = username;
+        usuario.setUsername(username);
     
         if (password) {
-            usuario.password = password;
+            usuario.setPassword(password);
         }
 
         console.log("Usuario después de la actualización:", usuario);
