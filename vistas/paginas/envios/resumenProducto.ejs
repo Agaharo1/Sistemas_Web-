@@ -1,26 +1,14 @@
 <div class="send-container">
-    <h1>Entrega del Producto</h1>
-    <div class="delivery-options">
-        <h2>Opciones de Entrega</h2>
-        <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
-        <div class="add-address-links">
-            <a href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
-            <a href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
-            <a href="/envios/formTarjeta/<%= producto.id %>" class="envio-button">Añadir tarjeta de crédito</a>
-        </div>
+    <h1 class="titulo-centrado">Compra del Producto</h1>
+    <div class="add-address-links">
+        <a class="nav-button" href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
+        <a class="nav-button" href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
+        <a class="nav-button" href="/envios/formTarjeta/<%= producto.id %>" class="envio-button">Añadir tarjeta de crédito</a>
     </div>
 
-    
-
-    <div class="total-summary">
-        <h2>Resumen del Pedido</h2>
-        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
-        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
-        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
-    </div>
 
     <div class="address-container">
-        <h2>Direcciones Guardadas</h2>
+        <h3>Direcciones Guardadas</h3>
         <% if (direcciones && direcciones.length > 0) { %>
             <select id="direccion-guardada" name="direccion_guardada" onchange="actualizarCostoEnvio()">
                 <% direcciones.forEach(direccion => { %>
@@ -43,12 +31,13 @@
         <% } else { %>
             <p>No tienes direcciones guardadas.</p>
         <% } %>
-   
+        <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
+
     </div>
 
   
     <div class="pay-summary">
-        <h2>Tarjetas Guardadas</h2>
+        <h3>Tarjetas Guardadas</h3>
         <% if (tarjetas && tarjetas.length > 0) { %>
             <select id="tarjeta-guardada" name="tarjeta_guardada">
                 <% tarjetas.forEach(tarjeta => { %>
@@ -63,11 +52,18 @@
            
         <% } %>
     </div>
-
-    <div class="send-summary">
-        <h2>Dirección seleccionada</h2>
+    <div class="total-summary">
+        <h3>Resumen del Pedido</h3>
+        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
+        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
+        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
+        <p><strong>Dirección:</strong></p>
         <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
     </div>
+    <!-- <div class="send-summary">
+        <h2>Dirección seleccionada</h2>
+        <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
+    </div> -->
     
     <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
 </div>

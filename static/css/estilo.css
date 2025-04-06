@@ -38,7 +38,7 @@ header a:hover {
     gap: 1%; 
 }
 
-.nav-button {
+.nav-button-top {
     flex: 1; 
     text-align: center; 
     padding: 1%;
@@ -47,8 +47,8 @@ header a:hover {
     font-size: 14px;
 }
 
-.nav-button:hover {
-    background-color: #19222b; /* Azul más oscuro */
+.nav-button-top:hover {
+    background-color: #19222b;
 }
 
 .sidebarIz{
@@ -74,11 +74,36 @@ header a:hover {
     padding: 1%;
     border-radius: 5px;
     font-size: 14px;
+
+
 }
 .nav-button-iz:hover {
-    background-color: #19222b; /* Azul más oscuro */
+    background-color: #19222b;
 }
 
+.nav-button{
+    flex: 1; 
+    text-align: center; 
+    padding: 1%;
+    border-radius: 5px;
+    font-size: 20px;
+	color: #872424; 
+	background-color: rgb(203, 133, 83);
+	text-decoration: none;
+}
+
+.nav-button:hover {
+    background-color: #496b8d; 
+	text-decoration: none;
+
+}
+.add-address-links{
+	display: flex;
+	text-align: center;
+	border-radius: 5px;
+	justify-content: space-between; 
+    gap: 1%; 
+}
 .profile-section{
 	margin-left: 20vh;
 	padding-left: 2vh;
@@ -114,7 +139,7 @@ aside {
 }
 
 main {
-	
+	/* padding: 5vh; */
 	float: left;
 	min-height: 600px;
 	width: 100%;

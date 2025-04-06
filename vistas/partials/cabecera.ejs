@@ -10,21 +10,21 @@ function mostrarSaludo(session){
 function mostrarMenu(session){
 	if (session == null || ! session.login){
 		return `<nav class="nav-container">
-		<a href="/" class="nav-button">Inicio</a>
-		<a href="/contenido/normal"class="nav-button">Mercado</a>
-		<a href="/usuarios/login"class="nav-button">Login</a>
-		<a href="/usuarios/registro"class="nav-button">Registro</a>
+		<a href="/" class="nav-button-top">Inicio</a>
+		<a href="/contenido/normal"class="nav-button-top">Mercado</a>
+		<a href="/usuarios/login"class="nav-button-top">Login</a>
+		<a href="/usuarios/registro"class="nav-button-top">Registro</a>
 	</nav>`;
 	}
 
 	return `<nav class="nav-container">
-		<a href="/" class="nav-button">Inicio</a>
-		<a href="/usuarios/profile" class="nav-button">Perfil</a>
-		<a href="/contenido/normal" class="nav-button">Mercado</a>
-		<a href="/" class="nav-button">Pujas</a>
-		<a href="/productos/subir" class="nav-button">Subir producto</a>
-		<a href="/usuarios/baja" class="nav-button">Darme de baja</a>
-		<a href="/usuarios/logout" class="nav-button">Logout</a>
+		<a href="/" class="nav-button-top">Inicio</a>
+		<a href="/usuarios/profile" class="nav-button-top">Perfil</a>
+		<a href="/contenido/normal" class="nav-button-top">Mercado</a>
+		<a href="/" class="nav-button-top">Pujas</a>
+		<a href="/productos/subir" class="nav-button-top">Subir producto</a>
+		<a href="/usuarios/baja" class="nav-button-top">Darme de baja</a>
+		<a href="/usuarios/logout" class="nav-button-top">Logout</a>
 	</nav>`;
 }
 
