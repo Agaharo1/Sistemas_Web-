@@ -51,6 +51,38 @@ header a:hover {
     background-color: #19222b; /* Azul más oscuro */
 }
 
+.sidebarIz{
+	position:fixed;
+	width: 20vh;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: #676767;
+}
+
+.sidebarIz nav{
+    display: flex;
+    justify-content: space-between; 
+    gap: 1%; 
+	flex-direction: column;
+	padding: 2vh;
+
+}
+.nav-button-iz {
+    flex: 1; 
+    text-align: left; 
+    padding: 1%;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.nav-button-iz:hover {
+    background-color: #19222b; /* Azul más oscuro */
+}
+
+.profile-section{
+	margin-left: 20vh;
+	padding-left: 2vh;
+}
 
 .product-container {
 	border: 1px solid #ccc;
