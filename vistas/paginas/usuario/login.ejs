@@ -5,18 +5,18 @@ function mostrarError(error){
 	}
 }
 %>
-<section class="section-login">
+<section class="formulario-section">
     <h2>Acceso al sistema</h2>
-    <div class="login-container">
+    <div class="formulario-container">
         <form action="/usuarios/login" method="POST">
             <fieldset>
                 <% if (locals.error) { %>
                     <p><strong><%= locals.error %></strong></p>
                 <% } %>
                 <legend>Correo y contraseña</legend>
-                <div><label>Correo:</label> <input type="text" name="username" value="<%= datos.username %>" /><%- helpers.error(errores, 'username') %></div>
-                <div><label>Contraseña:</label> <input type="password" name="password" /><%- helpers.error(errores, 'password') %></div>
-                <div><button type="submit">Enviar</button></div>
+                <p><label>Correo:</label> <input type="text" name="username" value="<%= datos.username %>" /><%- helpers.error(errores, 'username') %></p>
+                <p><label>Contraseña:</label> <input type="password" name="password" /><%- helpers.error(errores, 'password') %></p>
+                <p style="text-align: center;"><button type="submit">Enviar</button></p>
             </fieldset>
         </form>
         <p>¿No tienes cuenta? <a class = 'boton' href=/usuarios/registro>Registro</a></p>
