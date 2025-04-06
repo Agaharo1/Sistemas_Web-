@@ -2,28 +2,29 @@
 <%
 function mostrarSaludo(session){
 	if (session == null || ! session.login){
-		return `<p>Usuario desconocido. <a href="/usuarios/login">Login</a></p>`;
+		return `<p>Usuario desconocido.</p>`;
 	}
 
-	return `<p>Bienvenido ${session.nombre}. <a href="/usuarios/logout">(salir)</a></p>`;
+	return `<p>Bienvenido ${session.nombre}.</p>`;
 }
 function mostrarMenu(session){
 	if (session == null || ! session.login){
-		return `<nav style = "display: flex; gap:5%;">
-		<a href="/">Inicio</a>
-		<a href="/contenido/normal">Mercado</a>
-		<a href="/usuarios/login">Login</a>
-		<a href="/usuarios/registro">Registro</a>
+		return `<nav class="nav-container">
+		<a href="/" class="nav-button">Inicio</a>
+		<a href="/contenido/normal"class="nav-button">Mercado</a>
+		<a href="/usuarios/login"class="nav-button">Login</a>
+		<a href="/usuarios/registro"class="nav-button">Registro</a>
 	</nav>`;
 	}
 
-	return `<nav style = "display: flex; gap:5%;">
-		<a href="/">Inicio</a>
-		<a href="/usuarios/profile">Perfil</a>
-		<a href="/contenido/normal">Mercado</a>
-		<a href="/">Pujas</a>
-		<a href="/productos/subir">Subir producto</a>
-		<a href="/usuarios/baja">Darme de baja</a>
+	return `<nav class="nav-container">
+		<a href="/" class="nav-button">Inicio</a>
+		<a href="/usuarios/profile" class="nav-button">Perfil</a>
+		<a href="/contenido/normal" class="nav-button">Mercado</a>
+		<a href="/" class="nav-button">Pujas</a>
+		<a href="/productos/subir" class="nav-button">Subir producto</a>
+		<a href="/usuarios/baja" class="nav-button">Darme de baja</a>
+		<a href="/usuarios/logout" class="nav-button">Logout</a>
 	</nav>`;
 }
 
@@ -31,9 +32,10 @@ function mostrarMenu(session){
 
 <header>
 		<h1>TruequeHub</h1>
+		
+		<%- mostrarMenu(session) %>
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
-		<%- mostrarMenu(session) %>
 
 </header>

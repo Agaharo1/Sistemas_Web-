@@ -12,9 +12,10 @@ div#contenedor {
 }
 
 header {
-	padding: 30px;
-	background-color: #303030;
+	padding: 2%;
+	background-color: #424242;
 	color: white;
+	height: 20vh;
 }
 
 header a, header a:visited {
@@ -30,18 +31,26 @@ header a:hover {
 } 
 
 
- 
-/*
-nav a, nav a:visited {
-	color: red;
-	font-weight: bold;
-	text-decoration: none;
-} 
+.nav-container {
+    display: flex;
+	background-color: #424242;
+    justify-content: space-between; 
+    gap: 1%; 
+}
 
-nav a:hover {
-	color: red;
-	text-decoration: underline;
-}  */
+.nav-button {
+    flex: 1; 
+    text-align: center; 
+    padding: 1%;
+    color: white; 
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.nav-button:hover {
+    background-color: #19222b; /* Azul más oscuro */
+}
+
 
 .product-container {
 	border: 1px solid #ccc;
@@ -242,21 +251,29 @@ a.boton {
 
 
 
-/*Estilo form login */
-.section-login {
+/*Estilo forms */
+.formulario-container{
+	/* display: flex;
+	flex-direction: column; */
+    max-width: 50vw; 
+    padding: 5vh;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.formulario-section{
     display: flex;
 	justify-content: center;
 	align-items: center;
 	align-content: flex-start;
 	flex-direction: column;
+	padding: 2vh;
 }
-.login-container {
-    max-width: 400px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+form{
+	display: flex;
+	flex-direction: column;
 }
+
 /*Estilos pagina de productos*/
 .productos-container {
 	display: flex;

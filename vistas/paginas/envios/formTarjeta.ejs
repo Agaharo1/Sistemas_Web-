@@ -1,14 +1,14 @@
-<section>
+<section class="formulario-section" >
     <h2>Añadir Tarjeta de Crédito</h2>
-    <div class="card-form-container">
+    <div class="formulario-container">
         <form action="/envios/formTarjeta/<%= producto.id %>" method="POST">
             <input type="hidden" name="productoId" value="<%= producto.id %>">
             <p>
-                <label for="nombre_titular">Nombre del Titular: </label>
+                <label for="nombre_titular">Nombre Titular: </label>
                 <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Nombre completo del titular" required>
             </p>
             <p>
-                <label for="numero_tarjeta">Número de Tarjeta: </label>
+                <label for="numero_tarjeta">Número Tarjeta: </label>
                 <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="Número de tarjeta" maxlength="16" required>
             </p>
             <p>
@@ -19,7 +19,7 @@
                 <label for="codigo_seguridad">Código de Seguridad (CVV): </label>
                 <input type="text" id="codigo_seguridad" name="codigo_seguridad" placeholder="CVV" maxlength="3" required>
             </p>
-            <p>
+            <p  style="text-align: center;">
                 <button type="submit">Guardar Tarjeta</button>
             </p>
         </form>

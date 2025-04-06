@@ -1,10 +1,10 @@
-<section class="editar-perfil">
+<section class="formulario-section">
     <h2>Editar perfil</h2>
     
-    <div class="perfil-form-container">
+    <div class="formulario-container">
         <form action="/usuarios/editarPerfil" method="POST" class="perfil-form">
             
-            <div class="form-group">
+            <p>
                 <label for="nombre">Nombre completo</label>
                 <input 
                     type="text" 
@@ -14,9 +14,9 @@
                     value="<%= usuario?.nombre || '' %>"
                     placeholder="Tu nombre"
                 />
-            </div>
+            </p>
 
-            <div class="form-group">
+            <p>
                 <label for="username">Correo electrónico</label>
                 <input 
                     type="email" 
@@ -26,9 +26,9 @@
                     value="<%= usuario?.username || '' %>"
                     placeholder="ejemplo@correo.com"
                 />
-            </div>
+            </p>
 
-            <div class="form-group">
+            <p>
                 <label for="password">Nueva contraseña</label>
                 <input 
                     type="password" 
@@ -37,9 +37,9 @@
                     minlength="6"
                     placeholder="••••••••"
                 />
-            </div>
+            </p>
 
-            <div class="form-group">
+            <p>
                 <label for="passwordConfirmacion">Confirmar contraseña</label>
                 <input 
                     type="password" 
@@ -48,9 +48,9 @@
                     minlength="6"
                     placeholder="Repite la contraseña"
                 />
-            </div>
+            </p>
 
-            <div class="form-actions">
+            <div style="text-align: center;">
                 <button type="submit">Guardar cambios</button>
             </div>
         </form>
