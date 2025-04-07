@@ -5,6 +5,39 @@ import { Imagen } from "../imagenes/Imagen.js";
 import { DirEnvio } from "./direccionEnt.js";
 import { Tarjeta } from "./tarjeta.js";
 
+export function agradecimiento(req, res) {
+
+    const params = {
+        contenido: "paginas/envios/agradecimiento",
+        session: req.session,
+    };
+    res.render("pagina", params);
+
+}
+export function confirmacionCompra(req, res) {
+  const { direccionSeleccionada, tarjetaSeleccionada, costoEntrega, total } = req.body;
+  const { id } = req.params;
+
+  const producto = Producto.getProductById(id);
+
+  console.log('Datos recibidos:', {
+      direccionSeleccionada,
+      tarjetaSeleccionada: JSON.parse(tarjetaSeleccionada), 
+      costoEntrega,
+      total,
+      producto,
+  });
+
+  res.render('paginas/envios/confirmacionCompra', {
+      direccionSeleccionada,
+      tarjetaSeleccionada: JSON.parse(tarjetaSeleccionada),
+      costoEntrega,
+      total,
+      producto,
+  });
+}
+
+
 export function crearTarjeta(req, res) {
     const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
     console.log("Datos recibidos:", {
