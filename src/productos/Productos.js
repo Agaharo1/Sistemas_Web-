@@ -1,4 +1,5 @@
 import { Imagen } from "../imagenes/Imagen.js";
+import {Chat} from "../chat/Chat.js";
 import fs from 'fs';
 import path from 'path';
 
@@ -125,6 +126,7 @@ export class Producto {
   }
   
   static eliminarProducto(id) {
+    Chat.eliminarChatByProduct(id);
     Imagen.eliminarImagen(id);
     const result = this.#deleteStmt.run({ id });
     if (result.changes === 0) throw new ProductoNoEncontrado(id);

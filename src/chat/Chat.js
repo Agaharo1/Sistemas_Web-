@@ -13,6 +13,9 @@ export class Chat{
     static #deleteMensajeStmt = null;
     static #lastMensajeChatIdStmt = null;
     static #chatByIdStmt = null;
+    static #deleteMensajeStmtChatId = null;
+    static #deleteChatStmtProductId = null;
+    static #selectChatStmtProductId = null;
     id_2;
     id_1;
     id;
@@ -42,6 +45,9 @@ export class Chat{
            LEFT JOIN Usuarios u2 ON c.usuario2 = u2.id
            WHERE (c.usuario1 = @idUsuario OR c.usuario2 = @idUsuario)`
         );
+        this.#selectChatStmtProductId = db.prepare(
+          "SELECT id FROM Chats WHERE producto = @id_producto"
+        );
         this.#insertStmt = db.prepare(
           "INSERT INTO Chats(producto, usuario1, usuario2) VALUES (@producto, @usuario1, @usuario2)"
         );
@@ -56,6 +62,9 @@ export class Chat{
         );
         this.#deleteStmt = db.prepare(
             "DELETE FROM Chats WHERE usuario1 = 0 AND usuario2 = 0 AND id = @chatId"
+        );
+        this.#deleteChatStmtProductId = db.prepare(
+            "DELETE FROM Chats WHERE producto = @productId"
         );
         this.#getMessagesStmt = db.prepare(
             "SELECT contenido, senderId FROM Mensajes WHERE chatId = @id_chat"
@@ -75,16 +84,19 @@ export class Chat{
         this.#chatByIdStmt = db.prepare(
             "SELECT id, usuario1, usuario2, producto FROM Chats WHERE id = @id_chat"
         );
-        logger.debug("Statements de Chat inicializados");
+       this.#deleteMensajeStmtChatId = db.prepare(
+            "DELETE FROM Mensajes WHERE chatId = @chatId"
+        );
     }  
     
     static eliminarChat(chatId, usuarioId) {
         //Eliminar el chat de la tabla Chats (borrar usuario de la conversacion)
         const eliminado=this.#deleteUserFromChatStmt.run({ usuario: usuarioId, id_chat: chatId });
-        if (eliminado.changes === 0) throw new ChatNoEncontrado(chatId);
+        if (eliminado.changes === 0)
+            return logger.debug("No se ha eliminado el chat:", chatId);
         //Eliminar los mensajes de la tabla Mensajes (borrar mensajes del chat si los dos usuarios lo han eliminado)
         const eliminarMensajes = this.#deleteMensajeStmt.run({ chatId });
-        if (eliminarMensajes.changes === 0) throw new ChatNoEncontrado(chatId);
+        if (eliminarMensajes.changes === 0) return;
         else{
             //Eliminar el chat de la tabla Chats (borrar el chat si los dos usuarios lo han eliminado)
             const result = this.#deleteStmt.run({ chatId });
@@ -92,6 +104,21 @@ export class Chat{
             logger.debug("Chat eliminado:", result.changes);
         }
       }
+
+    static eliminarChatByProduct(productId){
+        //Guardamos los ids de los chats que se eliminan
+        let chats = this.#selectChatStmtProductId.all({id_producto:productId});
+        if(chats === undefined) return logger.debug("No se han encontrado chats para eliminar:", productId);
+        
+        //Eliminamos los mensajes de la tabla Mensajes
+        chats.forEach(chat => {
+            const eliminarMensajes = this.#deleteMensajeStmtChatId.run({ chatId: chat.id });
+        });
+
+        //Eliminamos los chats de la tabla Chats
+        const result = this.#deleteChatStmtProductId.run({productId: productId });
+        logger.debug("Chats eliminado:", result.changes);
+    }
     static getChatByUsers(id_user_producto, id_user_sesion, id_producto) {
         const chat = this.#getChatByProductIdStmt.all({id_usuario:id_user_producto, id_producto});
         if (chat === undefined)return null;
