@@ -1,0 +1,31 @@
+<section class="confirmation-section">
+    <h1>Confirmación de Compra</h1>
+
+    <div class="confirmation-details">
+        <h2>Detalles del Pedido</h2>
+        <p><strong>Dirección Seleccionada:</strong></p>
+        <p><%= direccionSeleccionada %></p>
+
+        <h2>Método de Pago</h2>
+        <p><strong>Tarjeta Seleccionada:</strong></p>
+        <p>
+            **** **** **** <%= tarjetaSeleccionada.numero_tarjeta %> - 
+            <%= tarjetaSeleccionada.nombre_titular %>
+        </p>
+
+        <h2>Resumen de Costos</h2>
+        <p><strong>Costo de Entrega:</strong> <%= costoEntrega %> €</p>
+        <p><strong>Total:</strong> <%= total %> €</p>
+    </div>
+
+    <div class="product-details">
+        <h2>Detalles del Producto</h2>
+        <p><strong>Nombre del Producto:</strong> <%= producto.nombre %></p>
+        <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+        <p><strong>Precio:</strong> <%= producto.precio %> €</p>
+    </div>
+
+    <div class="confirmation-actions">
+        <a href="/envios/agradecimiento" class="nav-button">Confirmacion compra</a>
+    </div>
+</section>

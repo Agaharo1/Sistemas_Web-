@@ -60,12 +60,14 @@
         <p><strong>Dirección:</strong></p>
         <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
     </div>
-    <!-- <div class="send-summary">
-        <h2>Dirección seleccionada</h2>
-        <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
-    </div> -->
-    
-    <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
+
+    <form action="/envios/confirmacionCompra/<%= producto.id %>" method="POST">
+        <input type="hidden" name="direccionSeleccionada" id="direccion-seleccionada-input">
+        <input type="hidden" name="tarjetaSeleccionada" id="tarjeta-seleccionada-input">
+        <input type="hidden" name="costoEntrega" id="costo-entrega-input">
+        <input type="hidden" name="total" id="total-input">
+        <button type="submit" class="continue-button">Continuar</button>
+    </form>
 </div>
 
 <div class="product-container">
@@ -128,7 +130,43 @@
 
    
     document.addEventListener('DOMContentLoaded', () => {
-        guardarDireccion();
-        actualizarCostoEnvio();
-    });
+    const direccionInput = document.getElementById('direccion-seleccionada-input');
+    const tarjetaInput = document.getElementById('tarjeta-seleccionada-input');
+    const costoEntregaInput = document.getElementById('costo-entrega-input');
+    const totalInput = document.getElementById('total-input');
+
+    const direccionElement = document.getElementById('direccion-guardada');
+    const tarjetaElement = document.getElementById('tarjeta-guardada');
+
+    function actualizarCamposOcultos() {
+ 
+        if (direccionElement && direccionElement.options.length > 0) {
+            const selectedOption = direccionElement.options[direccionElement.selectedIndex];
+            direccionInput.value = selectedOption.textContent.trim();
+        }
+
+       
+        if (tarjetaElement && tarjetaElement.options.length > 0) {
+            const selectedOption = tarjetaElement.options[tarjetaElement.selectedIndex];
+            tarjetaInput.value = JSON.stringify({
+                id: selectedOption.value,
+                numero_tarjeta: selectedOption.textContent.split(' ')[3],
+                nombre_titular: selectedOption.textContent.split('-')[1].trim(),
+            });
+        }
+
+      
+        const deliveryCostElement = document.getElementById('delivery-cost');
+        const totalPriceElement = document.getElementById('total-price');
+        costoEntregaInput.value = deliveryCostElement.textContent.trim();
+        totalInput.value = totalPriceElement.textContent.trim();
+    }
+
+
+    actualizarCamposOcultos();
+
+    
+    direccionElement.addEventListener('change', actualizarCamposOcultos);
+    tarjetaElement.addEventListener('change', actualizarCamposOcultos);
+});
 </script>
