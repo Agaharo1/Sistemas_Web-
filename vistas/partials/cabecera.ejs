@@ -33,24 +33,61 @@ function mostrarMenu(session){
 <header>
 	
 	<div class="contenido_cabecera">
+		<!-- Contenido: título, barra de búsqueda y login -->
 		<!-- Título -->
-	<h1>TruequeHub</h1>
+		<h1>TruequeHub</h1>
 
-	<div class="barra_busqueda">
-		<form action="/productos/buscar" method="GET">
-			<div style="display: flex; align-items: center;">
-				<input type="text" name="query" placeholder="Busca un producto" required style="flex-grow: 1;">
-				<button type="submit" style="margin-left: 10px;">Buscar</button>
-			</div>
-		</form>
-	</div>
+		<!-- Barra de búsqueda -->
+		<div class="barra_busqueda">
+			<form action="/productos/buscar" method="GET">
+				<div style="display: flex; align-items: center;">
+					<input type="text" name="query" placeholder="Busca un producto" required style="flex-grow: 1;">
+					<button type="submit" style="margin-left: 10px;">Buscar</button>
+				</div>
+			</form>
+		</div>
 
-	<%- mostrarMenu(session) %>
+		<!-- Login -->
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
-	</div>
 
+		
+		
+
+	</div>
+	<!-- Barra de navegación -->
+	<div class = "menu">
+		<%- mostrarMenu(session) %>
+	</div>
 
 </header>
 
+<style>
+		.menu {
+		margin-top: 20px; /* Espaciado entre el contenido superior y el menú */
+		text-align: center; /* Centra el menú horizontalmente */
+		display: flex;
+		
+	}
+	
+	.nav-container {
+		display: inline-flex; /* Alinea los elementos del menú en una fila */
+		gap: 10px; /* Espaciado entre los elementos del menú */
+		justify-content: center; /* Centra los elementos dentro del contenedor */
+	}
+	
+	.nav-button-top {
+		padding: 10px 15px; /* Espaciado interno de los botones */
+		background-color: #007BFF; /* Color de fondo */
+		color: white; /* Color del texto */
+		text-decoration: none; /* Elimina el subrayado */
+		border-radius: 5px; /* Bordes redondeados */
+		font-size: 14px; /* Tamaño de fuente */
+		font-weight: bold; /* Negrita */
+	}
+	
+	.nav-button-top:hover {
+		background-color: #0056b3; /* Color más oscuro al pasar el ratón */
+	}
+</style>

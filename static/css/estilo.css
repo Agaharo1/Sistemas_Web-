@@ -31,6 +31,12 @@ header a:hover {
 	text-decoration: underline;
 } 
 
+.barra_busqueda{
+	flex-grow: 1;
+}
+.barra_busqueda button{
+	flex-shrink: 0;
+}
 
 .nav-container {
     display: flex;
