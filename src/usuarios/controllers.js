@@ -31,7 +31,10 @@ export function viewProfile(req, res) {
 }
 
 export function viewEditarPerfil(req, res) {
-    const { id } = req.params;
+    const id = parseInt(req.session.user_id);
+    if (isNaN(id)) {    
+        return redirige(req, res, '/usuarios/login');
+    }
     const usuario = Usuario.getUsuarioById(id);
     const params = {
         contenido: "paginas/usuario/editarPerfil",
@@ -42,7 +45,7 @@ export function viewEditarPerfil(req, res) {
 }
 
 export function doEditarPerfil(req, res) {
-    const userId = req.session.user_id;
+    const userId = parseInt(req.session.user_id);
     const {nombre, username, password } = req.body;
     try {
         console.log("Editando perfil:", userId, nombre, username, password);
