@@ -1,31 +1,36 @@
 <div id="mercado">
-    <h2>Mis Productos</h2>
-    <ul>
+    <h2 class="titulo-centrado">Mis Productos</h2>
+    <div class="productos-container">
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
-                <p>
+                <div class="producto">
                     <% if (producto.imagen) { %>
-                        <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" style="max-width: 200px; height: auto;">
+                        <a href="/productos/producto/<%= producto.id %>">
+                            <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" class="product-image">
+                        </a>
                     <% } else { %>
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>
                     <p>
-                    Producto: <%= producto.nombre %> -
-                    Descripcion:
-                    <% if (!producto.descripcion) {%>
-                        Este producto no tiene descripcion -
-                    <%} else {%>
-                        <%= producto.descripcion %> - 
-                    <% } %>
-                    Precio: <%= producto.precio %> </p>
+                        Producto: <a href="/productos/producto/<%= producto.id %>"><%= producto.nombre %></a> -
+                        Precio: <%= producto.precio %>
+                    </p>
+                    <p>
+                        Descripción:
+                        <% if (!producto.descripcion) { %>
+                            Este producto no tiene descripción -
+                        <% } else { %>
+                            <%= producto.descripcion %>
+                        <% } %>
+                    </p>
                     <p>
                         <a href="/productos/editarProducto/<%= producto.id %>">Editar</a> |
                         <a href="/productos/eliminarProducto/<%= producto.id %>">Eliminar</a>
                     </p>
-                </p>
+                </div>
             <% }) %>
         <% } else { %>
-            <li>No hay productos disponibles.</li>
+            <p>No hay productos disponibles.</p>
         <% } %>
-    </ul>
+    </div>
 </div>
