@@ -113,13 +113,25 @@ export function buscarProducto(req, res) {
   const { query } = req.query; // Use req.query to get data from a GET request
 
   let productos = [];
-  productos = Producto.buscarProducto(query);
-  const params = {
-    contenido: "paginas/productos/buscarProducto",
-    session: req.session,
-    productos,
-    query
-  };
-  res.render("pagina", params);
+  try{
+    productos = Producto.buscarProducto(query);
+    const params = {
+      contenido: "paginas/productos/buscarProducto",
+      session: req.session,
+      productos,
+      query
+    };
+    res.render("pagina", params);
+  }catch(error){
+    const params = {
+      contenido: "paginas/productos/buscarProducto",
+      session: req.session,
+      productos,
+      query
+      
+    };
+    res.render("pagina", params);
+  }
+  
 }
 

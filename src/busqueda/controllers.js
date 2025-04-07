@@ -1,12 +1,26 @@
-export function mostrarBusqueda(req, res) {
+
+export function mostrarResultados(req, res) {
   const { busqueda } = req.query;
-  const productos = Producto.buscarProducto(busqueda);
-  const imagenes = Imagen.getImagenByProductId(busqueda);
-  const params = {
+  let productos = [];
+  let imagenes = [];
+  try{
+   productos = Producto.buscarProducto(busqueda);
+   imagenes = Imagen.getImagenByProductId(busqueda);
+
+   const params = {
     contenido: "paginas/busqueda/busqueda",
     session: req.session,
     productos,
     imagenes
-  };
-  res.render("pagina", params);
+    };
+  }catch(error){
+    const params = {
+      contenido: "paginas/busqueda/busqueda",
+      session: req.session,
+      productos,
+      imagenes
+    };
+    res.render("pagina", params);
+  }
+ 
 }
