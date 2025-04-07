@@ -2,7 +2,7 @@
 <%
 function mostrarSaludo(session){
 	if (session == null || ! session.login){
-		return `<p>Usuario desconocido.</p>`;
+		return `<a href="/usuarios/login">Inicia sesión</a></p>`;
 	}
 
 	return `<p>Bienvenido ${session.nombre}.</p>`;
@@ -12,14 +12,13 @@ function mostrarMenu(session){
 		return `<nav class="nav-container">
 		<a href="/" class="nav-button-top">Inicio</a>
 		<a href="/contenido/normal"class="nav-button-top">Mercado</a>
-		<a href="/usuarios/login"class="nav-button-top">Login</a>
 		<a href="/usuarios/registro"class="nav-button-top">Registro</a>
 	</nav>`;
 	}
 
 	return `<nav class="nav-container">
 		<a href="/" class="nav-button-top">Inicio</a>
-		<a href="/usuarios/profile" class="nav-button-top">Perfil</a>
+		<a href="/usuarios/profile" class="nav-button-top">Mi perfil</a>
 		<a href="/contenido/normal" class="nav-button-top">Mercado</a>
 		<a href="/" class="nav-button-top">Pujas</a>
 		<a href="/productos/subir" class="nav-button-top">Subir producto</a>
@@ -35,7 +34,7 @@ function mostrarMenu(session){
 	<div class="contenido_cabecera">
 		<!-- Contenido: título, barra de búsqueda y login -->
 		<!-- Título -->
-		<h1>TruequeHub</h1>
+		<h1><a href="/">TruequeHub</a></h1>
 
 		<!-- Barra de búsqueda -->
 		<div class="barra_busqueda">
@@ -63,31 +62,3 @@ function mostrarMenu(session){
 
 </header>
 
-<style>
-		.menu {
-		margin-top: 20px; /* Espaciado entre el contenido superior y el menú */
-		text-align: center; /* Centra el menú horizontalmente */
-		display: flex;
-		
-	}
-	
-	.nav-container {
-		display: inline-flex; /* Alinea los elementos del menú en una fila */
-		gap: 10px; /* Espaciado entre los elementos del menú */
-		justify-content: center; /* Centra los elementos dentro del contenedor */
-	}
-	
-	.nav-button-top {
-		padding: 10px 15px; /* Espaciado interno de los botones */
-		background-color: #007BFF; /* Color de fondo */
-		color: white; /* Color del texto */
-		text-decoration: none; /* Elimina el subrayado */
-		border-radius: 5px; /* Bordes redondeados */
-		font-size: 14px; /* Tamaño de fuente */
-		font-weight: bold; /* Negrita */
-	}
-	
-	.nav-button-top:hover {
-		background-color: #0056b3; /* Color más oscuro al pasar el ratón */
-	}
-</style>

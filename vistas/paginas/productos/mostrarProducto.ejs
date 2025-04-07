@@ -13,14 +13,14 @@
             <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
             <p><strong>Precio:</strong> <%= producto.precio %> €</p>
             <% if (producto.id_user !== session.user_id) { %>  <!--Esto es para que si el producto es de un usuario no tenga la opcion de comprarlo -->
-                <a href="/envios/resumenProducto/<%= producto.id %>">Comprar</a>
+                <button onclick="location.href='/envios/resumenProducto/<%= producto.id %>'">Comprar</button>
             <% } %>
         </div>
         <div class="user-info">
             <h3>Información del Usuario</h3>
             <p><strong>Nombre:</strong> <%= producto.usuario_nombre %></p>
             <p><strong>Email:</strong> <%= producto.username %></p>
-            <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>">Iniciar Chat</a>
+            <button onclick="location.href='/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>'">Iniciar Chat</button>
         </div>
     </div>
 
