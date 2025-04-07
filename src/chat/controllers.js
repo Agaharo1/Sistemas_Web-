@@ -5,6 +5,7 @@ import { Imagen } from "../imagenes/Imagen.js";
 import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
 import { Producto } from "../productos/Productos.js";
+import session from "express-session";
 
 export function nuevoChat(req, res) {
     const { id} = req.params;
@@ -83,4 +84,15 @@ export function enviarMensaje(req, res) {
   const { mensaje, id_chat,senderId } = req.body;
   const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
   res.redirect(`/chats/chat/${id_chat}`);
+}
+
+export function eliminarChat(req, res) {
+  const { id } = req.params;
+  try {
+    console.log("Eliminando chat:", id);
+    Chat.eliminarChat(id,req.session.user_id);
+    res.redirect("/chats/misChats/"+req.session.user_id);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
 }
