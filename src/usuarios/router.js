@@ -14,7 +14,7 @@ usuariosRouter.get('/registro', viewRegister);
 usuariosRouter.get('/profile', viewProfile);
 
 //Edicion perfil del usuario
-usuariosRouter.get('/editarPerfil/:id', viewEditarPerfil);
+usuariosRouter.get('/editarPerfil', viewEditarPerfil);
 
 usuariosRouter.post('/editarPerfil', doEditarPerfil)
 

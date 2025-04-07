@@ -95,14 +95,13 @@ export class Chat{
         if (eliminado.changes === 0)
             return logger.debug("No se ha eliminado el chat:", chatId);
         //Eliminar los mensajes de la tabla Mensajes (borrar mensajes del chat si los dos usuarios lo han eliminado)
-        const eliminarMensajes = this.#deleteMensajeStmt.run({ chatId });
-        if (eliminarMensajes.changes === 0) return;
-        else{
+        const eliminarMensajes = this.#deleteMensajeStmt.run({ id_chat:chatId });
+
             //Eliminar el chat de la tabla Chats (borrar el chat si los dos usuarios lo han eliminado)
-            const result = this.#deleteStmt.run({ chatId });
-            if (result.changes === 0) throw new ChatNoEncontrado(chatId);
+            const result = this.#deleteStmt.run({ chatId:chatId });
+           
             logger.debug("Chat eliminado:", result.changes);
-        }
+        
       }
 
     static eliminarChatByProduct(productId){
