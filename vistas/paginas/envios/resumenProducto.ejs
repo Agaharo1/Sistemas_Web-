@@ -1,54 +1,70 @@
 <div class="send-container">
-    <h1>Entrega del Producto</h1>
-    <div class="delivery-options">
-        <h2>Opciones de Entrega</h2>
-        <div class="option">
-            <input type="radio" id="pickup" name="delivery" value="9.49" checked onchange="updateDeliveryOption()">
-            <label for="pickup">Punto de recogida <span class="price">9,49 €</span></label>
-        </div>
-        <div class="option">
-            <input type="radio" id="home" name="delivery" value="11.49" onchange="updateDeliveryOption()">
-            <label for="home">Mi dirección <span class="price">11,49 €</span></label>
-        </div>
-        <div class="option">
-            <input type="radio" id="in-person" name="delivery" value="0" onchange="updateDeliveryOption()">
-            <label for="in-person">En persona <span class="price">Gratuito</span></label>
-        </div>
+    <h1 class="titulo-centrado">Compra del Producto</h1>
+    <div class="add-address-links">
+        <a class="nav-button" href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
+        <a class="nav-button" href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
+        <a class="nav-button" href="/envios/formTarjeta/<%= producto.id %>" class="envio-button">Añadir tarjeta de crédito</a>
     </div>
 
-    <div id="dynamic-links" class="dynamic-links"></div>
-
-    <div class="total-summary">
-        <h2>Resumen del Pedido</h2>
-        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
-        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">9.49</span> €</p>
-        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio + 9.49 %></span> €</p>
-        <p><strong>Punto de Recogida:</strong> 
-            <% if (puntoRecogida) { %>
-                <%= puntoRecogida.direccion %>, <%= puntoRecogida.provincia %>
-            <% } else { %>
-                No seleccionado
-            <% } %>
-        </p>
-    </div>
 
     <div class="address-container">
-        <h2>Direcciones Guardadas</h2>
+        <h3>Direcciones Guardadas</h3>
         <% if (direcciones && direcciones.length > 0) { %>
-            <select id="direccion-guardada" name="direccion_guardada">
+            <select id="direccion-guardada" name="direccion_guardada" onchange="actualizarCostoEnvio()">
                 <% direcciones.forEach(direccion => { %>
-                    <option value="<%= direccion.id %>">
+                    <option value="<%= direccion.id %>" 
+                            data-nombre="<%= direccion.nombre %>" 
+                            data-direccion="<%= direccion.direccion_entrega %>" 
+                            data-codigo-postal="<%= direccion.codigo_postal %>" 
+                            data-provincia="<%= direccion.provincia %>" 
+                            data-telefono="<%= direccion.telefono %>" 
+                            data-dni="<%= direccion.dni %>" 
+                            data-tipo="<%= direccion.punto_recogida %>">
                         <%= direccion.nombre %>, <%= direccion.direccion_entrega %>, 
                         <%= direccion.codigo_postal %>, <%= direccion.provincia %>, 
-                        Teléfono: <%= direccion.telefono %>, DNI: <%= direccion.dni %>
+                        Teléfono: <%= direccion.telefono %>, DNI: <%= direccion.dni %>,
+                        Forma de entrega: <%= direccion.punto_recogida === 1 ? 'Punto de recogida' : 'Dirección particular' %>
                     </option>
                 <% }) %>
             </select>
+            <button type="button" onclick="guardarDireccion()">Establecer dirección de entrega</button>
         <% } else { %>
             <p>No tienes direcciones guardadas.</p>
         <% } %>
+        <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
+
     </div>
 
+  
+    <div class="pay-summary">
+        <h3>Tarjetas Guardadas</h3>
+        <% if (tarjetas && tarjetas.length > 0) { %>
+            <select id="tarjeta-guardada" name="tarjeta_guardada">
+                <% tarjetas.forEach(tarjeta => { %>
+                    <option value="<%= tarjeta.id %>">
+                        **** **** **** <%= tarjeta.numero_tarjeta.slice(-4) %> - <%= tarjeta.nombre_titular %>
+                    </option>
+                <% }) %>
+            </select>
+            <button type="button" onclick="usarTarjeta()">Usar esta tarjeta</button>
+        <% } else { %>
+            <p>No tienes tarjetas guardadas.</p>
+           
+        <% } %>
+    </div>
+    <div class="total-summary">
+        <h3>Resumen del Pedido</h3>
+        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
+        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
+        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
+        <p><strong>Dirección:</strong></p>
+        <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
+    </div>
+    <!-- <div class="send-summary">
+        <h2>Dirección seleccionada</h2>
+        <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
+    </div> -->
+    
     <a href="/productos/pagoProducto/<%= producto.id %>" class="continue-button">Continuar</a>
 </div>
 
@@ -63,29 +79,56 @@
 </div>
 
 <script>
-    function updateDeliveryOption() {
-        const selectedOption = document.querySelector('input[name="delivery"]:checked');
-        const deliveryCost = parseFloat(selectedOption.value);
-        const productPrice = parseFloat(<%= producto.precio %>);
-        const dynamicLinks = document.getElementById('dynamic-links');
+    function guardarDireccion() {
+        const selectElement = document.getElementById('direccion-guardada');
+        const direccionSeleccionadaElement = document.getElementById('direccion-seleccionada');
+        if (selectElement && selectElement.options.length > 0) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-        document.getElementById('delivery-cost').textContent = deliveryCost.toFixed(2);
-        document.getElementById('total-price').textContent = (productPrice + deliveryCost).toFixed(2);
+            const nombre = selectedOption.getAttribute('data-nombre');
+            const direccion = selectedOption.getAttribute('data-direccion');
+            const codigoPostal = selectedOption.getAttribute('data-codigo-postal');
+            const provincia = selectedOption.getAttribute('data-provincia');
+            const telefono = selectedOption.getAttribute('data-telefono');
+            const dni = selectedOption.getAttribute('data-dni');
 
-        dynamicLinks.innerHTML = '';
+            const direccionSeleccionada = `
+                ${nombre}, ${direccion}, ${codigoPostal}, ${provincia}, 
+                Teléfono: ${telefono}, DNI: ${dni}
+                Forma de entrega: ${selectedOption.getAttribute('data-tipo') === '1' ? 'Punto de recogida' : 'Dirección particular'}
 
-        if (selectedOption.id === 'pickup') {
-            dynamicLinks.innerHTML = `
-                <a href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
-                <a href="/productos/modificarPuntoRecogida" class="modPunto-button">Modificar</a>
             `;
-        } else if (selectedOption.id === 'home') {
-            dynamicLinks.innerHTML = `
-                <a href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
-                <a href="/productos/modificarDireccion" class="modDirec-button">Modificar</a>
-            `;
-        } 
+
+            direccionSeleccionadaElement.textContent = direccionSeleccionada;
+        } else {
+            direccionSeleccionadaElement.textContent = "No hay dirección seleccionada.";
+        }
     }
 
-    updateDeliveryOption();
+    function actualizarCostoEnvio() {
+        const selectElement = document.getElementById('direccion-guardada');
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        const tipoDireccion = selectedOption.getAttribute('data-tipo'); 
+        const deliveryCostElement = document.getElementById('delivery-cost');
+        const totalPriceElement = document.getElementById('total-price');
+        const productPrice = parseFloat(document.getElementById('product-price').textContent);
+
+        let deliveryCost = 0;
+
+        if (tipoDireccion === "1") {
+            deliveryCost = 9.49; 
+        } else if (tipoDireccion === "0") {
+            deliveryCost = 11.49; 
+        }
+
+        deliveryCostElement.textContent = deliveryCost.toFixed(2);
+        totalPriceElement.textContent = (productPrice + deliveryCost).toFixed(2);
+    }
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+        guardarDireccion();
+        actualizarCostoEnvio();
+    });
 </script>

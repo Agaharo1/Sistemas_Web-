@@ -2,108 +2,55 @@
 <%
 function mostrarSaludo(session){
 	if (session == null || ! session.login){
-		return `<p>Usuario desconocido. <a href="/usuarios/login">Login</a></p>`;
+		return `<p>Usuario desconocido.</p>`;
 	}
 
-	return `<p>Bienvenido ${session.nombre}. <a href="/usuarios/logout">(salir)</a></p>`;
+	return `<p>Bienvenido ${session.nombre}.</p>`;
 }
 function mostrarMenu(session){
 	if (session == null || ! session.login){
-		return `<nav style = "display: flex; gap:5%;">
-		<a href="/">Inicio</a>
-		<a href="/contenido/normal">Mercado</a>
-		<a href="/usuarios/login">Login</a>
-		<a href="/usuarios/registro">Registro</a>
+		return `<nav class="nav-container">
+		<a href="/" class="nav-button-top">Inicio</a>
+		<a href="/contenido/normal"class="nav-button-top">Mercado</a>
+		<a href="/usuarios/login"class="nav-button-top">Login</a>
+		<a href="/usuarios/registro"class="nav-button-top">Registro</a>
 	</nav>`;
 	}
 
-	return `<nav style = "display: flex; gap:5%;">
-		<a href="/">Inicio</a>
-		<a href="/usuarios/profile">Perfil</a>
-		<a href="/contenido/normal">Mercado</a>
-		<a href="/">Pujas</a>
-		<a href="/productos/subir">Subir producto</a>
-		<a href="/usuarios/baja">Darme de baja</a>
+	return `<nav class="nav-container">
+		<a href="/" class="nav-button-top">Inicio</a>
+		<a href="/usuarios/profile" class="nav-button-top">Perfil</a>
+		<a href="/contenido/normal" class="nav-button-top">Mercado</a>
+		<a href="/" class="nav-button-top">Pujas</a>
+		<a href="/productos/subir" class="nav-button-top">Subir producto</a>
+		<a href="/usuarios/baja" class="nav-button-top">Darme de baja</a>
+		<a href="/usuarios/logout" class="nav-button-top">Logout</a>
 	</nav>`;
 }
 
 %>
 
 <header>
-	<!-- Contenedor principal -->
+	
 	<div class="contenido_cabecera">
 		<!-- Título -->
-		<h1>TruequeHub</h1>
+	<h1>TruequeHub</h1>
 
-		<!-- Barra de búsqueda -->
-		<div class="barra_busqueda">
-			<form action="/productos/buscar" method="GET">
-				<input type="text" name="query" placeholder="Busca un producto" required>
-				<button type="submit">Buscar</button>
-			</form>
-		</div>
+	<div class="barra_busqueda">
+		<form action="/productos/buscar" method="GET">
+			<div style="display: flex; align-items: center;">
+				<input type="text" name="query" placeholder="Busca un producto" required style="flex-grow: 1;">
+				<button type="submit" style="margin-left: 10px;">Buscar</button>
+			</div>
+		</form>
+	</div>
 
-		<!-- Saludo + login -->
+	<%- mostrarMenu(session) %>
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
 	</div>
 
-	<!-- Menú -->
-	<%- mostrarMenu(session) %>
-
-		
 
 </header>
 
-<style>
-	.contenido_cabecera {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 5%; ;
-		/*padding: 10px;*/
-		border-bottom: 1px solid #ccc; 
-		
-	}
-
-	.contenido_cabecera h1{
-		font-family: Pacifico, cursive;
-		font-weight: 400;
-  		font-style: normal;
-		color: #6bb88a
-
-	}
-
-	.barra_busqueda {
-		flex-grow: 1; /* Permite que la barra de búsqueda ocupe el espacio restante */
-	}
-
-	.barra_busqueda input[type="text"] {
-		width: 100%; /* Hace que el campo de texto ocupe todo el ancho disponible */
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-	}
-
-	.barra_busqueda button {
-		padding: 10px 15px;
-		background-color: #007BFF;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		margin-left: 5px; /* Espacio entre el campo de texto y el botón */
-	}
-
-	.barra_busqueda button:hover {
-		background-color: #0056b3; /* Color al pasar el ratón por encima */
-	}
-
-	.saludo {
-		flex-shrink: 0;
-		white-space: nowrap;
-	}
-	
-
-</style>

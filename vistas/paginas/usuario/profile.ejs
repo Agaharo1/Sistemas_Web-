@@ -1,52 +1,8 @@
 
-<div class="contenido_perfil">
-
-    <!-- Barra lateral izquierda -->
-        <%- include('../../partials/sidebarIzqProfile') %>
-
-    <!-- Contenido principal (perfil) -->
-    <section id ="contenido_principal">
-        <h2>Bienvenido a tu perfil, <%= session.nombre %></h2>
-        <div class="profile">
-            <p>Aquí puedes ver y editar tu información personal.</p>
-            <p><a href="/usuarios/editarPerfil/<%= session.user_id %>">Editar perfil</a></p>
-        </div>
-    </section>
-</div>
-
-
-<style>
-    /* Contenedor principal que organiza la barra lateral y el contenido */
-.layout {
-    display: flex; /* Usa Flexbox para alinear los elementos en una fila */
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-}
-
-/* Barra lateral izquierda */
-#sidebarIzq {
-    width: 250px; /* Ancho fijo de la barra lateral */
-    background-color: #f4f4f4; /* Color de fondo */
-    border-right: 1px solid #ccc; /* Línea separadora */
-    padding: 20px; /* Espaciado interno */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra opcional */
-}
-
-/* Contenido principal (perfil) */
-#contenidoPrincipal {
-    flex-grow: 1; /* Ocupa el espacio restante */
-    padding: 20px; /* Espaciado interno */
-    background-color: #fff; /* Fondo blanco */
-    overflow-y: auto; /* Habilita el scroll si el contenido es muy largo */
-}
-
-/* Estilo para los enlaces dentro del perfil */
-#contenidoPrincipal a {
-    color: #007BFF;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#contenidoPrincipal a:hover {
-    color: #0056b3;
-}
-</style>
+<section class="profile-section">
+    <h2>Bienvenido a tu perfil, <%= session.nombre %></h2>
+    <div class="profile">
+        <p>Aquí puedes ver y editar tu información personal.</p>
+        <p><a href="/usuarios/editarPerfil/<%= session.user_id %>">Editar perfil</a></p>
+    </div>
+</section>

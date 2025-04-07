@@ -1,6 +1,6 @@
-<section>
+<section class="formulario-section">
     <h2>Subir Producto</h2>
-    <div class="productRegist-container">
+    <div class="formulario-container">
         <form action="/productos/subir" method="POST" enctype="multipart/form-data">
             <p><label for="nombre">Nombre: </label>
                 <input type="text" id="nombre" name="nombre"required>
@@ -13,7 +13,7 @@
                 <label for="imagen">Imagen:</label>
                 <input type="file" id="imagen" name="imagen" accept="image/*" required></p> 
                 <input type="hidden" id="user_id" name="user_id" value="<%= session.user_id %>">
-            <p><button type="submit">Enviar</button></p>
+            <p style="text-align: center;"><button type="submit">Enviar</button></p>
                 
         </form>
     </div>

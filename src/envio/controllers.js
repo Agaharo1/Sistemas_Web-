@@ -3,9 +3,43 @@ import { Producto } from "../productos/Productos.js";
 import { Usuario } from "../usuarios/Usuario.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { DirEnvio } from "./direccionEnt.js";
+import { Tarjeta } from "./tarjeta.js";
 
+export function crearTarjeta(req, res) {
+    const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
+    console.log("Datos recibidos:", {
+        numero_tarjeta,
+        fecha_expiracion,
+        codigo_seguridad,
+        nombre_titular
+    });
+    
+        const usuario_id = req.session.user_id;
+        console.log("Creando tarjeta:", {
+            usuario_id,
+            numero_tarjeta,
+            fecha_expiracion,
+            codigo_seguridad,
+            nombre_titular
+        });
 
-
+      Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
+        return res.redirect(`/envios/resumenProducto/${req.params.id}`);
+    
+}
+export function formularioTarjeta(req, res) {
+    const { id } = req.params;
+    console.log("ID del producto recibido:", id);
+    const producto = Producto.getProductById(id);
+    console.log(producto);
+    const params = {
+      contenido: "paginas/envios/formTarjeta",
+      session: req.session,
+      producto,
+    };
+    res.render("pagina", params);
+  
+  }
 export function formularioPuntoRecogida(req, res) {
     const { id } = req.params;
     console.log("ID del producto recibido:", id);
@@ -60,10 +94,12 @@ export function formularioPuntoRecogida(req, res) {
     const usuario = Usuario.getUsuarioById(producto.id_user);
     const imagen = Imagen.getImagenByProductId(id);
 
+
     const puntoRecogida = req.session.puntoRecogidaSeleccionado;
     console.log("Punto de recogida seleccionado:", puntoRecogida);
 
     const direcciones = DirEnvio.getDireccionesByUsuarioId(req.session.user_id);
+    const tarjetas =  Tarjeta.getTarjetasByUsuarioId(req.session.user_id); 
   
     const params = {
       contenido: "paginas/envios/resumenProducto",
@@ -73,6 +109,7 @@ export function formularioPuntoRecogida(req, res) {
       imagen,
       puntoRecogida,
       direcciones,
+      tarjetas
     };
     res.render("pagina", params);
   }

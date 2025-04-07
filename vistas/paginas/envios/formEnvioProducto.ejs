@@ -1,6 +1,6 @@
-<section>
+<section class="formulario-section">
     <h2>Añadir Dirección de Envío</h2>
-    <div class="address-form-container">
+    <div class="formulario-container">
         <form action="/envios/formEnvioProducto/<%= producto.id %>" method="POST">
             <input type="hidden" name="productoId" value="<%= producto.id %>">
             <input type="hidden" name="punto_recogida" value="0">
@@ -25,7 +25,7 @@
                 <input type="text" id="dni" name="dni" placeholder="Documento de identidad" required>
             </p>
             <input type="hidden" id="user_id" name="user_id" value="<%= session.user_id %>">
-            <p>
+            <p style="text-align: center;">
                 <button type="submit">Guardar Dirección</button>
             </p>
         </form>

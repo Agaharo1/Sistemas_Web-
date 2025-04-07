@@ -1,42 +1,14 @@
-<nav id="sidebarIzq">
-    <h2>Menú</h2>
-    <ul>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li><a href="#">Ventas</a></li>
-        <li><a href="/contenido/misProductos">Mis productos</a></li>
-        <li><a href="/chats/misChats/<%= session.user_id %>">Mis chats</a></li>
-    </ul>
-</nav>
 
+<section class="sidebarIz">
+    <nav id="sidebarIzq">
+        <h2>Menú</h2>
 
+            <a class="nav-button-iz" href="/">Inicio</a>
+            <a class="nav-button-iz" href="#">Compras</a>
+            <a class="nav-button-iz" href="#">Ventas</a>
+            <a class="nav-button-iz" href="/contenido/misProductos">Mis productos</a>
+            <a class="nav-button-iz" href="/chats/misChats/<%= session.user_id %>">Mis chats</a>
 
-<style>
-    #sidebarIzq {
-        width: 200px;
-        background-color: #f4f4f4;
-        padding: 20px;
-        border-radius: 5px;
-    }
+    </nav>
+</section>
 
-    #sidebarIzq h2 {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
-
-    #sidebarIzq ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    #sidebarIzq ul li {
-        margin-bottom: 10px;
-    }
-
-    #sidebarIzq ul li a {
-        text-decoration: none;
-        color: #333;
-    }
-
-   
-    </style>
