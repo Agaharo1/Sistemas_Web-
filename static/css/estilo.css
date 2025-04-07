@@ -47,11 +47,11 @@ header a:hover {
     border-radius: 5px;
     font-size: 14px;
 }
-
+/*
 .nav-button-top:hover {
     background-color: #19222b;
 }
-
+*/
 .sidebarIz{
 	position:fixed;
 	width: 20vh;
