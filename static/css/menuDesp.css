@@ -1,0 +1,43 @@
+
+/*@@author meriwen*/
+/*@@author dabarr02*/
+
+.menu {
+	text-align: center; /* Centra el menú horizontalmente */
+	display: flex;
+	justify-content: center;
+	border-bottom: 1px solid #ccc;
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	min-height: 5vh;
+}
+.nav-container {
+    display: flex; 
+    justify-content: space-between;  
+    width: 100%; 
+	gap: 2%;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.nav-button-top {
+		
+	text-align: center; 
+	color: black; 
+	background-color: #85aab0;
+
+	display: flex;
+	align-items: center; /* Centra verticalmente el texto */
+	justify-content: center; /* Centra horizontalmente el texto */
+	padding: 1%;
+	border-radius: 5px; /* Bordes redondeados */
+	font-size: 90%; /* Tamaño de fuente */
+	text-decoration: none; /* Elimina el subrayado del enlace */
+	transition: background-color 0.3s ease; 
+	width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+}
+
+.nav-button-top:hover {
+	background-color: #57838a; 
+}

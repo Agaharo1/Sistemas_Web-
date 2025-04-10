@@ -1,0 +1,59 @@
+
+.user-info button {
+	background-color: #65c5c0;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 5px;
+	margin-left: 5px;
+	margin-top: 5px;
+	width: 15%;
+	flex-shrink: 0;
+}
+
+.user-info button:hover {
+	background-color: #58aca7;
+}
+
+.product-details button {
+    background-color: #5cb397; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 5px; /* Espaciado interno */
+    margin-left: 5px; /* Espaciado a la izquierda */
+    margin-top: 5px; /* Espaciado superior */
+    width: 15%; /* Ancho del botón */
+    flex-shrink: 0; /* Evita que el botón se reduzca */
+    text-align: center; /* Centra el texto dentro del botón */
+}
+
+.product-details button:hover {
+    background-color: #428d75; /* Color de fondo al pasar el ratón */
+}
+
+.nav-button{
+    flex: 1; 
+    text-align: center; 
+    padding: 1%;
+    border-radius: 5px;
+    font-size: 20px;
+	color:black; 
+	background-color: #8fd8d6;
+	text-decoration: none;
+}
+
+.nav-button:hover {
+    background-color: #69adab; 
+	text-decoration: none;
+
+}
+.add-address-links{
+	display: flex;
+	text-align: center;
+	border-radius: 5px;
+	justify-content: space-between; 
+    gap: 1%; 
+}
