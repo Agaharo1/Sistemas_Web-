@@ -1,25 +1,29 @@
-<section class="formulario-section" >
+<section class="formulario-section">
     <h2>Añadir Tarjeta de Crédito</h2>
     <div class="formulario-container">
         <form action="/envios/formTarjeta/<%= producto.id %>" method="POST">
             <input type="hidden" name="productoId" value="<%= producto.id %>">
             <p>
                 <label for="nombre_titular">Nombre Titular: </label>
-                <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Nombre completo del titular" required>
+                <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Nombre completo del titular" value="<%= datos.nombre_titular %>">
+                <%- helpers.error(errores, 'nombre_titular') %>
             </p>
             <p>
                 <label for="numero_tarjeta">Número Tarjeta: </label>
-                <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="Número de tarjeta" maxlength="16" required>
+                <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="Número de tarjeta"  value="<%= datos.numero_tarjeta %>">
+                <%- helpers.error(errores, 'numero_tarjeta') %>
             </p>
             <p>
                 <label for="fecha_expiracion">Fecha de Expiración: </label>
-                <input type="text" id="fecha_expiracion" name="fecha_expiracion" placeholder="MM/AA" maxlength="5" required>
+                <input type="text" id="fecha_expiracion" name="fecha_expiracion" placeholder="MM/AA"  value="<%= datos.fecha_expiracion %>">
+                <%- helpers.error(errores, 'fecha_expiracion') %>
             </p>
             <p>
                 <label for="codigo_seguridad">Código de Seguridad (CVV): </label>
-                <input type="text" id="codigo_seguridad" name="codigo_seguridad" placeholder="CVV" maxlength="3" required>
+                <input type="text" id="codigo_seguridad" name="codigo_seguridad" placeholder="CVV"  value="<%= datos.codigo_seguridad %>">
+                <%- helpers.error(errores, 'codigo_seguridad') %>
             </p>
-            <p  style="text-align: center;">
+            <p style="text-align: center;">
                 <button type="submit">Guardar Tarjeta</button>
             </p>
         </form>

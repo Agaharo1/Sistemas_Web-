@@ -4,6 +4,7 @@ import { Usuario } from "../usuarios/Usuario.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { DirEnvio } from "./direccionEnt.js";
 import { Tarjeta } from "./tarjeta.js";
+import { body, validationResult, matchedData } from 'express-validator';
 
 export function agradecimiento(req, res) {
 
@@ -38,27 +39,46 @@ export function confirmacionCompra(req, res) {
 }
 
 
-export function crearTarjeta(req, res) {
-    const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
-    console.log("Datos recibidos:", {
-        numero_tarjeta,
-        fecha_expiracion,
-        codigo_seguridad,
-        nombre_titular
-    });
+export async function crearTarjeta(req, res) {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+      const errores = result.mapped();
+      const datos = matchedData(req);
+      const { id } = req.params;
+      const producto = Producto.getProductById(id);
+      return res.render("pagina", {
+          contenido: "paginas/envios/formTarjeta",
+          session: req.session,
+          producto,
+          datos,
+          errores,
+          helpers: {
+              error: (errores, campo) => errores[campo]?.msg || "",
+          },
+      });
+  }
+  const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
+  try {
+      const usuario_id = req.session.user_id;
     
-        const usuario_id = req.session.user_id;
-        console.log("Creando tarjeta:", {
-            usuario_id,
-            numero_tarjeta,
-            fecha_expiracion,
-            codigo_seguridad,
-            nombre_titular
-        });
-
-      Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
-        return res.redirect(`/envios/resumenProducto/${req.params.id}`);
-    
+      await Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
+      return res.redirect(`/envios/resumenProducto/${req.params.id}`);
+  } catch (e) {
+      console.error("Error al crear la tarjeta:", e.message);
+      const { id } = req.params;
+      const producto = Producto.getProductById(id);
+      return res.render("pagina", {
+          contenido: "paginas/envios/formTarjeta",
+          session: req.session,
+          producto,
+          error: "No se ha podido guardar la tarjeta",
+          datos: {}, 
+          errores: {}, 
+          helpers: {
+              error: (errores, campo) => errores[campo]?.msg || "",
+          },
+      });
+  }
 }
 export function formularioTarjeta(req, res) {
     const { id } = req.params;
@@ -69,6 +89,11 @@ export function formularioTarjeta(req, res) {
       contenido: "paginas/envios/formTarjeta",
       session: req.session,
       producto,
+      datos: {}, 
+      errores: {},
+      helpers: {
+        error: (errores, campo) => errores[campo]?.msg || "",
+    },
     };
     res.render("pagina", params);
   
@@ -83,7 +108,12 @@ export function formularioPuntoRecogida(req, res) {
       contenido: "paginas/envios/formPuntoRecogida",
       session: req.session,
       producto,
-      puntoRecogida
+      puntoRecogida,
+      datos: {},
+      errores: {},
+      helpers: {
+        error: (errores, campo) => errores[campo]?.msg || "",
+      },
       
     };
     res.render("pagina", params);
@@ -115,6 +145,11 @@ export function formularioPuntoRecogida(req, res) {
       contenido: "paginas/envios/formEnvioProducto",
       session: req.session,
       producto,
+      datos: {},
+      errores: {},
+      helpers: {
+        error: (errores, campo) => errores[campo]?.msg || "",
+      },
     };
     res.render("pagina", params);
   
@@ -149,29 +184,32 @@ export function formularioPuntoRecogida(req, res) {
 
 
 
-  export async function crearDireccion(req, res) {
+  export async function crearPuntoRecogida(req, res) {
+    const result = validationResult(req);
+
+    if (!result.isEmpty()) {
+      const { id } = req.params;
+      const puntoRecogida = PuntoRecogida.getPuntoRecogidaById(id)
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        const producto = Producto.getProductById(id);
+        return res.render("pagina", {
+            contenido: "paginas/envios/formPuntoRecogida",
+            session: req.session,
+            producto,
+            datos,
+            puntoRecogida,
+            errores,
+            helpers: {
+                error: (errores, campo) => errores[campo]?.msg || "",
+            },
+        });
+    }
     const { nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida, productoId } = req.body;
-console.log("Datos recibidos:", {
-        nombre,
-        codigo_postal,
-        telefono,
-        dni,
-        direccion_entrega,
-        punto_recogida,
-        productoId
-    });
+   
     try {
         const usuario_id = req.session.user_id;
-        console.log("Creando dirección:", {
-            usuario_id,
-            nombre,
-            codigo_postal,
-            telefono,
-            dni,
-            direccion_entrega,
-            punto_recogida,
-            productoId
-        });
+     
 
         await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
         return res.redirect(`/envios/resumenProducto/${productoId}`);
@@ -179,4 +217,49 @@ console.log("Datos recibidos:", {
         console.error("Error al crear la dirección:", e.message);
         return res.status(500).send("Error al crear la dirección.");
     }
+
+
+
+
+
+    
 }
+
+
+export async function crearDireccion(req, res) {
+  const result = validationResult(req);
+
+  if (!result.isEmpty()) {
+      const { id } = req.params;
+      const errores = result.mapped();
+      const datos = matchedData(req);
+      const producto = Producto.getProductById(id);
+      return res.render("pagina", {
+          contenido: "paginas/envios/formEnvioProducto",
+          session: req.session,
+          producto,
+          datos,
+          errores,
+          helpers: {
+              error: (errores, campo) => errores[campo]?.msg || "",
+          },
+      });
+  }
+  const { nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida, productoId } = req.body;
+  try {
+      const usuario_id = req.session.user_id;
+
+      await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
+      return res.redirect(`/envios/resumenProducto/${productoId}`);
+  } catch (e) {
+      console.error("Error al crear la dirección:", e.message);
+      return res.status(500).send("Error al crear la dirección.");
+  }
+
+
+
+
+
+  
+}
+

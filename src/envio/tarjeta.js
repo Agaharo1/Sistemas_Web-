@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs";
+
 export class Tarjeta {
     static #insertStmt = null;
     static #getByIdStmt = null;
@@ -59,8 +61,13 @@ export class Tarjeta {
     }
 
     static crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular) {
-        const Ttarjeta = new Tarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
-      
+        const ultimos_cuatro_digitos = numero_tarjeta.slice(-4);
+
+        const numero_tarjeta_encriptado = bcrypt.hashSync(numero_tarjeta.slice(0, -4), 10);
+        const fecha_expiracion_encriptada = bcrypt.hashSync(fecha_expiracion);
+        const codigo_seguridad_encriptado = bcrypt.hashSync(codigo_seguridad);
+        const Ttarjeta = new Tarjeta(usuario_id, numero_tarjeta_encriptado + ultimos_cuatro_digitos, fecha_expiracion_encriptada, codigo_seguridad_encriptado, nombre_titular);
+     
         return Ttarjeta.persist();
     }
     persist() {
