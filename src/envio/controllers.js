@@ -4,30 +4,30 @@ import { Usuario } from "../usuarios/Usuario.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { DirEnvio } from "./direccionEnt.js";
 import { Tarjeta } from "./tarjeta.js";
+import {compra} from "./compra.js";
 import { body, validationResult, matchedData } from 'express-validator';
 
-export function agradecimiento(req, res) {
 
-    const params = {
-        contenido: "paginas/envios/agradecimiento",
-        session: req.session,
-    };
-    res.render("pagina", params);
-
-}
-export function confirmacionCompra(req, res) {
-  const { direccionSeleccionada, tarjetaSeleccionada, costoEntrega, total } = req.body;
+export async function confirmacionCompra(req, res) {
   const { id } = req.params;
-
+  const { direccionSeleccionada, tarjetaSeleccionada, costoEntrega, total } = req.body;
+  console.log("tarjetaSeleccionada:", tarjetaSeleccionada);
+  console.log("direccionSeleccionada:", direccionSeleccionada);
+  if(!direccionSeleccionada || !tarjetaSeleccionada) {
+    console.log("Faltan datos de dirección o tarjeta");
+    return res.redirect(`/envios/resumenProducto/${id}`);
+  }
+  const usuario_id = req.session.user_id;
+  const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
   const producto = Producto.getProductById(id);
+  const produ = producto;
+  const dni = DirEnvio.getDniByUsuarioId(usuario_id);
+  const telefono = DirEnvio.getTelefonoByUsuarioId(usuario_id);
+  const direccionEntrega = direccionSeleccionada || "Dirección no especificada";
+  const nombre = Tarjeta.getNombreById(usuario_id);
+ 
 
-  console.log('Datos recibidos:', {
-      direccionSeleccionada,
-      tarjetaSeleccionada: JSON.parse(tarjetaSeleccionada), 
-      costoEntrega,
-      total,
-      producto,
-  });
+  await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, nombre, usuario_id, id_targeta);
 
   res.render('paginas/envios/confirmacionCompra', {
       direccionSeleccionada,
@@ -38,6 +38,17 @@ export function confirmacionCompra(req, res) {
   });
 }
 
+export function mostrarPuntoRecogida(req, res) {
+  const { puntoId,productoId } = req.body;
+  console.log("Producto ID recibido:", productoId);
+  try {
+      const puntoRecogida = PuntoRecogida.getPuntoRecogidaByOneId(puntoId);
+      req.session.puntoRecogidaSeleccionado = puntoRecogida;
+      res.redirect(`/envios/resumenProducto/${productoId}`);
+  } catch (error) {
+      res.status(404).send('Error al procesar el punto de recogida');
+  }
+} 
 
 export async function crearTarjeta(req, res) {
   const result = validationResult(req);
@@ -120,17 +131,7 @@ export function formularioPuntoRecogida(req, res) {
   
   }
 
-  export function mostrarPuntoRecogida(req, res) {
-    const { puntoId,productoId } = req.body;
-    console.log("Producto ID recibido:", productoId);
-    try {
-        const puntoRecogida = PuntoRecogida.getPuntoRecogidaByOneId(puntoId);
-        req.session.puntoRecogidaSeleccionado = puntoRecogida;
-        res.redirect(`/envios/resumenProducto/${productoId}`);
-    } catch (error) {
-        res.status(404).send('Error al procesar el punto de recogida');
-    }
-} 
+
 
   export function formularioEnvioProducto(req, res) {
     const { id } = req.params;
@@ -217,12 +218,6 @@ export function formularioPuntoRecogida(req, res) {
         console.error("Error al crear la dirección:", e.message);
         return res.status(500).send("Error al crear la dirección.");
     }
-
-
-
-
-
-    
 }
 
 
@@ -255,11 +250,5 @@ export async function crearDireccion(req, res) {
       console.error("Error al crear la dirección:", e.message);
       return res.status(500).send("Error al crear la dirección.");
   }
-
-
-
-
-
-  
 }
 

@@ -4,6 +4,8 @@ export class Tarjeta {
     static #insertStmt = null;
     static #getByIdStmt = null;
     static #getByUserIdStmt = null;
+    static #getNombreByIdStmt = null;
+    static #getIdByUserIdStmt = null;
 
     #id;
     #usuario_id;     
@@ -34,6 +36,24 @@ export class Tarjeta {
         this.#getByUserIdStmt = db.prepare(`
             SELECT * FROM tarjeta WHERE usuario_id = @usuario_id
         `);
+        this.#getNombreByIdStmt = db.prepare(`
+            SELECT nombre_titular FROM tarjeta WHERE usuario_id = @usuario_id
+        `);
+        this.#getIdByUserIdStmt = db.prepare(`
+            SELECT id FROM tarjeta WHERE usuario_id = @usuario_id
+        `);
+        
+    }
+
+    static getIdTargetaById(usuario_id) {
+        const result = this.#getIdByUserIdStmt.get({ usuario_id });
+        if (!result) throw new TarjetaNoEncontrada(usuario_id);
+        return result.id;
+    }
+    static getNombreById(usuario_id) {
+        const result = this.#getNombreByIdStmt.get({ usuario_id });
+        if (!result) throw new TarjetaNoEncontrada(usuario_id);
+        return result.nombre_titular;
     }
 
     static getTarjetaById(id) {

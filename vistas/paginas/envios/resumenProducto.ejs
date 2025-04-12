@@ -1,172 +1,151 @@
 <div class="send-container">
     <h1 class="titulo-centrado">Compra del Producto</h1>
     <div class="add-address-links">
-        <a class="nav-button" href="/envios/formEnvioProducto/<%= producto.id %>" class="envio-button">Añadir dirección de envío</a>
-        <a class="nav-button" href="/envios/formPuntoRecogida/<%= producto.id %>" class="envio-button">Añadir punto de recogida</a>
-        <a class="nav-button" href="/envios/formTarjeta/<%= producto.id %>" class="envio-button">Añadir tarjeta de crédito</a>
+      <a class="nav-button envio-button" href="/envios/formEnvioProducto/<%= producto.id %>">Añadir dirección de envío</a>
+      <a class="nav-button envio-button" href="/envios/formPuntoRecogida/<%= producto.id %>">Añadir punto de recogida</a>
+      <a class="nav-button envio-button" href="/envios/formTarjeta/<%= producto.id %>">Añadir tarjeta de crédito</a>
     </div>
-
-
+  
     <div class="address-container">
-        <h3>Direcciones Guardadas</h3>
-        <% if (direcciones && direcciones.length > 0) { %>
-            <select id="direccion-guardada" name="direccion_guardada" onchange="actualizarCostoEnvio()">
-                <% direcciones.forEach(direccion => { %>
-                    <option value="<%= direccion.id %>" 
-                            data-nombre="<%= direccion.nombre %>" 
-                            data-direccion="<%= direccion.direccion_entrega %>" 
-                            data-codigo-postal="<%= direccion.codigo_postal %>" 
-                            data-provincia="<%= direccion.provincia %>" 
-                            data-telefono="<%= direccion.telefono %>" 
-                            data-dni="<%= direccion.dni %>" 
-                            data-tipo="<%= direccion.punto_recogida %>">
-                        <%= direccion.nombre %>, <%= direccion.direccion_entrega %>, 
-                        <%= direccion.codigo_postal %>, <%= direccion.provincia %>, 
-                        Teléfono: <%= direccion.telefono %>, DNI: <%= direccion.dni %>,
-                        Forma de entrega: <%= direccion.punto_recogida === 1 ? 'Punto de recogida' : 'Dirección particular' %>
-                    </option>
-                <% }) %>
-            </select>
-            <button type="button" onclick="guardarDireccion()">Establecer dirección de entrega</button>
-        <% } else { %>
-            <p>No tienes direcciones guardadas.</p>
-        <% } %>
-        <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
-
+      <h3>Direcciones Guardadas</h3>
+      <% if (direcciones && direcciones.length > 0) { %>
+        <select id="direccion-guardada" name="direccion_guardada" onchange="actualizarDatosDireccion()">
+          <% direcciones.forEach(direccion => { %>
+            <option value="<%= direccion.id %>" 
+                    data-nombre="<%= direccion.nombre %>" 
+                    data-direccion="<%= direccion.direccion_entrega %>" 
+                    data-codigo-postal="<%= direccion.codigo_postal %>" 
+                    data-provincia="<%= direccion.provincia %>" 
+                    data-telefono="<%= direccion.telefono %>" 
+                    data-dni="<%= direccion.dni %>" 
+                    data-tipo="<%= direccion.punto_recogida %>">
+              <%= direccion.nombre %>, <%= direccion.direccion_entrega %>, <%= direccion.codigo_postal %>, 
+              <%= direccion.provincia %>, Teléfono: <%= direccion.telefono %>, DNI: <%= direccion.dni %>, 
+              Forma de entrega: <%= direccion.punto_recogida === 1 ? 'Punto de recogida' : 'Dirección particular' %>
+            </option>
+          <% }); %>
+        </select>
+      <% } else { %>
+        <p>No tienes direcciones guardadas.</p>
+      <% } %>
+      <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
+      <p><strong>Dirección seleccionada:</strong></p>
+      <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
     </div>
-
   
     <div class="pay-summary">
-        <h3>Tarjetas Guardadas</h3>
-        <% if (tarjetas && tarjetas.length > 0) { %>
-            <select id="tarjeta-guardada" name="tarjeta_guardada">
-                <% tarjetas.forEach(tarjeta => { %>
-                    <option value="<%= tarjeta.id %>">
-                        **** **** **** <%= tarjeta.numero_tarjeta.slice(-4) %> - <%= tarjeta.nombre_titular %>
-                    </option>
-                <% }) %>
-            </select>
-            <button type="button" onclick="usarTarjeta()">Usar esta tarjeta</button>
-        <% } else { %>
-            <p>No tienes tarjetas guardadas.</p>
-           
-        <% } %>
+      <h3>Tarjetas Guardadas</h3>
+      <% if (tarjetas && tarjetas.length > 0) { %>
+        <select id="tarjeta-guardada" name="tarjeta_guardada" onchange="actualizarCamposOcultos()">
+          <% tarjetas.forEach(tarjeta => { %>
+            <option value="<%= tarjeta.id %>">
+              **** **** **** <%= tarjeta.numero_tarjeta.slice(-4) %> - <%= tarjeta.nombre_titular %>
+            </option>
+          <% }); %>
+        </select>
+      <% } else { %>
+        <p>No tienes tarjetas guardadas.</p>
+      <% } %>
     </div>
+  
     <div class="total-summary">
-        <h3>Resumen del Pedido</h3>
-        <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
-        <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
-        <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
-        <p><strong>Dirección:</strong></p>
-        <p id="direccion-seleccionada">No hay dirección seleccionada.</p>
+      <h3>Resumen del Pedido</h3>
+      <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
+      <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
+      <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
     </div>
+  
 
-    <form action="/envios/confirmacionCompra/<%= producto.id %>" method="POST">
-        <input type="hidden" name="direccionSeleccionada" id="direccion-seleccionada-input">
-        <input type="hidden" name="tarjetaSeleccionada" id="tarjeta-seleccionada-input">
-        <input type="hidden" name="costoEntrega" id="costo-entrega-input">
-        <input type="hidden" name="total" id="total-input">
-        <button type="submit" class="continue-button">Continuar</button>
+    <form action="/envios/confirmacionCompra/<%= producto.id %>" method="POST" id="resumen-form">
+      <input type="hidden" name="direccionSeleccionada" id="direccion-seleccionada-input">
+      <input type="hidden" name="tarjetaSeleccionada" id="tarjeta-seleccionada-input">
+      <input type="hidden" name="costoEntrega" id="costo-entrega-input">
+      <input type="hidden" name="total" id="total-input">
+      <button type="button" class="continue-button" onclick="comprobar()">Confirmar compra</button>
     </form>
-</div>
-
-<div class="product-container">
+  </div>
+  
+  <div class="product-container">
     <h1>Detalles del Producto</h1>
     <img src="/imagenes/imagen/<%= producto.id %>/<%= imagen %>" alt="Imagen del Producto" class="product-image">
     <div class="product-details">
-        <h2><%= producto.nombre %></h2>
-        <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
-        <p><strong>Precio:</strong> <%= producto.precio %> €</p>
+      <h2><%= producto.nombre %></h2>
+      <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+      <p><strong>Precio:</strong> <%= producto.precio %> €</p>
     </div>
-</div>
+  </div>
+  
+  <script>
+    const actualizarDatosDireccion = () => {
+      const direccionSelect = document.getElementById('direccion-guardada');
+      if (direccionSelect && direccionSelect.options.length > 0) {
+        const option = direccionSelect.options[direccionSelect.selectedIndex];
+        const direccionText = `${option.getAttribute('data-nombre')}, ${option.getAttribute('data-direccion')}, ${option.getAttribute('data-codigo-postal')}, ${option.getAttribute('data-provincia')}, Teléfono: ${option.getAttribute('data-telefono')}, DNI: ${option.getAttribute('data-dni')}, Forma de entrega: ${option.getAttribute('data-tipo') === '1' ? 'Punto de recogida' : 'Dirección particular'}`;
+        document.getElementById('direccion-seleccionada').textContent = direccionText.trim();
+        actualizarCostoEnvio();
+        actualizarCamposOcultos();
+      } else {
+        document.getElementById('direccion-seleccionada').textContent = "No hay dirección seleccionada.";
+      }
+    };
+  
+    const actualizarCostoEnvio = () => {
+      const direccionSelect = document.getElementById('direccion-guardada');
+      const productPrice = parseFloat(document.getElementById('product-price').textContent);
+      const deliveryCostElem = document.getElementById('delivery-cost');
+      const totalPriceElem = document.getElementById('total-price');
+      const option = direccionSelect.options[direccionSelect.selectedIndex];
+      const tipoDireccion = option.getAttribute('data-tipo');
+      let deliveryCost = 0;
+  
+      if (tipoDireccion === "1") {
+        deliveryCost = 9.49;
+      } else if (tipoDireccion === "0") {
+        deliveryCost = 11.49;
+      }
+  
+      deliveryCostElem.textContent = deliveryCost.toFixed(2);
+      totalPriceElem.textContent = (productPrice + deliveryCost).toFixed(2);
+    };
+  
+    const actualizarCamposOcultos = () => {
+      const direccionInput = document.getElementById('direccion-seleccionada-input');
+      const tarjetaInput = document.getElementById('tarjeta-seleccionada-input');
+      const costoEntregaInput = document.getElementById('costo-entrega-input');
+      const totalInput = document.getElementById('total-input');
+      const direccionSelect = document.getElementById('direccion-guardada');
+      const tarjetaSelect = document.getElementById('tarjeta-guardada');
 
-<script>
-    function guardarDireccion() {
-        const selectElement = document.getElementById('direccion-guardada');
-        const direccionSeleccionadaElement = document.getElementById('direccion-seleccionada');
-        if (selectElement && selectElement.options.length > 0) {
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-
-            const nombre = selectedOption.getAttribute('data-nombre');
-            const direccion = selectedOption.getAttribute('data-direccion');
-            const codigoPostal = selectedOption.getAttribute('data-codigo-postal');
-            const provincia = selectedOption.getAttribute('data-provincia');
-            const telefono = selectedOption.getAttribute('data-telefono');
-            const dni = selectedOption.getAttribute('data-dni');
-
-            const direccionSeleccionada = `
-                ${nombre}, ${direccion}, ${codigoPostal}, ${provincia}, 
-                Teléfono: ${telefono}, DNI: ${dni}
-                Forma de entrega: ${selectedOption.getAttribute('data-tipo') === '1' ? 'Punto de recogida' : 'Dirección particular'}
-
-            `;
-
-            direccionSeleccionadaElement.textContent = direccionSeleccionada;
-        } else {
-            direccionSeleccionadaElement.textContent = "No hay dirección seleccionada.";
-        }
-    }
-
-    function actualizarCostoEnvio() {
-        const selectElement = document.getElementById('direccion-guardada');
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        
-        const tipoDireccion = selectedOption.getAttribute('data-tipo'); 
-        const deliveryCostElement = document.getElementById('delivery-cost');
-        const totalPriceElement = document.getElementById('total-price');
-        const productPrice = parseFloat(document.getElementById('product-price').textContent);
-
-        let deliveryCost = 0;
-
-        if (tipoDireccion === "1") {
-            deliveryCost = 9.49; 
-        } else if (tipoDireccion === "0") {
-            deliveryCost = 11.49; 
-        }
-
-        deliveryCostElement.textContent = deliveryCost.toFixed(2);
-        totalPriceElement.textContent = (productPrice + deliveryCost).toFixed(2);
-    }
-
-   
+      if (direccionSelect && direccionSelect.options.length > 0) {
+        direccionInput.value = direccionSelect.options[direccionSelect.selectedIndex].textContent.trim();
+      }
+      if (tarjetaSelect && tarjetaSelect.options.length > 0) {
+        const tarjetaOption = tarjetaSelect.options[tarjetaSelect.selectedIndex];
+        const partes = tarjetaOption.textContent.split(' ');
+        const tarjetaDatos = {
+          id: tarjetaOption.value,
+          numero_tarjeta: partes[3],
+          nombre_titular: tarjetaOption.textContent.split('-')[1].trim()
+        };
+        tarjetaInput.value = JSON.stringify(tarjetaDatos);
+      }
+      costoEntregaInput.value = document.getElementById('delivery-cost').textContent.trim();
+      totalInput.value = document.getElementById('total-price').textContent.trim();
+    };
+  
     document.addEventListener('DOMContentLoaded', () => {
-    const direccionInput = document.getElementById('direccion-seleccionada-input');
-    const tarjetaInput = document.getElementById('tarjeta-seleccionada-input');
-    const costoEntregaInput = document.getElementById('costo-entrega-input');
-    const totalInput = document.getElementById('total-input');
+      actualizarDatosDireccion();
+      actualizarCamposOcultos();
+      document.getElementById('direccion-guardada').addEventListener('change', actualizarDatosDireccion);
+      document.getElementById('tarjeta-guardada').addEventListener('change', actualizarCamposOcultos);
+    });
 
-    const direccionElement = document.getElementById('direccion-guardada');
-    const tarjetaElement = document.getElementById('tarjeta-guardada');
 
-    function actualizarCamposOcultos() {
- 
-        if (direccionElement && direccionElement.options.length > 0) {
-            const selectedOption = direccionElement.options[direccionElement.selectedIndex];
-            direccionInput.value = selectedOption.textContent.trim();
-        }
-
-       
-        if (tarjetaElement && tarjetaElement.options.length > 0) {
-            const selectedOption = tarjetaElement.options[tarjetaElement.selectedIndex];
-            tarjetaInput.value = JSON.stringify({
-                id: selectedOption.value,
-                numero_tarjeta: selectedOption.textContent.split(' ')[3],
-                nombre_titular: selectedOption.textContent.split('-')[1].trim(),
-            });
-        }
-
-      
-        const deliveryCostElement = document.getElementById('delivery-cost');
-        const totalPriceElement = document.getElementById('total-price');
-        costoEntregaInput.value = deliveryCostElement.textContent.trim();
-        totalInput.value = totalPriceElement.textContent.trim();
+    function comprobar() {
+    var ok = window.confirm("Vas a confirmar la compra del producto. ¿Estás seguro?");
+    if (ok) {
+      document.getElementById('resumen-form').submit();
     }
-
-
-    actualizarCamposOcultos();
-
-    
-    direccionElement.addEventListener('change', actualizarCamposOcultos);
-    tarjetaElement.addEventListener('change', actualizarCamposOcultos);
-});
-</script>
+  }
+  </script>
+  

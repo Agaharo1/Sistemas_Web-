@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { config } from '../config.js';
-import { formularioPuntoRecogida,formularioEnvioProducto,envioProducto,formularioTarjeta,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra,agradecimiento} from './controllers.js';
+import { formularioPuntoRecogida,formularioEnvioProducto,envioProducto,formularioTarjeta,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 import { body } from 'express-validator';
 
@@ -60,7 +60,7 @@ envioRouter.post(
 );
 
 envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
-envioRouter.get('/agradecimiento', autenticado('/usuarios/login'), agradecimiento);
+
 
 
 export default envioRouter;

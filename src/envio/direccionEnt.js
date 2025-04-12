@@ -2,6 +2,8 @@ export class DirEnvio {
     static #insertStmt = null;
     static #getByIdStmt = null;
     static #getByUserIdStmt = null;
+    static #getDniByUserIdStmt = null;
+    static #getTelefonoByUserIdStmt = null;
 
     #id;
     #usuario_id ;     
@@ -36,6 +38,12 @@ export class DirEnvio {
         this.#getByUserIdStmt = db.prepare(`
             SELECT * FROM direccion WHERE usuario_id = @usuario_id
         `);
+        this.#getDniByUserIdStmt = db.prepare(`
+            SELECT dni FROM direccion WHERE usuario_id = @usuario_id
+        `);
+        this.#getTelefonoByUserIdStmt = db.prepare(`
+            SELECT telefono FROM direccion WHERE usuario_id = @usuario_id
+        `);
     }
 
     static getDireccionById(id) {
@@ -46,6 +54,16 @@ export class DirEnvio {
 
     static getDireccionesByUsuarioId(usuario_id) {
         return this.#getByUserIdStmt.all({ usuario_id });
+    }
+    static getDniByUsuarioId(usuario_id) {
+        const result = this.#getDniByUserIdStmt.get({ usuario_id });
+        if (!result) throw new DireccionNoEncontrada(usuario_id);
+        return result.dni;
+    }
+    static getTelefonoByUsuarioId(usuario_id) {
+        const result = this.#getTelefonoByUserIdStmt.get({ usuario_id });
+        if (!result) throw new DireccionNoEncontrada(usuario_id);
+        return result.telefono;
     }
 
     static #insert(direccion) {
