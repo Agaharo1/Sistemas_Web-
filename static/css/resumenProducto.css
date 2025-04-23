@@ -1,0 +1,106 @@
+.titulo-centrado {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Address Section */
+ .pay-summary{
+    width: 50%; /* Reduce el ancho al 80% del contenedor padre */
+    margin: 0 auto; /* Centra el div horizontalmente */
+    padding: 15px; /* Mantén el padding para el contenido interno */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+}
+.product-container {
+    width: 30%; /* Reduce el ancho al 80% del contenedor padre */
+    margin: 20px auto; /* Centra el contenedor horizontalmente y añade margen superior/inferior */
+    padding: 15px; /* Espaciado interno */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    text-align: center; /* Centra el contenido dentro del contenedor */
+}
+
+.address-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center; /* Centra los títulos */
+}
+
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+p {
+    margin: 8px 0;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+.nav-button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 10px 5px;
+    background-color: #5cb397;;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.nav-button:hover {
+    background-color:  #5cb397;;
+}
+
+.continue-button {
+    display: block;
+    width: 10%; /* Reduce el ancho al 80% */
+    padding: 8px; /* Reduce el padding */
+    background-color: #5cb397;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Reduce el tamaño de la fuente */
+    cursor: pointer;
+    margin: 10px auto; /* Centra el botón horizontalmente y reduce el margen superior */
+}
+
+
+
+/* Product Section */
+.product-container {
+    text-align: center;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.product-details {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.product-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.product-details p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+

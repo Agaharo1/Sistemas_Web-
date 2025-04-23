@@ -16,7 +16,7 @@ envioRouter.post('/formPuntoRecogida/:id',
         autenticado('/usuarios/login'),
         body('nombre').notEmpty().withMessage('El nombre completo es obligatorio'),
         body('codigo_postal')
-            .isPostalCode('ES') // Valida el código postal para España (puedes cambiarlo según el país)
+            .isPostalCode('ES') 
             .withMessage('El código postal no es válido'),
         body('telefono')
             .matches(/^[0-9]{9}$/)
@@ -34,7 +34,7 @@ envioRouter.post('/formEnvioProducto/:id',
         autenticado('/usuarios/login'),
         body('nombre').notEmpty().withMessage('El nombre completo es obligatorio'),
         body('codigo_postal')
-            .isPostalCode('ES') // Valida el código postal para España (puedes cambiarlo según el país)
+            .isPostalCode('ES') 
             .withMessage('El código postal no es válido'),
         body('telefono')
             .matches(/^[0-9]{9}$/)

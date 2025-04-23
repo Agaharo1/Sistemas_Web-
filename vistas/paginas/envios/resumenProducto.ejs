@@ -6,7 +6,7 @@
       <a class="nav-button envio-button" href="/envios/formTarjeta/<%= producto.id %>">Añadir tarjeta de crédito</a>
     </div>
   
-    <div class="address-container">
+    <div class="pay-summary">
       <h3>Direcciones Guardadas</h3>
       <% if (direcciones && direcciones.length > 0) { %>
         <select id="direccion-guardada" name="direccion_guardada" onchange="actualizarDatosDireccion()">
@@ -28,10 +28,9 @@
       <% } else { %>
         <p>No tienes direcciones guardadas.</p>
       <% } %>
-      <p>El precio de envío se calculará automáticamente según la dirección seleccionada.</p>
-      </div>
+      
   
-    <div class="pay-summary">
+   
       <h3>Tarjetas Guardadas</h3>
       <% if (tarjetas && tarjetas.length > 0) { %>
         <select id="tarjeta-guardada" name="tarjeta_guardada" onchange="actualizarCamposOcultos()">
@@ -44,14 +43,16 @@
       <% } else { %>
         <p>No tienes tarjetas guardadas.</p>
       <% } %>
-    </div>
+    
   
-    <div class="total-summary">
+    
       <h3>Resumen del Pedido</h3>
       <p><strong>Precio del Producto:</strong> <span id="product-price"><%= producto.precio %></span> €</p>
       <p><strong>Costo de Entrega:</strong> <span id="delivery-cost">0.00</span> €</p>
       <p><strong>Total:</strong> <span id="total-price"><%= producto.precio %></span> €</p>
-    </div>
+    
+
+  </div>
   
 
     <form action="/envios/confirmacionCompra/<%= producto.id %>" method="POST" id="resumen-form">
