@@ -1,0 +1,56 @@
+
+.confirmation-section {
+    background-color: #f9f9f9;
+    padding: 20px; 
+    border-radius: 8px; 
+    max-width: 800px; 
+    margin: 20px auto; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    font-family: Arial, sans-serif; 
+}
+
+
+.confirmation-section h1 {
+    text-align: center;
+    color: #333; 
+    margin-bottom: 20px;
+}
+
+
+.confirmation-details, .product-details {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 5px;
+}
+
+
+.confirmation-details h2, .product-details h2 {
+    color: #555; 
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+
+.confirmation-details p strong, .product-details p strong {
+    color: #333;
+}
+
+
+.nav-button {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #65c5c0; 
+    color: white; 
+    text-decoration: none;
+    border-radius: 5px; 
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.nav-button:hover {
+    background-color: #58aca7; 
+    text-decoration: none; 
+}

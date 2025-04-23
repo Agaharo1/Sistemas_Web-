@@ -29,13 +29,20 @@ export async function confirmacionCompra(req, res) {
 
   await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, nombre, usuario_id, id_targeta);
 
-  res.render('paginas/envios/confirmacionCompra', {
-      direccionSeleccionada,
-      tarjetaSeleccionada: JSON.parse(tarjetaSeleccionada),
-      costoEntrega,
-      total,
-      producto,
-  });
+  
+
+  return res.render("pagina", {
+    contenido: "paginas/envios/confirmacionCompra",
+    session: req.session,
+    direccionSeleccionada,
+    tarjetaSeleccionada: JSON.parse(tarjetaSeleccionada),
+    costoEntrega,
+    total,
+    producto,
+    helpers: {
+        error: (errores, campo) => errores[campo]?.msg || "",
+    },
+});
 }
 
 export function mostrarPuntoRecogida(req, res) {
