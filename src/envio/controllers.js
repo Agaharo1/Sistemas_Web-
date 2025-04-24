@@ -5,11 +5,35 @@ import { Imagen } from "../imagenes/Imagen.js";
 import { DirEnvio } from "./direccionEnt.js";
 import { Tarjeta } from "./tarjeta.js";
 import { compra } from "./compra.js";
-import { body, validationResult, matchedData } from 'express-validator';
+import { body, validationResult, matchedData, ExpressValidator } from 'express-validator';
 
 
+export function mostarHistorial(req, res) {
+  console.log("mostarHistorial");
+  const usuario_id = req.session.user_id;
 
 
+  const historial = compra.getComprasByUsuarioId(usuario_id);
+
+ 
+  const nombresProductos = historial.map(compra => {
+    return Producto.getProductNameById(compra.producto_id);
+  });
+
+  console.log("Historial de compras:", historial);
+  console.log("Nombres de productos:", nombresProductos);
+
+
+  return res.render("pagina", {
+    contenido: "paginas/envios/resumenCompras",
+    historial, 
+    nombresProductos, 
+    session: req.session,
+    helpers: {
+      error: (errores, campo) => errores[campo]?.msg || "",
+    },
+  });
+}
 export async function mostrarTicket(req, res) {
 
   const { id } = req.params;
@@ -50,13 +74,13 @@ export async function confirmacionCompra(req, res) {
     return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
   }
   const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
+  const nombre = Tarjeta.getNombreById(usuario_id);
+
   const produ = producto;
   const dni = DirEnvio.getDniByUsuarioId(usuario_id);
   const telefono = DirEnvio.getTelefonoByUsuarioId(usuario_id);
   const direccionEntrega = direccionSeleccionada || "Dirección no especificada";
-  const nombre = Tarjeta.getNombreById(usuario_id);
-
-  Producto.venderProducto(id);
+  Producto.venderProducto(id); // Para marcar el producto como vendido en la base de datos
   const compraId = await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, nombre, usuario_id, id_targeta);
   console.log("Compra id = ", compraId)
   return res.redirect(`/envios/confirmacionCompra/${compraId}`);

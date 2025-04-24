@@ -2,6 +2,7 @@ export class compra {
     static #insertStmt = null;
     static #getByIdStmt = null;
     static #getByUserIdStmt = null;
+    static #getProductoIdsByUserIdStmt = null;
     #id;
     #usuario_id ;
     
@@ -37,6 +38,13 @@ export class compra {
         this.#getByUserIdStmt = db.prepare(`
             SELECT * FROM compra WHERE usuario_id = @usuario_id
         `);
+        this.#getProductoIdsByUserIdStmt = db.prepare(`
+            SELECT producto_id FROM compra WHERE usuario_id = @usuario_id
+        `);
+    }
+
+    static getIdProductoByUsuarioId(usuario_id) {
+     return this.#getProductoIdsByUserIdStmt.all({ usuario_id });
     }
     static getCompraById(id) {
         const compra = this.#getByIdStmt.get({ id });

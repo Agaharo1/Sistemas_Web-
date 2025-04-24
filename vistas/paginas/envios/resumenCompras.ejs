@@ -1,0 +1,16 @@
+<div class="resumen-compras-container">
+    <h1>Resumen de Compras</h1>
+    <% if (historial && historial.length > 0) { %>
+      <ul class="resumen-compras-list">
+        <% historial.forEach((compra, index) => { %> 
+          <li class="resumen-compra-item">
+            <p><strong>Producto:</strong> <%= nombresProductos[index].nombre  %></p>
+            <p><strong>Precio:</strong> <%= compra.precio %> €</p>
+            <a href="/envios/confirmacionCompra/<%= compra.id %>" class="button-link">Ver Detalles</a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>No tienes compras registradas.</p>
+    <% } %>
+</div>

@@ -58,9 +58,3 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('tarjeta-guardada').addEventListener('change', actualizarCamposOcultos);
 });
 
-function comprobar() {
-  var ok = window.confirm("Vas a confirmar la compra del producto. ¿Estás seguro?");
-  if (ok) {
-      document.getElementById('resumen-form').submit();
-  }
-}

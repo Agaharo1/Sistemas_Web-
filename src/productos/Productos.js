@@ -11,6 +11,7 @@ export class Producto {
   static #deleteStmt = null;
   static #getByIdStmt = null;
   static #venderStmt = null;
+  static #getNombreByIdStmt = null;
   
 
   nombre;
@@ -59,9 +60,15 @@ export class Producto {
     this.#venderStmt = db.prepare(
       "UPDATE productos SET vendido = 1 WHERE id = @id"
     );
+    this.#getNombreByIdStmt = db.prepare(`
+      SELECT nombre FROM productos WHERE id = @id
+  `);
      
 }
-
+static getProductNameById(id) {
+  return this.#getNombreByIdStmt.get({ id });
+}
+  
   static venderProducto(id) {
     const result = Producto.#venderStmt.run({ id });
     if (result.changes === 0) throw new ProductoNoEncontrado(id);

@@ -43,18 +43,29 @@
 }
 
 
-
+.sold-product {
+    background-color: #ffcccc; 
+    color: #cc0000; 
+    padding: 5px; 
+    border: 1px solid #cc0000; 
+    border-radius: 4px; 
+    text-align: center;
+    font-size: 12px; 
+    font-weight: bold;
+    margin-top: 10px; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+}
 
 
 #mercado h2 {
-    text-align: center; /* Centra el texto horizontalmente */
-    margin: 20px 0; /* Opcional: agrega espacio arriba y abajo */
+    text-align: center; 
+    margin: 20px 0; 
 }
 
-/*Titulos centrados*/
+
 .titulo-centrado {
-    text-align: center; /* Centra el texto horizontalmente */
-    margin: 20px 0; /* Opcional: agrega espacio arriba y abajo */
+    text-align: center; 
+    margin: 20px 0; 
 }
 
 
