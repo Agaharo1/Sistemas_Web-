@@ -10,6 +10,7 @@ export class Producto {
   static #updateStmt = null;
   static #deleteStmt = null;
   static #getByIdStmt = null;
+  static #venderStmt = null;
   
 
   nombre;
@@ -17,13 +18,15 @@ export class Producto {
   precio;
   id;
   id_u;
+  vendido;
 
-  constructor(nombre, descripcion, precio, id_u,id = null) {
+  constructor(nombre, descripcion, precio, id_u,id = null,vendido = 0) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
     this.id = id;
     this.id_u = id_u;
+    this.vendido = vendido;
   }
 
   static initStatements(db) {
@@ -38,7 +41,7 @@ export class Producto {
       "INSERT INTO productos(nombre,id_user, descripcion, precio) VALUES (@nombre,@id_u, @descripcion, @precio)"
     );
     this.#updateStmt = db.prepare(
-      "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio WHERE id = @id"
+      "UPDATE productos SET nombre = @nombre, descripcion = @descripcion, precio = @precio, vendido = @vendido WHERE id = @id"
     );
     this.#getAllStmt = db.prepare(`SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
     FROM productos p 
@@ -47,14 +50,23 @@ export class Producto {
     `);
     this.#deleteStmt = db.prepare("DELETE FROM productos WHERE id = @id");
     this.#getByIdStmt = db.prepare(
-    `SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+    `SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,p.vendido as vendido,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
     FROM productos p 
     JOIN usuarios u ON p.id_user = u.id 
     JOIN Imagenes i ON i.id_producto = p.id 
     WHERE p.id = @id`
     );
+    this.#venderStmt = db.prepare(
+      "UPDATE productos SET vendido = 1 WHERE id = @id"
+    );
      
 }
+
+  static venderProducto(id) {
+    const result = Producto.#venderStmt.run({ id });
+    if (result.changes === 0) throw new ProductoNoEncontrado(id);
+    return result;
+  }
 
   static editarProducto(nombre, descripcion, precio, id) {
     
@@ -102,7 +114,8 @@ export class Producto {
     const descripcion = producto.descripcion;
     const precio = producto.precio;
     const id = producto.id;
-    const datos = { nombre, descripcion, precio,id };
+    const vendido = producto.vendido;
+    const datos = { nombre, descripcion, precio,id,vendido: vendido };
 
     const result = this.#updateStmt.run(datos);
     if (result.changes === 0) throw new ProductoNoEncontrado(username);

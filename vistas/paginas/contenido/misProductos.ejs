@@ -12,7 +12,7 @@
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>
                     <p>
-                        Producto: <a href="/productos/producto/<%= producto.id %>"><%= producto.nombre %></a> -
+                        Producto: <%= producto.nombre %></a> -
                         Precio: <%= producto.precio %>
                     </p>
                     <p>
@@ -24,8 +24,8 @@
                         <% } %>
                     </p>
                     <p>
-                        <a href="/productos/editarProducto/<%= producto.id %>">Editar</a> |
-                        <a href="/productos/eliminarProducto/<%= producto.id %>">Eliminar</a>
+                        <a href="/productos/editarProducto/<%= producto.id %>" class = "button-link">Editar</a> |
+                        <a href="/productos/eliminarProducto/<%= producto.id %>" class = "button-link">Eliminar</a>
                     </p>
                 </div>
             <% }) %>

@@ -44,15 +44,19 @@ export async function confirmacionCompra(req, res) {
     return res.redirect(`/envios/resumenProducto/${id}`);
   }
   const usuario_id = req.session.user_id;
-  const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
   const producto = Producto.getProductById(id);
+  if(producto.vendido) {
+    console.log("El producto ya ha sido vendido");
+    return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
+  }
+  const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
   const produ = producto;
   const dni = DirEnvio.getDniByUsuarioId(usuario_id);
   const telefono = DirEnvio.getTelefonoByUsuarioId(usuario_id);
   const direccionEntrega = direccionSeleccionada || "Dirección no especificada";
   const nombre = Tarjeta.getNombreById(usuario_id);
 
-
+  Producto.venderProducto(id);
   const compraId = await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, nombre, usuario_id, id_targeta);
   console.log("Compra id = ", compraId)
   return res.redirect(`/envios/confirmacionCompra/${compraId}`);

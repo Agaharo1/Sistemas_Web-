@@ -42,15 +42,9 @@
 	color: #333;
 }
 
-.producto a {
-	text-decoration: none;
-	color: #007bff;
-	font-weight: bold;
-}
 
-.producto a:hover {
-	text-decoration: underline;
-}
+
+
 
 #mercado h2 {
     text-align: center; /* Centra el texto horizontalmente */

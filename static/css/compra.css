@@ -1,15 +1,17 @@
 
-.user-info button {
-	background-color: #65c5c0;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	padding: 5px;
-	margin-left: 5px;
-	margin-top: 5px;
-	width: 15%;
-	flex-shrink: 0;
+.button-link {
+    background-color: #5cb397; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 5px; /* Espaciado interno */
+    margin-left: 5px; /* Espaciado a la izquierda */
+    margin-top: 5px; /* Espaciado superior */
+    width: 15%; /* Ancho del botón */
+    flex-shrink: 0; /* Evita que el botón se reduzca */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Quita el subrayado del enlace */
 }
 
 .user-info button:hover {
