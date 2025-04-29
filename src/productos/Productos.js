@@ -12,6 +12,7 @@ export class Producto {
   static #getByIdStmt = null;
   static #venderStmt = null;
   static #getNombreByIdStmt = null;
+  static #getSoldProductsByUserIdStmt = null;
   
 
   nombre;
@@ -33,11 +34,20 @@ export class Producto {
   static initStatements(db) {
     if (this.#getByUserIdStmt !== null) return;
     this.#getByUserIdStmt = db.prepare(
-      `SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+      `SELECT p.vendido, p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
       FROM productos p 
       JOIN usuarios u ON p.id_user = u.id 
       JOIN Imagenes i ON i.id_producto = p.id WHERE id_user = @id_u`
     );
+
+    this.#getSoldProductsByUserIdStmt = db.prepare(
+      `SELECT  p.vendido, p.id, p.nombre, p.descripcion, p.precio, p.id_user, u.username AS username, u.nombre AS usuario_nombre, i.nombre AS imagen 
+      FROM productos p 
+      JOIN usuarios u ON p.id_user = u.id 
+      JOIN Imagenes i ON i.id_producto = p.id 
+      WHERE p.id_user = @id_u AND p.vendido = 1`
+    );
+    
     this.#insertStmt = db.prepare(
       "INSERT INTO productos(nombre,id_user, descripcion, precio) VALUES (@nombre,@id_u, @descripcion, @precio)"
     );
@@ -65,6 +75,12 @@ export class Producto {
   `);
      
 }
+
+static getSoldProductByUserId(id_u) {
+ 
+  return  this.#getSoldProductsByUserIdStmt.all({ id_u });
+}
+
 static getProductNameById(id) {
   return this.#getNombreByIdStmt.get({ id });
 }

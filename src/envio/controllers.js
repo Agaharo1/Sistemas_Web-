@@ -8,14 +8,29 @@ import { compra } from "./compra.js";
 import { body, validationResult, matchedData, ExpressValidator } from 'express-validator';
 
 
+
+export function mostrarHisVentas(req, res) {
+ console.log("mostrarHistorialVentas");
+ const usuario_id = req.session.user_id;
+ const productos = Producto.getSoldProductByUserId(usuario_id);
+
+ console.log("Productos vendidos:", productos);
+
+ return res.render("pagina", {
+   contenido: "paginas/envios/resumenVentas",
+   session: req.session,
+   productos,
+   helpers: {
+     error: (errores, campo) => errores[campo]?.msg || "",
+   },
+ });
+}
+
+
 export function mostarHistorial(req, res) {
   console.log("mostarHistorial");
   const usuario_id = req.session.user_id;
-
-
   const historial = compra.getComprasByUsuarioId(usuario_id);
-
- 
   const nombresProductos = historial.map(compra => {
     return Producto.getProductNameById(compra.producto_id);
   });

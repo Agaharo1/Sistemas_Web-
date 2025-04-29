@@ -11,6 +11,7 @@ contenidoRouter.get('/misProductos', (req, res) => {
 
     if (req.session.login) {
         productos = Producto.getProductByUserId(req.session.user_id);
+        console.log(productos);
 
         // Crear el diccionario de productos e imágenes
 

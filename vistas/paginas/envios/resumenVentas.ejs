@@ -1,7 +1,7 @@
 <div id="mercado">
-    <h2 class="titulo-centrado">Mis Productos</h2>
+    <h2 class="titulo-centrado">Mis Ventas</h2>
     <div class="productos-container">
-        <% if (productos.length > 0) { %>
+        <% if (productos && productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <div class="producto">
                     <% if (producto.imagen) { %>
@@ -12,34 +12,30 @@
                         <p>No hay imágenes disponibles para este producto.</p>
                     <% } %>
                     <p>
-                        Producto: <%= producto.nombre %> -
+                        Producto: <%= producto.nombre %></a> -
                         Precio: <%= producto.precio %>
                     </p>
                     <p>
                         Descripción:
                         <% if (!producto.descripcion) { %>
-                            Este producto no tiene descripción.
+                            Este producto no tiene descripción -
                         <% } else { %>
                             <%= producto.descripcion %>
                         <% } %>
                     </p>
+                  
                     <% if (producto.vendido) { %>
-                       
-                            <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
-                            <div class="sold-product">
-                                <p><strong>Producto vendido</strong></p>
-                            </div>
-                       
-                    <% } else { %>
-                        <p>
-                            <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
-                            <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
-                        </p>
+                        <div class="sold-product">
+                            <p><strong>Producto vendido</strong></p>
+                        </div>
                     <% } %>
+                    <p>  
+                        <a href="/productos/eliminarProducto/<%= producto.id %>" class = "button-link">Eliminar</a>
+                    </p>
                 </div>
             <% }) %>
         <% } else { %>
-            <p>No hay productos disponibles.</p>
+            <p>No tienes ventas registradas.</p>
         <% } %>
     </div>
 </div>
