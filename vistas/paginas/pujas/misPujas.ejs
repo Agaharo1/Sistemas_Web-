@@ -1,0 +1,23 @@
+<% function mostrarPujas(pujas) { %>
+    <div class="puja-list">
+        <% if (pujas && pujas.length > 0) { %>
+            <% pujas.forEach(puja => { %>
+                <div class="puja-item-container"> 
+                    <a href="/pujas/puja/<%= puja.productoId %>" class="puja-item">
+                        <div class="puja-info">
+                            <div class="puja-left">
+                                <img src="/imagenes/imagen/<%= puja.productoId %>/<%= puja.imagen %>" alt="Imagen del producto" class="product-image-circle">
+                                <h4><%= puja.producto %></h4>
+                            </div>
+                            <p class="puja-last-bid">Última puja: <%= puja.lastPuja %> €</p>
+                        </div>
+                    </a>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No tienes pujas activas.</p>
+        <% } %>
+    </div>
+<% } %>
+
+<% mostrarPujas(pujas); %>
