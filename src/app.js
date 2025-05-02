@@ -12,6 +12,7 @@ const pinoMiddleware = pinoHttp(config.logger.http(logger));
 import { flashMessages } from './middleware/flash.js';
 import { errorHandler } from './middleware/error.js';
 import chatRouter from './chat/router.js';
+import pujaRouter from './pujas/router.js';
 
 
 export const app = express();
@@ -46,4 +47,5 @@ app.use('/productos', productossRouter);
 app.use('/imagenes', imagenRouter);
 app.use('/envios', envioRouter);
 app.use('/chats', chatRouter);
+app.use('/pujas', pujaRouter);
 app.use(errorHandler)

@@ -6,6 +6,7 @@ import { Chat } from "./chat/Chat.js";
 import { DirEnvio } from "./envio/direccionEnt.js";
 import { Tarjeta } from "./envio/tarjeta.js";
 import { compra } from "./envio/compra.js";
+import { Pujas } from "./pujas/Pujas.js";
 
 
 export function inicializaModelos(db) {
@@ -17,4 +18,5 @@ export function inicializaModelos(db) {
     DirEnvio.initStatements(db);
     Tarjeta.initStatements(db);
     compra.initStatements(db);
+    Pujas.initStatements(db);
 }

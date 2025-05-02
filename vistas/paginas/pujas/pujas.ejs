@@ -1,15 +1,16 @@
-<h2>Mis Pujas</h2>
+<h2>Todas las Pujas</h2>
 
 <% if (!pujas || pujas.length === 0) { %>
-  <p>No has realizado ninguna puja aún.</p>
+  <p>No hay pujas registradas.</p>
 <% } else { %>
   <table>
     <thead>
       <tr>
-        <th>ID Puja</th>
+        <th>ID</th>
         <th>ID Producto</th>
+        <th>ID Usuario</th>
         <th>Valor Máximo</th>
-        <th>Fecha</th>
+        <th>Ganador</th>
         <th>Ver</th>
       </tr>
     </thead>
@@ -18,11 +19,12 @@
         <tr>
           <td><%= puja.id %></td>
           <td><%= puja.id_p %></td>
-          <td><%= puja.lastPuja || puja.valor_max %> €</td>
-          <td><%= puja.fecha || 'N/D' %></td>
+          <td><%= puja.id_u %></td>
+          <td><%= puja.valor_max %> €</td>
+          <td><%= puja.id_ganador ?? 'Pendiente' %></td>
           <td><a href="/puja/<%= puja.id %>">Ver</a></td>
         </tr>
-      <% }); %>
+      <% }) %>
     </tbody>
   </table>
 <% } %>

@@ -1,4 +1,3 @@
-import { db } from '../db.js'; // Asegúrate de tener acceso a tu base de datos
 import { logger } from '../logger.js';
 
 /*
@@ -13,68 +12,161 @@ export class Pujas {
   static #insertPujaStmt = null;
   static #getPujasByUserIdStmt = null;
   static #getPujaByIdStmt = null;
-  static #getLastPujaStmt = null;
-  static #getProductoByIdStmt = null;
+  static #getPujaByIdProductStmt = null;
+  static #insertStmt = null;
+  static #updateStmt = null;
+  static #updateGanadorStmt = null;
+  static #verTodasPujasStmt = null;
+
+  id;
+  id_p;
+  id_u;
+  id_ganador;
+  valor_max;
+
+  constructor (id_p, id_u, id_ganador = null, id, valor_max = null){
+    this.id_p = id_p;
+    this.id_u = id_u;
+    this.id = id;
+    this.id_ganador = id_ganador;
+    this.valor_max = valor_max;
+  }
 
   static initStatements(db) {
     if (this.#getPujasByUserIdStmt !== null) return;
     this.#getPujasByUserIdStmt = db.prepare(
-      "SELECT p.productoId, p.producto, p.imagen, MAX(pa.valor) AS lastPuja " +
+      "SELECT p.id, p.id_p, p.id_u, p.valor_max AS lastPuja " +
       "FROM Pujas p " +
-      "LEFT JOIN PujasActivas pa ON p.productoId = pa.productoId " +
-      "WHERE pa.usuarioId = @usuarioId " +
-      "GROUP BY p.productoId"
+      "JOIN Usuarios u ON p.id_u = u.id " +
+      "WHERE u.id = @usuarioId " +
+      "GROUP BY p.id"
     );
 
-    // Método para obtener la última puja de un producto
-    this.#getLastPujaStmt = db.prepare(
-      "SELECT valor FROM PujasActivas WHERE productoId = @productoId ORDER BY id DESC LIMIT 1"
-    );
+    this.#verTodasPujasStmt = db.prepare(
+      "SELECT * FROM Pujas"
+    )
+
+    this.#insertPujaStmt = db.prepare(
+      "UPDATE Pujas SET valor_max = @valor WHERE Pujas.id = @id"
+    )
+
+    this.#getPujaByIdProductStmt = db.prepare(
+      "SELECT * FROM Pujas p JOIN productos pr ON p.id_p = pr.id WHERE pr.id = @productoId GROUP BY p.id"
+    )
 
     this.#getPujaByIdStmt = db.prepare(
-      "SELECT id, usuario1, usuario2, producto FROM Chats WHERE id = @id_chat"
+      "SELECT * FROM Pujas WHERE id = @id"
     );
+
+    this.#insertStmt = db.prepare(
+      "INSERT INTO Pujas(id_u, id_p, id_ganador, valor_max) VALUES (@usuario, @producto, @ganador, @valor_max)"
+    );
+    this.#updateStmt = db.prepare(
+      "UPDATE Pujas SET id_p = @producto, id_u = @usuario,  id_ganador = @ganador, valor_max = @valor_max WHERE Pujas.id = @puja"
+    );
+    this.#updateGanadorStmt = db.prepare(
+      "UPDATE Pujas SET id_ganador = @ganador WHERE Pujas.id = @id"
+    )
+  }
+
+  static verTodasPujas (){
+    this.#verTodasPujasStmt.all();
+  }
+
+  static insertPujaStmt(id, valor, ganador){
+
+    const puja = this.#getPujaByIdStmt(id);
+    if (puja && parseFloat(valor) > puja.valor_max) {
+      // Actualizar el valor de la puja en la base de datos
+      this.#insertPujaStmt.run({ valor, id }); // Actualizamos la puja
+      this.#updateGanadorStmt.run({ id, ganador }); // Actualizamos el ganador
+      return this.getPujaByIdStmt(id); // Retornamos la puja actualizada
+    } else {
+      return null;
+    }
+  }
+
+  static getPujaByIdStmt(id){
+    const pujas = this.#getPujaByIdStmt({ id });
+
+    if (pujas == undefined) return null;
+
+    const pujaexistente = pujas.find(
+      (puja) => (puja.id == id)
+    )
+
+    if (pujaexistente){
+      logger.debug("Puja existente:", pujaexistente);
+      return pujaexistente;
+    }
+    else{
+      return null;
+    }
   }
 
   static getPujasByUserId(usuarioId) {
     const pujas = this.#getPujasByUserIdStmt.all({ usuarioId });
-    return pujas || [];
+
+    if (pujas == undefined) return null;
+
+    const pujaexistente = pujas.find(
+      (puja) => (puja.id_u == usuarioId)
+    )
+
+    if (pujaexistente){
+      logger.debug("Puja existente:", pujaexistente);
+      return pujaexistente;
+    }
+    else{
+      return null;
+    }
   }
 
-  static getProductoById(productoId) {
-     return this.#getProductoByIdStmt.get({ productoId });
-  }
+  static getPujaByIdProductStmt(productoId){
+    const pujas = this.#getPujaByIdProductStmt.all({ productoId });
 
-  static getLastPuja(productoId) {
-    const puja = this.#getLastPujaStmt.get({ productoId });
-    return puja ? puja.valor : 0; // Retorna el valor de la última puja
-  }
-  
-  // Enviar una nueva puja
-  static enviarPuja(chatId, cantidad, usuarioId) {
-    const productoId = this.getProductoIdByChatId(chatId); // Lógica para obtener el producto asociado a este chat
+    if (pujas == undefined) return null;
 
-    // Verifica que la puja no esté vacía
-    if (cantidad <= 0) {
-      logger.error("Intento de puja con cantidad inválida:", cantidad);
-      return false;
+    const pujaexistente = pujas.find(
+      (puja) => (puja.id_p == productoId)
+    )
+
+    if(pujaexistente){
+      logger.debug("Puja existente:", pujaexistente);
+      return pujaexistente;
+    }
+    else{
+      return null;
+    }
+  }
+  #insert(puja) 
+  {
+      const producto = puja.id_p;
+      const usuario = puja.id_u;
+      const ganador = puja.id_ganador;
+      const valor_max = puja.valor_max;
+      const { lastInsertRowid } = Pujas.#insertStmt.run({ producto:producto, id_u:usuario, id_ganador:ganador, valor_max:valor_max });
+      puja.id = lastInsertRowid;
+      return puja;
     }
 
-    const { lastInsertRowid } = this.#insertPujaStmt.run({ chatId, cantidad, usuarioId, productoId });
-    logger.debug("Puja registrada con éxito:", lastInsertRowid);
-    return { id: lastInsertRowid, chatId, cantidad, usuarioId, productoId };
-  }
+  #update(puja) {
+      const producto = puja.id_p;
+      const usuario = puja.id_u;
+      const ganador = puja.id_ganador;
+      const valor_max = puja.valor_max;
+      puja.#updateStmt.run({ producto, usuario, ganador, valor_max });
+      return chat;
+    }
 
-  // Obtener todas las pujas hechas por un usuario
-  static getPujasByUserId(usuarioId) {
-    const pujas = this.#getPujasByUserIdStmt.all({ usuarioId });
-    return pujas;
-  }
-
-  // Método adicional para obtener el ID del producto de un chat (supongamos que tienes una lógica para esto)
-  static getProductoIdByChatId(chatId) {
-    // Aquí puede ir la lógica para obtener el producto por el `chatId`.
-    // Supongamos que el `chatId` contiene información que nos permite identificar el `productoId` asociado.
-    return 123; // Producto ficticio para el ejemplo
-  }
+  static crearPuja(id_u, id_p,id) {
+      const nuevaPuja = new Pujas( id_p, id_u, null, id, null);
+      console.log("Puja creada:", nuevaPuja);
+      return nuevaPuja.persist();
+    }
+  
+  persist() {
+      if (this.id === null) return this.#insert(this);
+      return this.#update(this);
+    }
 }

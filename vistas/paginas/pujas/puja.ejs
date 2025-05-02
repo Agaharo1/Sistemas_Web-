@@ -1,0 +1,23 @@
+<h2>Detalle de Puja</h2>
+
+<% if (!puja) { %>
+  <p>Puja no encontrada.</p>
+<% } else { %>
+  <ul>
+    <li><strong>ID:</strong> <%= puja.id %></li>
+    <li><strong>Producto ID:</strong> <%= puja.id_p %></li>
+    <li><strong>Usuario que Pujó:</strong> <%= puja.id_u %></li>
+    <li><strong>Valor Actual:</strong> <%= puja.valor_max %> €</li>
+    <li><strong>Ganador Actual:</strong> <%= puja.id_ganador ?? 'No definido' %></li>
+  </ul>
+
+  <hr>
+  <h3>Enviar nueva puja</h3>
+  <form action="/enviarPuja" method="POST">
+    <input type="hidden" name="id" value="<%= puja.id %>">
+    <input type="hidden" name="ganador" value="<%= session.user_id %>">
+    <label for="valor">Cantidad (€):</label>
+    <input type="number" step="0.01" name="valor" required>
+    <button type="submit">Pujar</button>
+  </form>
+<% } %>
