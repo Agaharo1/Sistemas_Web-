@@ -1,55 +1,55 @@
 .footer {
-    background-color: #fff; /* Fondo oscuro */
-    color: #333; /* Texto blanco */
-    padding: 20px 0; /* Espaciado interno */
-    text-align: center; /* Centra el contenido */
-    font-size: 14px; /* Tamaño de fuente */
+    background-color: #fff; 
+    color: #333; 
+    padding: 20px 0; 
+    text-align: center;
+    font-size: 14px; 
 }
 
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
-    display: flex; /* Activa Flexbox */
-    flex-direction: column; /* Coloca los elementos en columna */
-    align-items: center; /* Centra los elementos horizontalmente */
-    gap: 15px; /* Espaciado entre los elementos */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
 }
 
 .footer-nav {
-    display: flex; /* Activa Flexbox para los enlaces */
-    gap: 10px; /* Espaciado entre los enlaces */
-    flex-wrap: wrap; /* Permite que los enlaces se ajusten en varias líneas si es necesario */
-    justify-content: center; /* Centra los enlaces */
+    display: flex;
+    gap: 10px; 
+    flex-wrap: wrap; 
+    justify-content: center; 
 }
 
 .footer-nav a {
-    color: #1e90ff; /* Color azul para enlaces */
-    text-decoration: none; /* Sin subrayado */
+    color: #1e90ff; 
+    text-decoration: none; 
     font-size: 14px;
 }
 
 .footer-nav a:hover {
-    text-decoration: underline; /* Subrayado al pasar el mouse */
+    text-decoration: underline; 
 }
 
 .footer p {
-    margin: 0; /* Elimina márgenes adicionales */
+    margin: 0; 
     text-align: center;
 }
 
 .footer-social {
-    display: flex; /* Activa Flexbox para las redes sociales */
-    gap: 10px; /* Espaciado entre los enlaces */
-    justify-content: center; /* Centra los enlaces */
+    display: flex; 
+    gap: 10px;
+    justify-content: center; 
 }
 
 .footer-social a {
-    color: #fff; /* Color blanco para los iconos */
+    color: #fff; 
     text-decoration: none;
-    font-size: 16px; /* Tamaño de fuente para los iconos */
+    font-size: 16px; 
 }
 
 .footer-social a:hover {
-    color: #1e90ff; /* Cambia el color al pasar el mouse */
+    color: #1e90ff; 
 }

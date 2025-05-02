@@ -1,0 +1,43 @@
+.terminos-condiciones-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.terminos-condiciones-container h1, 
+.terminos-condiciones-container h2 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.terminos-condiciones-container p {
+    margin-bottom: 15px;
+    color: #555;
+    text-align: justify;
+}
+
+.terminos-condiciones-container ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.terminos-condiciones-container ul li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.terminos-condiciones-container a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+.terminos-condiciones-container a:hover {
+    text-decoration: underline;
+}
