@@ -30,7 +30,7 @@ export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);
 
-  const puja = Pujas.getPujaByIdProductStmt(id);
+  let puja = Pujas.getPujaByIdProductStmt(id);
 
   // Si no hay puja, crea una nueva
   if (!puja) {

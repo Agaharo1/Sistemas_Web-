@@ -13,7 +13,7 @@
 
   <hr>
   <h3>Enviar nueva puja</h3>
-  <form action="/enviarPuja" method="POST">
+  <form action="/pujas/enviarPuja" method="POST">
     <input type="hidden" name="id" value="<%= puja.id %>">
     <input type="hidden" name="ganador" value="<%= session.user_id %>">
     <label for="valor">Cantidad (€):</label>

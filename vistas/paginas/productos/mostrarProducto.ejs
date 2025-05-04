@@ -19,15 +19,7 @@
                 </div>
             <% } else if (producto.id_user !== session.user_id) { %> 
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
-                <% if (puja) { %>
-                    <a class="button-link" href="/pujas/puja/<%= puja.id %>">Pujar</a>
-                  <% } else { %>
-                    <form action="/pujas/enviarPuja" method="POST">
-                      <input type="hidden" name="producto_id" value="<%= producto.id %>">
-                      <input type="number" name="valor" required placeholder="Ingresa tu puja">
-                      <button type="submit">Pujar</button>
-                    </form>
-                  <% } %>
+                <a class="button-link" href="/pujas/iniciarPuja/<%= producto.id %>">Pujar</a>
             <% } else { %> 
                 <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
                 <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
