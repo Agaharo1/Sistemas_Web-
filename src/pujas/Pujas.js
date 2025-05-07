@@ -139,7 +139,7 @@ export class Pujas {
     return puja;
   }
   static crearPuja(id_u, id_p) {
-    const nuevaPuja = new Pujas(id_p, id_u); // sin id
+    const nuevaPuja = new Pujas(id_p, id_u);
     console.log("Puja creada:", nuevaPuja);
     return nuevaPuja.persist();
   }

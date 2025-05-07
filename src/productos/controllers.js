@@ -29,21 +29,11 @@ export function pagoProducto(req, res) {
 export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);
-
-  let puja = Pujas.getPujaByIdProductStmt(id);
-
-  // Si no hay puja, crea una nueva
-  if (!puja) {
-    // Suponiendo que tienes un método para crear la puja con el id del producto y el usuario
-    const userId = req.session.user_id; // Obtener el id del usuario desde la sesión
-    puja = Pujas.crearPuja(userId, id); // La puja inicializa con un valor de 0
-  }
   
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
     producto,
-    puja,
   };
   res.render("pagina", params);
 }

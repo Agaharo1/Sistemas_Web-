@@ -13,7 +13,7 @@ export function nuevaPuja(req, res) {
   }
 
   // Creamos una nueva puja (sin pasar id)
-  const nuevaPuja = Pujas.crearPuja(id_p, id_u);  // 🔧 corregido: no pasar id
+  const nuevaPuja = Pujas.crearPuja(id_p, id_u);
 
   if (nuevaPuja) {
     res.redirect(`/pujas/puja/${nuevaPuja.id}`);
