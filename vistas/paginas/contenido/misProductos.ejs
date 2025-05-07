@@ -25,16 +25,20 @@
                     </p>
                     <% if (producto.vendido) { %>
                        
-                            <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
+                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                                <button type="submit">Eliminar</button>
+                            </form>
                             <div class="sold-product">
                                 <p><strong>Producto vendido</strong></p>
                             </div>
                        
                     <% } else { %>
-                        <p>
-                            <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
-                            <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
-                        </p>
+                        <div>
+                            <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
+                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </div>
                     <% } %>
                 </div>
             <% }) %>

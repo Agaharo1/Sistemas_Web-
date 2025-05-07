@@ -68,4 +68,23 @@
     margin: 20px 0; 
 }
 
+button {
+	background-color: #5cb397; /* Color de fondo */
+	color: white; /* Color del texto */
+	border: none; /* Sin bordes */
+	border-radius: 4px; /* Bordes redondeados */
+	cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+	padding: 10px 15px; /* Espaciado interno */
+	margin-left: 5px; /* Espaciado a la izquierda */
+	margin-top: 5px; /* Espaciado superior */
+	width: auto; /* Ajusta el ancho automáticamente al contenido */
+	flex-shrink: 0; /* Evita que el botón se reduzca */
+	text-align: center; /* Centra el texto dentro del botón */
+	text-decoration: none; /* Quita el subrayado del enlace */
+	font-family: 'Times New Roman', TimesNewRomanPSMT, serif;
+}
+
+.formEliminar{
+	align-items: center; /* Centra el contenido verticalmente */
+}
 

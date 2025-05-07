@@ -14,7 +14,7 @@ productossRouter.post('/subir',multerFactory.single('imagen'),doSubirProducto);
 
 productossRouter.get('/productoExitoso',viewProductoExitoso);
 
-productossRouter.get('/eliminarProducto/:id',eliminarProducto);
+productossRouter.post('/eliminarProducto',eliminarProducto);
 
 productossRouter.get('/editarProducto/:id',editarProducto);
 
