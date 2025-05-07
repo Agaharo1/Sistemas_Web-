@@ -19,7 +19,6 @@
                 </div>
             <% } else if (producto.id_user !== session.user_id) { %> 
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
-                <a class="button-link" href="/pujas/iniciarPuja/<%= producto.id %>">Pujar</a>
             <% } else { %> 
                 <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
                 <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
