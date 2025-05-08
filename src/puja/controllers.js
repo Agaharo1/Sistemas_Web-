@@ -15,7 +15,7 @@ export function nuevaPuja(req, res){
     console.log(pujaExistente);
     if (pujaExistente !== null && pujaExistente.length > 0) {
         //Si existe, redirigimos a la puja existente
-        return res.redirect(`/pujas/puja/${pujaExistente.id}`);
+        return res.redirect(`/pujas/puja/${pujaExistente[0].id}`);
     }
     const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, null);
 
