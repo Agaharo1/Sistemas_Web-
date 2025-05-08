@@ -48,6 +48,7 @@ nav .menu a.active{
 	  }
 	nav .menu{
 		flex-direction: row; /* Cambia la dirección a fila */
+		display: flex; /* Muestra el menú */
 	}
 	nav .menu li{
 		margin-right: 20px; /* Espacio entre los elementos del menú */
@@ -57,4 +58,8 @@ nav .menu a.active{
 		color: black;
 		font-weight: bold;
 	}
+
+	nav .menu.oculto {
+        display: flex; 
+    }
 }
