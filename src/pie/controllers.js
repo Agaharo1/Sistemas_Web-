@@ -1,5 +1,5 @@
 import session from "express-session";
-
+import nodemailer from 'nodemailer';
 
 export function sobreNosotros(req, res) {
 
@@ -28,4 +28,42 @@ export function politicaPrivacidad(req, res) {
         contenido: "paginas/pie/politicaPrivacidad",
         session: req.session}
     );
+}
+
+export async function mandarCorreo(req, res) {
+    const { nombre, email, mensaje } = req.body;
+
+    try {
+      
+        const transporter = nodemailer.createTransport({
+            host: 'mail.swarm.test', 
+            port: 25,              
+            secure: false         
+        });
+
+       
+        const mailOptions = {
+            from: `"${nombre}" <${email}>`, 
+            to: 'usuario@containers.fdi.ucm.es', 
+            subject: 'Nuevo mensaje de contacto',
+            text: `
+                Nombre: ${nombre}
+                Email: ${email}
+                Mensaje:
+                ${mensaje}
+            `
+        };
+
+        
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Correo enviado: ' + info.response);
+
+        
+        res.redirect('/?success=true');
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+
+        
+        res.redirect('/?success=false');
+    }
 }

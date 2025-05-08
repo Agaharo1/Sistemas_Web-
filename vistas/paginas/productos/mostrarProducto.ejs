@@ -21,7 +21,9 @@
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
             <% } else { %> 
                 <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
-                <a href="/productos/eliminarProducto/<%= producto.id %>" class="button-link">Eliminar</a>
+                <form action="/productos/eliminarProducto" method="POST">
+                    <button type="submit" class="button-link">Eliminar</button>
+                </form>
             <% } %>
         </div>
         <% if (producto.id_user !== session.user_id) { %>

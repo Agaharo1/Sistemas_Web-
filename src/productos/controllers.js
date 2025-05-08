@@ -6,7 +6,7 @@ import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
 import {Pujas} from "../pujas/Pujas.js";
 import { ProductoNoEncontrado } from "./Productos.js";
-
+import { logger } from "../logger.js";
 import fs from 'fs';
 import path from 'path';
 
@@ -59,7 +59,7 @@ export function viewProductoExitoso(req, res) {
 export function doSubirProducto(req, res) {
   const { nombre, descripcion, precio ,user_id} = req.body;
   try {
-    console.log("Subiendo producto:", nombre, descripcion, precio,user_id);
+    logger.debug("Subiendo producto:", nombre, descripcion, precio,user_id);
     const result = Producto.crearProducto(nombre, descripcion, precio,user_id,req.file.filename,config.uploads);
     const productoId = result.id;
     
@@ -76,7 +76,6 @@ export function eliminarProducto(req, res) {
     return;
   }
   try {
-    console.log("Eliminando producto:", id);
     Producto.eliminarProducto(id);
     res.redirect("/contenido/misProductos");
   } catch (e) {
@@ -101,7 +100,7 @@ export function editarProducto(req, res) {
 export function doEditarProducto(req, res) {
   const { id, nombre, descripcion, precio } = req.body;
   try {
-    console.log("Editando producto:", id, nombre, descripcion, precio);
+    logger.info("Editando producto:", id, nombre, descripcion, precio);
     Producto.editarProducto(nombre, descripcion, precio, id);
     res.redirect("/contenido/misProductos");
   } catch (e) {

@@ -234,7 +234,7 @@ export function envioProducto(req, res) {
 
 
   const puntoRecogida = req.session.puntoRecogidaSeleccionado;
-  console.log("Punto de recogida seleccionado:", puntoRecogida);
+  logger.debug("Punto de recogida seleccionado:", puntoRecogida);
 
   const direcciones = DirEnvio.getDireccionesByUsuarioId(req.session.user_id);
   const tarjetas = Tarjeta.getTarjetasByUsuarioId(req.session.user_id);

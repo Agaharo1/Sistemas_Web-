@@ -5,13 +5,15 @@
     border: none; /* Sin bordes */
     border-radius: 4px; /* Bordes redondeados */
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    padding: 5px; /* Espaciado interno */
+    padding: 2%; /* Espaciado interno */
     margin-left: 5px; /* Espaciado a la izquierda */
     margin-top: 5px; /* Espaciado superior */
-    width: 15%; /* Ancho del botón */
+    width: 25%; /* Ancho del botón */
     flex-shrink: 0; /* Evita que el botón se reduzca */
     text-align: center; /* Centra el texto dentro del botón */
     text-decoration: none; /* Quita el subrayado del enlace */
+    display: inline-block; /* Permite que el ancho tenga efecto */
+    height: 10%;;
 }
 
 .user-info button:hover {

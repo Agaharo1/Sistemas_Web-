@@ -55,7 +55,7 @@ aside {
 }
 
 main {
-	padding: 0 2%;
+	padding: 0;
 	float: left;
 	min-height: 600px;
 	width: 100%;
