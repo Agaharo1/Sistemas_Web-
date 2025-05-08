@@ -67,15 +67,30 @@ export function viewPuja(req, res) {
 }
 
 export function viewMisPujas(req, res) {
-  const {id_u} = req.params;
-  const pujas = Puja.getPujaByUser(id_u);
-  console.log(pujas);
- 
+  const id_u = req.session.user_id;
+  let pujas = Puja.getPujaByUser(id_u) || [];
+
+  // Enriquecer cada puja con producto, imagen y nombre
+  pujas = pujas.map(puja => {
+    const producto = Producto.getProductById(puja.producto);
+    const imagenes = Imagen.getImagenByProductId(puja.producto);
+    const usuario = Usuario.getUsuarioById(puja.id_u);
+
+    return {
+      ...puja,
+      productName: producto?.nombre || 'Sin nombre',
+      productId: producto?.id || puja.producto,
+      imagen: imagenes?.[0]?.nombre || 'default.jpg',
+      nombreUsuario: usuario?.nombre || 'Anónimo'
+    };
+  });
+
   const params = {
     contenido: "paginas/pujas/misPujas",
     session: req.session,
-    pujas: pujas
+    pujas
   };
+
   res.render("pagina", params);
 }
 
