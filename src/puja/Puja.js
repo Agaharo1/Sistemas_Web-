@@ -14,16 +14,15 @@ export class Puja{
     static #lastPujarIdStmt = null;
     static #getPujaByIdStmt = null;
     static #deletePujaStmtProductId = null;
-    static #selectPujaStmtProductId = null;
     static #PujaByIdStmt = null;
     static #getPujasStmt = null;
-
+    static #selectPujaStmtProductId = null;
     valor_max;
     id_u;
     id;
     #id_p;
 
-    constructor(id_producto, id = null, id_u = null, valor_max = 0) {
+    constructor({ id_producto, id = null, id_u = null, valor_max = 0 }) {
         this.id = id;
         this.#id_p = id_producto;
         this.id_u = id_u;
@@ -33,7 +32,7 @@ export class Puja{
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         this.#getByUserIdStmt = db.prepare(
-          `SELECT p.id as PujaId, p.producto as producto
+          `SELECT p.id as PujaId, p.producto as producto, p.id_u
            FROM Puja p
            WHERE (p.id_u == @usuario)`
         );
@@ -108,7 +107,7 @@ export class Puja{
         let puja = this.#selectPujaStmtProductId.all({id_producto:productId});
         if(puja === undefined) return logger.debug("No se ha encontrado ninguna puja para este producto:", productId);
     
-        const result = this.#deletePujaStmtProductId.run({productId: productId });
+        const result = this.#deletePujaStmtProductId.run({id_producto: productId });
         logger.debug("Puja eliminada:", result.changes);
     }
 
@@ -132,7 +131,7 @@ export class Puja{
         const producto = puja.#id_p;
         const id_u = puja.id_u;
         const valor_max = puja.valor_max;
-        const { lastInsertRowid } = Puja.#insertStmt.run({ producto:producto, id_u:id_u, valor_max:valor_max });
+        const { lastInsertRowid } = Puja.#insertStmt.run({ producto:producto, usuario:id_u, valor_max:valor_max });
         puja.id = lastInsertRowid;
         return puja;
     }
@@ -144,8 +143,8 @@ export class Puja{
         return puja;
     }
 
-    static crearPuja(id_u, id_p, id) {
-        const nuevaPuja = new Puja( id_p, id, id_u);
+    static crearPuja(id_u, id_producto, id = null) {
+        const nuevaPuja = new Puja({ id_producto, id, id_u });
         console.log("Puja creada:", nuevaPuja);
         return nuevaPuja.persist();
     }

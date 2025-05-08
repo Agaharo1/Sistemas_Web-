@@ -32,7 +32,7 @@
             <p><strong>Nombre:</strong> <%= producto.usuario_nombre %></p>
             <p><strong>Email:</strong> <%= producto.username %></p>
             <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Chat</a>
-            <a href="/puja/nuevaPuja/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>"
+            <a href="/puja/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>
         </div>
         <% } %>
     </div>

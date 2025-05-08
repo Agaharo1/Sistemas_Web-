@@ -8,22 +8,22 @@ import session from "express-session";
 import { logger } from "../logger.js";
 
 export function nuevaPuja(req, res){
-    const { id} = req.params;
-    const { id_producto, id_user_sesion } = req.query;
+    const { id_producto} = req.params;
+    const {id_user_sesion } = req.query;
 
     //Comprobamos si ya existe una puja
-    const pujaExistente = Puja.getPujaByUser(id_producto, id_user_sesion);
+    const pujaExistente = Puja.getPujaByUser(id_user_sesion);
     if (pujaExistente !== null) {
         //Si existe, redirigimos a la puja existente
         return res.redirect(`/puja/puja/${pujaExistente.id}`);
     }
-    const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, id, );
+    const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto);
 
     if (nuevaPuja) {
         res.redirect(`/puja/puja/${nuevaPuja.id}`);
     } else {
         res.status(500).send("Error al crear la puja");
-    }
+  }
 
 }
 
@@ -78,6 +78,14 @@ export function viewMisPujas(req, res) {
 
 export function pujar(req, res) {
   const { valor, id_puja, id_u } = req.body;
+
+  let puja = Puja.getPujaById(id_puja);
+
+  if (puja.valor_max >= valor){
+    console.log("No se puede realizar la puja");
+    res.redirect(`/puja/puja/${id_puja}`);
+  }
+
   const nuevaPujada = Puja.pujar(id_puja, valor, id_u);
   res.redirect(`/puja/puja/${id_puja}`);
 }

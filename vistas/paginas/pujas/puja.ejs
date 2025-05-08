@@ -6,7 +6,7 @@
     <h2>Puja de <%= usuario %></h2>
     <div class="pujadas">
         <% pujadas.forEach(pujada => { %>
-            <div class="pujada <%= pujada.id_u === session.user_id %>">
+            <div class="pujada <%= pujada.id_u === session.user_id ? 'mi-puja' : '' %>">
                 <p><%= pujada.valor %></p>
             </div>
         <% }); %>
