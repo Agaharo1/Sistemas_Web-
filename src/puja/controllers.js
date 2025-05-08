@@ -44,6 +44,7 @@ export function viewPuja(req, res) {
   const producto = Producto.getProductById(puja.producto);
   const imagenes = Imagen.getImagenByProductId(puja.producto);
   const pujadas = Puja.getPujadasByPujaId(id) || [];
+  const ahora = Date.now();
   const tiempoRestante = Math.max(0, Math.floor((puja.fecha_limite - ahora) / 1000));
 
   if (!usuario || !producto || !imagenes) {
@@ -58,6 +59,7 @@ export function viewPuja(req, res) {
     productName: producto.nombre,
     productId: producto.id,
     imagenes,
+    ahora,
     tiempoRestante,
     pujadas
   };
