@@ -17,6 +17,7 @@ export class Puja{
     static #PujaByIdStmt = null;
     static #getPujasStmt = null;
     static #selectPujaStmtProductId = null;
+    static #updateValorMax = null;
     valor_max;
     id_u;
     id;
@@ -35,6 +36,9 @@ export class Puja{
           `SELECT *
            FROM Puja p
            WHERE (p.id_u == @usuario)`
+        );
+        this.#updateValorMax = db.prepare(
+            "UPDATE Puja SET valor_max = @valor_max WHERE id = @id_puja"
         );
         this.#selectPujaStmtProductId = db.prepare(
           "SELECT id FROM Puja WHERE producto = @id_producto"
@@ -94,6 +98,12 @@ export class Puja{
         } else {
             return null;
         }
+    }
+
+    static updateValorMaximo(valor_max, id_puja){
+        const actualizar = this.#updateValorMax.run({valor_max, id_puja});
+
+        return actualizar;
     }
 
     static getPujaByProductId(id_producto){
@@ -168,6 +178,7 @@ export class Puja{
         const nuevaPujada = { id_puja, valor, id_u };
         const { lastInsertRowid } = this.#insertPujarStmt.run(nuevaPujada);
         nuevaPujada.id = lastInsertRowid;
+        this.updateValorMaximo(valor, id_puja);
         return nuevaPujada;
     }
 
