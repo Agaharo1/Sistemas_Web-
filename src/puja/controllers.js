@@ -1,118 +1,127 @@
 import { config } from "../config.js";
 import { Puja } from "../puja/Puja.js";
 import { Imagen } from "../imagenes/Imagen.js";
-import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
 import { Producto } from "../productos/Productos.js";
-import session from "express-session";
 import { logger } from "../logger.js";
 
-export function nuevaPuja(req, res){
-    const { id_producto} = req.params;
-    const {id_user_sesion } = req.query;
-    //Comprobamos si ya existe una puja
-    const pujaExistente = Puja.getPujaByUser(id_user_sesion);
-    console.log(pujaExistente);
-    if (pujaExistente !== null && pujaExistente.length > 0) {
-        //Si existe, redirigimos a la puja existente
-        return res.redirect(`/pujas/puja/${pujaExistente[0].id}`);
-    }
-    const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, null);
+// Crear una nueva puja si no existe una para el producto
+export function nuevaPuja(req, res) {
+  const { id_producto } = req.params;
+  const id_user_sesion = req.session.user_id;
 
-    if (nuevaPuja) {
-      console.log("Redirigiendo a:", `/pujas/puja/${nuevaPuja.id}`);
-      res.redirect(`/pujas/puja/${nuevaPuja.id}`);
-    } else {
-        res.status(500).send("Error al crear la puja");
+  const pujasExistentes = Puja.getPujaByUser(id_user_sesion) || [];
+
+  const pujaExistente = pujasExistentes.find(p => p.producto == id_producto);
+  if (pujaExistente) {
+    return res.redirect(`/pujas/puja/${pujaExistente.id}`);
   }
 
+  const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto);
+
+  if (nuevaPuja && nuevaPuja.id) {
+    logger.info(`Redirigiendo a: /pujas/puja/${nuevaPuja.id}`);
+    return res.redirect(`/pujas/puja/${nuevaPuja.id}`);
+  }
+
+  res.status(500).send("Error al crear la puja");
 }
 
+// Vista de una puja concreta
 export function viewPuja(req, res) {
   const { id } = req.params;
-  console.log('Aqui');
-  const puja = Puja.getPujaById(id);
-  console.log(puja);
-  if(!puja) {
-    return res.status(404).send("Puja no encontrada");
-  }
-    const usuario = Usuario.getUsuarioById(puja.id_u);
-    if(!usuario) {
-        return res.status(404).send("Usuario no encontrado");
-    }
-    const producto = Producto.getProductById(puja.producto);
-    if(!producto) {
-        return res.status(404).send("Producto no encontrado");
-    }
-    const imagenes = Imagen.getImagenByProductId(puja.producto);
-    if(!imagenes) {
-        return res.status(404).send("Imagenes no encontradas");
-    }
 
-  const pujadas = Puja.getPujadasByPujaId(id);
-    if(!pujadas) {
-        return pujadas=[];
-    }
+  if (!id) return res.status(400).send("ID de puja no válido");
+
+  let puja;
+  try {
+    puja = Puja.getPujaById(id);
+  } catch (error) {
+    return res.status(404).send(error.message);
+  }
+
+  const usuario = Usuario.getUsuarioById(puja.id_u);
+  const producto = Producto.getProductById(puja.producto);
+  const imagenes = Imagen.getImagenByProductId(puja.producto);
+  const pujadas = Puja.getPujadasByPujaId(id) || [];
+
+  if (!usuario || !producto || !imagenes) {
+    return res.status(500).send("Error al recuperar datos relacionados");
+  }
+
   const params = {
     contenido: "paginas/pujas/puja",
     session: req.session,
     puja,
-    usuario : usuario.nombre,
-    productName : producto.nombre,
-    productId : producto.id,
+    usuario: usuario.nombre,
+    productName: producto.nombre,
+    productId: producto.id,
     imagenes,
     pujadas
   };
+
   res.render("pagina", params);
 }
 
+// Vista de todas las pujas del usuario actual
 export function viewMisPujas(req, res) {
   const id_u = req.session.user_id;
   let pujas = Puja.getPujaByUser(id_u) || [];
 
-  // Enriquecer cada puja con producto, imagen y nombre
   pujas = pujas.map(puja => {
     const producto = Producto.getProductById(puja.producto);
-    const imagenes = Imagen.getImagenByProductId(puja.producto);
+    const imagen = Imagen.getImagenByProductId(puja.producto);
     const usuario = Usuario.getUsuarioById(puja.id_u);
-
     return {
       ...puja,
-      productName: producto?.nombre || 'Sin nombre',
+      productName: producto?.nombre || "Sin nombre",
       productId: producto?.id || puja.producto,
-      imagen: imagenes?.[0]?.nombre || 'default.jpg',
-      nombreUsuario: usuario?.nombre || 'Anónimo'
+      imagen: imagen || "default.jpg", // sin .nombre ni [0]
+      nombreUsuario: usuario?.nombre || "Anónimo"
     };
   });
 
-  const params = {
+  res.render("pagina", {
     contenido: "paginas/pujas/misPujas",
     session: req.session,
     pujas
-  };
-
-  res.render("pagina", params);
+  });
 }
 
+// Procesar una puja nueva (pujar sobre una existente)
 export function pujar(req, res) {
-  const {id_puja} = req.params;
+  const { id_puja } = req.params;
   const { valor, id_u } = req.body;
 
-  let puja = Puja.getPujaById(id_puja);
-
-  if (puja.valor_max >= valor){
-    console.log("No se puede realizar la puja");
-    res.redirect(`/pujas/puja/${id_puja}`);
+  if (!valor || !id_u || !id_puja) {
+    return res.status(400).send("Faltan datos para pujar");
   }
 
-  const nuevaPujada = Puja.pujar(id_puja, valor, id_u);
-  res.redirect(`/pujas/misPujas/${id_u}`);
+  const puja = Puja.getPujaById(id_puja);
+  if (!puja) {
+    return res.status(404).send("Puja no encontrada");
+  }
+
+  const valorFloat = parseFloat(valor);
+  if (isNaN(valorFloat)) {
+    return res.status(400).send("Valor inválido");
+  }
+
+  if (valorFloat <= puja.valor_max) {
+    console.log("No se puede realizar la puja, debe ser mayor al valor actual");
+    return res.redirect(`/pujas/puja/${id_puja}`);
+  }
+
+  Puja.pujar(id_puja, valorFloat, id_u);
+  return res.redirect(`/pujas/misPujas`);
 }
 
+
+// Eliminar una puja
 export function eliminarPuja(req, res) {
   const { id } = req.params;
+
   try {
-    console.log("Eliminando puja:", id);
     Puja.eliminarPuja(parseInt(id));
     res.redirect("/pujas/misPujas");
   } catch (e) {

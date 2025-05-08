@@ -1,196 +1,155 @@
 import { logger } from '../logger.js';
+import { Imagen } from '../imagenes/Imagen.js';
 
-//Puja: chat, Pujar: mensaje
+export class Puja {
+  static #getByUserIdStmt = null;
+  static #getAllStmt = null;
+  static #getPujarStmt = null;
+  static #getPujaByProductIdStmt = null;
+  static #insertStmt = null;
+  static #updateStmt = null;
+  static #deleteStmt = null;
+  static #insertPujarStmt = null;
+  static #lastPujarIdStmt = null;
+  static #getPujaByIdStmt = null;
+  static #deletePujaStmtProductId = null;
+  static #getPujasStmt = null;
+  static #selectPujaStmtProductId = null;
+  static #updateValorMax = null;
 
-export class Puja{
-    static #getByUserIdStmt = null;
-    static #getAllStmt = null;
-    static #getPujarStmt = null;
-    static #getPujaByProductIdStmt = null;
-    static #insertStmt = null;
-    static #updateStmt = null;
-    static #deleteStmt = null;
-    static #insertPujarStmt = null;
-    static #lastPujarIdStmt = null;
-    static #getPujaByIdStmt = null;
-    static #deletePujaStmtProductId = null;
-    static #PujaByIdStmt = null;
-    static #getPujasStmt = null;
-    static #selectPujaStmtProductId = null;
-    static #updateValorMax = null;
-    valor_max;
-    id_u;
-    id;
-    #id_p;
+  valor_max;
+  id_u;
+  id;
+  #id_p;
 
-    constructor({ id_producto, id = null, id_u = null, valor_max = 0 }) {
-        this.id = id;
-        this.#id_p = id_producto;
-        this.id_u = id_u;
-        this.valor_max = valor_max;
+  constructor({ id_producto, id = null, id_u = null, valor_max = 0 }) {
+    this.id = id;
+    this.#id_p = id_producto;
+    this.id_u = id_u;
+    this.valor_max = valor_max;
+  }
+
+  static initStatements(db) {
+    if (this.#getByUserIdStmt !== null) return;
+
+    this.#getByUserIdStmt = db.prepare(`SELECT * FROM Puja WHERE id_u = @usuario`);
+    this.#getAllStmt = db.prepare(`SELECT * FROM Puja`);
+    this.#getPujaByProductIdStmt = db.prepare(`SELECT * FROM Puja WHERE producto = @id_producto`);
+    this.#getPujaByIdStmt = db.prepare(`SELECT * FROM Puja WHERE id = @id_puja`);
+    this.#insertStmt = db.prepare(`INSERT INTO Puja(producto, id_u, valor_max) VALUES (@producto, @usuario, @valor_max)`);
+    this.#updateStmt = db.prepare(`UPDATE Puja SET id_u = @id_u WHERE producto = @id_p`);
+    this.#deleteStmt = db.prepare(`DELETE FROM Puja WHERE id = @id`);
+    this.#deletePujaStmtProductId = db.prepare(`DELETE FROM Puja WHERE producto = @productId`);
+    this.#selectPujaStmtProductId = db.prepare(`SELECT id FROM Puja WHERE producto = @id_producto`);
+    this.#insertPujarStmt = db.prepare(`INSERT INTO Pujar(id_puja, valor, id_u) VALUES (@id_puja, @valor, @id_u)`);
+    this.#getPujasStmt = db.prepare(`SELECT valor, id_u FROM Pujar WHERE id_puja = @id_puja`);
+    this.#lastPujarIdStmt = db.prepare(`SELECT id FROM Pujar WHERE id_puja = @id_puja ORDER BY id DESC LIMIT 1`);
+    this.#updateValorMax = db.prepare(`UPDATE Puja SET valor_max = @valor_max, id_u = @id_u WHERE id = @id_puja`);
+  }
+
+  // Obtener todas las pujas de un usuario
+  static getPujaByUser(id_user_sesion) {
+    const pujas = this.#getByUserIdStmt.all({ usuario: id_user_sesion });
+    if (!pujas || pujas.length === 0) {
+      logger.debug("No hay pujas para el usuario:", id_user_sesion);
+      return [];
+    }
+    logger.debug("Pujas del usuario:", pujas);
+    return pujas;
+  }
+
+  // Obtener una puja por ID
+  static getPujaById(id_puja) {
+    const puja = this.#getPujaByIdStmt.get({ id_puja });
+    if (!puja) throw new PujaNoEncontrada(id_puja);
+    logger.debug("Puja encontrada:", puja);
+    return puja;
+  }
+
+  // Obtener todas las pujadas asociadas a una puja
+  static getPujadasByPujaId(id_puja) {
+    const pujadas = this.#getPujasStmt.all({ id_puja });
+    logger.debug("Pujadas encontradas:", pujadas);
+    return pujadas;
+  }
+
+  // Obtener todas las pujas por producto
+  static getPujaByProductId(id_producto) {
+    const pujas = this.#getPujaByProductIdStmt.all({ id_producto });
+    if (!pujas || pujas.length === 0) {
+      logger.debug("No existe puja para este producto:", id_producto);
+      return [];
+    }
+    return pujas;
+  }
+
+  // Insertar una nueva puja
+  static crearPuja(id_u, id_producto) {
+    const nuevaPuja = new Puja({ id_producto, id_u });
+    return nuevaPuja.persist();
+  }
+
+  // Ejecutar una nueva pujada y actualizar el valor máximo
+  static pujar(id_puja, valor, id_u) {
+    const nuevaPujada = { id_puja, valor, id_u };
+    const { lastInsertRowid } = this.#insertPujarStmt.run(nuevaPujada);
+    nuevaPujada.id = lastInsertRowid;
+
+    this.updateValorMaximo(valor, id_puja, id_u);
+    return nuevaPujada;
+  }
+
+  // Actualizar valor máximo de la puja
+  static updateValorMaximo(valor_max, id_puja, id_u) {
+    return this.#updateValorMax.run({ valor_max, id_puja, id_u });
+  }
+
+  // Eliminar una puja por ID
+  static eliminarPuja(id) {
+    const result = this.#deleteStmt.run({ id });
+    logger.debug("Puja eliminada:", result.changes);
+  }
+
+  // Eliminar una puja por ID de producto
+  static eliminarPujaByProduct(productId) {
+    const puja = this.#selectPujaStmtProductId.all({ id_producto: productId });
+    if (!puja || puja.length === 0) {
+      return logger.debug("No se ha encontrado ninguna puja para este producto:", productId);
     }
 
-    static initStatements(db) {
-        if (this.#getByUserIdStmt !== null) return;
-        this.#getByUserIdStmt = db.prepare(
-          `SELECT *
-           FROM Puja p
-           WHERE (p.id_u == @usuario)`
-        );
-        this.#updateValorMax = db.prepare(
-            "UPDATE Puja SET valor_max = @valor_max, id_u = @id_u WHERE id = @id_puja"
-        );
-        this.#selectPujaStmtProductId = db.prepare(
-          "SELECT id FROM Puja WHERE producto = @id_producto"
-        );
-        this.#getPujaByProductIdStmt = db.prepare(
-            "SELECT id, id_u, producto, valor_max FROM Puja WHERE producto = @id_producto"
-        );
-        this.#insertStmt = db.prepare(
-          "INSERT INTO Puja(producto, id_u, valor_max) VALUES (@producto, @usuario, @valor_max)"
-        );
-        this.#updateStmt = db.prepare(
-          "UPDATE Puja SET id_u = @id_u WHERE producto = @id_p"
-        );
-        this.#getAllStmt = db.prepare(
-            "SELECT id, id_u, valor_max, producto FROM Puja"
-        );
-        this.#deletePujaStmtProductId = db.prepare(
-            "DELETE FROM Puja WHERE producto = @productId"
-        );
-        this.#getPujarStmt = db.prepare(
-            "SELECT valor, id_u FROM Pujar WHERE id_puja = @id_puja"
-        );
-        this.#insertPujarStmt = db.prepare(
-            "INSERT INTO Pujar(id_puja, valor, id_u) VALUES (@id_puja, @valor, @id_u)"
-        );
-        this.#lastPujarIdStmt = db.prepare(
-            "SELECT id FROM Pujar WHERE id_puja = @id_puja ORDER BY id DESC LIMIT 1"
-        );
-        this.#getPujaByProductIdStmt = db.prepare(
-            "SELECT id, producto, id_u, valor_max FROM Puja WHERE producto = @id_producto"
-        );
-        this.#getPujaByIdStmt = db.prepare(
-            "SELECT id, id_u, producto, valor_max FROM Puja WHERE id = @id_puja"
-        );
-        this.#deletePujaStmtProductId = db.prepare(
-            "DELETE FROM Pujar WHERE id_puja = @id_puja"
-        );
-        this.#deleteStmt = db.prepare(
-            "DELETE FROM Puja WHERE id = @id"
-        );
-        this.#getPujasStmt = db.prepare(
-            "SELECT valor, id_u FROM Pujar WHERE id_puja = @id_puja"
-        );
-    }
+    const result = this.#deletePujaStmtProductId.run({ productId });
+    logger.debug("Puja eliminada:", result.changes);
+  }
 
-    //Mostrar las pujas de un usuario dada su sesión
-    static getPujaByUser(id_user_sesion) {
-        const pujas = this.#getByUserIdStmt.all({ usuario: id_user_sesion });
-        if (!pujas || pujas.length === 0) {
-            logger.debug("No hay pujas para el usuario:", id_user_sesion);
-            return [];
-        }
-        logger.debug("Pujas del usuario:", pujas);
-        return pujas;
-    }
+  // Insertar o actualizar una puja
+  persist() {
+    return this.id === null ? Puja.#insert(this) : Puja.#update(this);
+  }
 
-    static updateValorMaximo(valor_max, id_puja, id_u) {
-        const actualizar = this.#updateValorMax.run({ valor_max, id_puja, id_u });
-        return actualizar;
-    }
+  // Inserta la puja en la BDD
+  static #insert(puja) {
+    const producto = puja.#id_p;
+    const id_u = puja.id_u;
+    const valor_max = puja.valor_max;
 
-    static getPujaByProductId(id_producto){
-            let puja = this.#getPujaByProductIdStmt.all({id_producto:id_producto});
+    const info = this.#insertStmt.run({ producto, usuario: id_u, valor_max });
+    puja.id = info.lastInsertRowid || info.lastID;
+    return puja;
+  }
 
-        if (puja === 0){
-            console.log('No existe puja para este producto');
-        }
-        else{
-            return puja;
-        }
-    }
-    
-    //Eliminar una puja dado su id
-    static eliminarPuja(id) {
-        const result = this.#deleteStmt.run({ id:id });
-           
-        logger.debug("Puja eliminada:", result.changes);
-        
-    }
+  // Actualiza la puja existente
+  static #update(puja) {
+    const producto = puja.#id_p;
+    const id_u = puja.id_u;
 
-    //Eliminar una puja dado el id del producto
-    static eliminarPujaByProduct(productId){
-        //Guardamos los ids de los chats que se eliminan
-        let puja = this.#selectPujaStmtProductId.all({id_producto:productId});
-        if(puja === undefined) return logger.debug("No se ha encontrado ninguna puja para este producto:", productId);
-    
-        const result = this.#deletePujaStmtProductId.run({id_producto: productId });
-        logger.debug("Puja eliminada:", result.changes);
-    }
-
-    //Obtener una puja por su id
-    static getPujaById(id_puja) {
-        const puja = this.#getPujaByIdStmt.get({ id_puja });
-        if (puja === undefined) throw new PujaNoEncontrada(id_puja);
-        logger.debug("Puja encontrada:", puja);
-        return puja;
-    }
-
-    //Obtener una pujada por el id de la puja en si
-    static getPujadasByPujaId(id_puja) {
-        const pujadas = this.#getPujasStmt.all({ id_puja });
-        logger.debug("Pujadas encontradas:", pujadas);
-        return pujadas;
-    }
-
-    static #insert(puja) 
-    {
-        const producto = puja.#id_p;
-        const id_u = puja.id_u;
-        const valor_max = puja.valor_max;
-        const info = Puja.#insertStmt.run({ producto: producto, usuario: id_u, valor_max: valor_max });
-        puja.id = info.lastInsertRowid || info.lastInsertRowId || info.lastID;
-        return puja;
-    }
-
-    static #update(puja) {
-        const producto = puja.#id_p;
-        const id_u = puja.id_u;
-        Puja.#updateStmt.run({ id_p: producto, id_u: id_u});
-        return puja;
-    }
-
-    static crearPuja(id_u, id_producto, id = null) {
-        console.log(id_u, id_producto);
-        const nuevaPuja = new Puja({ id_producto, id_u });
-        console.log("Puja creada:", nuevaPuja);
-        return nuevaPuja.persist();
-    }
-    
-    static pujar(id_puja, valor, id_u) {
-        const nuevaPujada = { id_puja, valor, id_u };
-        const { lastInsertRowid } = this.#insertPujarStmt.run(nuevaPujada);
-        nuevaPujada.id = lastInsertRowid;
-        this.updateValorMaximo(valor, id_puja, id_u);
-        return nuevaPujada;
-    }
-
-    persist() {
-        if (this.id === null) return Puja.#insert(this);
-        return Puja.#update(this);
-    }
-
+    this.#updateStmt.run({ id_p: producto, id_u });
+    return puja;
+  }
 }
 
 export class PujaNoEncontrada extends Error {
-    /**
-     *
-     * @param {string} id
-     * @param {ErrorOptions} [options]
-     */
-    constructor(id, options) {
-      super(`Puja no encontrada: ${id}`, options);
-      this.name = "PujaNoEncontrada";
-    }
+  constructor(id, options) {
+    super(`Puja no encontrada: ${id}`, options);
+    this.name = "PujaNoEncontrada";
   }
+}
