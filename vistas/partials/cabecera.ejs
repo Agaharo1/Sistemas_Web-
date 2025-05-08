@@ -9,21 +9,31 @@ function mostrarSaludo(session){
 }
 function mostrarMenu(session){
 	if (session == null || ! session.login){
-		return `<nav class="nav-container">
-		<a href="/" class="nav-button-top">Inicio</a>
-		<a href="/contenido/normal"class="nav-button-top">Mercado</a>
-		<a href="/usuarios/registro"class="nav-button-top">Registro</a>
-	</nav>`;
+		return `
+		<nav class="nav-container">
+			<p><a href="#" class = "boton icon"><span class="menu-icon">▶</span></a></p>
+			<ul class = "menu oculto">
+				<li><a href="/" class="nav-button-top">Inicio</a></li>
+				<li><a href="/contenido/normal"class="nav-button-top">Mercado</a></li>
+				<li><a href="/usuarios/registro"class="nav-button-top">Registro</a></li>
+			</ul>
+
+		</nav>`;
 	}
 
-	return `<nav class="nav-container">
-		<a href="/" class="nav-button-top">Inicio</a>
-		<a href="/usuarios/profile" class="nav-button-top">Mi perfil</a>
-		<a href="/contenido/normal" class="nav-button-top">Mercado</a>
-		<a href="/pujas/pujas" class="nav-button-top">Pujas</a>
-		<a href="/productos/subir" class="nav-button-top">Subir producto</a>
-		<a href="/usuarios/baja" class="nav-button-top">Darme de baja</a>
-		<a href="/usuarios/logout" class="nav-button-top">Logout</a>
+	return `
+	<nav class="nav-container">
+		<p><a href="#" class = "boton icon"><span class="menu-icon">▶</span></a></p>
+
+		<ul class = "menu oculto">
+			<li><a href="/" class="nav-button-top">Inicio</a></li>
+			<li><a href="/usuarios/profile" class="nav-button-top">Mi perfil</a></li>
+			<li><a href="/contenido/normal" class="nav-button-top">Mercado</a></li>
+			<li><a href="/pujas/pujas" class="nav-button-top">Pujas</a></li>
+			<li><a href="/productos/subir" class="nav-button-top">Subir producto</a></li>
+			<li><a href="/usuarios/baja" class="nav-button-top">Darme de baja</a></li>
+			<li><a href="/usuarios/logout" class="nav-button-top">Logout</a></li>
+		</ul>
 	</nav>`;
 }
 
