@@ -44,6 +44,7 @@ export function viewPuja(req, res) {
   const producto = Producto.getProductById(puja.producto);
   const imagenes = Imagen.getImagenByProductId(puja.producto);
   const pujadas = Puja.getPujadasByPujaId(id) || [];
+  const tiempoRestante = Math.max(0, Math.floor((puja.fecha_limite - ahora) / 1000));
 
   if (!usuario || !producto || !imagenes) {
     return res.status(500).send("Error al recuperar datos relacionados");
@@ -57,6 +58,7 @@ export function viewPuja(req, res) {
     productName: producto.nombre,
     productId: producto.id,
     imagenes,
+    tiempoRestante,
     pujadas
   };
 
