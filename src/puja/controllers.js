@@ -17,10 +17,10 @@ export function nuevaPuja(req, res){
         //Si existe, redirigimos a la puja existente
         return res.redirect(`/puja/puja/${pujaExistente.id}`);
     }
-    const nuevaPuja = Puja.crearPuja(id_producto, id, id_user_sesion);
+    const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, id, );
 
     if (nuevaPuja) {
-        res.redirect(`/pujas/puja/${nuevaPuja.id}`);
+        res.redirect(`/puja/puja/${nuevaPuja.id}`);
     } else {
         res.status(500).send("Error al crear la puja");
     }
@@ -79,7 +79,7 @@ export function viewMisPujas(req, res) {
 export function pujar(req, res) {
   const { valor, id_puja, id_u } = req.body;
   const nuevaPujada = Puja.pujar(id_puja, valor, id_u);
-  res.redirect(`/pujas/puja/${id_puja}`);
+  res.redirect(`/puja/puja/${id_puja}`);
 }
 
 export function eliminarPuja(req, res) {
@@ -87,7 +87,7 @@ export function eliminarPuja(req, res) {
   try {
     console.log("Eliminando puja:", id);
     Puja.eliminarPuja(parseInt(id));
-    res.redirect("/pujas/misPujas");
+    res.redirect("/puja/misPujas");
   } catch (e) {
     res.status(400).send(e.message);
   }

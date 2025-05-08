@@ -4,7 +4,6 @@ import { config } from "../config.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
-import {Pujas} from "../pujas/Pujas.js";
 import { ProductoNoEncontrado } from "./Productos.js";
 import { logger } from "../logger.js";
 import fs from 'fs';

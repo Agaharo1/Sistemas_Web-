@@ -33,7 +33,7 @@ export class Puja{
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         this.#getByUserIdStmt = db.prepare(
-          `SELECT p.id as PujaId, p.producto as producto, 
+          `SELECT p.id as PujaId, p.producto as producto
            FROM Puja p
            WHERE (p.id_u == @usuario)`
         );
@@ -53,7 +53,7 @@ export class Puja{
             "DELETE FROM Puja WHERE producto = @productId"
         );
         this.#getPujarStmt = db.prepare(
-            "SELECT valor, id_u FROM Pujar WHERE chatId = @id_chat"
+            "SELECT valor, id_u FROM Pujar WHERE id_puja = @id_puja"
         );
         this.#insertPujarStmt = db.prepare(
             "INSERT INTO Pujar(id_puja, valor, id_u) VALUES (@id_puja, @valor, @id_u)"
@@ -78,8 +78,9 @@ export class Puja{
         );
     }
 
-    static getPujaByUser(id_user_sesion, id_producto) {
-        const puja = this.#getPujaByProductIdStmt.all({id_usuario:id_user_sesion, id_producto});
+    //Mostrar las pujas de un usuario dada su sesión
+    static getPujaByUser(id_user_sesion) {
+        const puja = this.#getByUserIdStmt.all({usuario:id_user_sesion});
         if (puja === undefined)return null;
         const pujaExistente = puja.find(
             (puja) =>
@@ -93,6 +94,7 @@ export class Puja{
         }
     }
     
+    //Eliminar una puja dado su id
     static eliminarPuja(id) {
         const result = this.#deleteStmt.run({ id:id });
            
@@ -100,6 +102,7 @@ export class Puja{
         
     }
 
+    //Eliminar una puja dado el id del producto
     static eliminarPujaByProduct(productId){
         //Guardamos los ids de los chats que se eliminan
         let puja = this.#selectPujaStmtProductId.all({id_producto:productId});
@@ -109,28 +112,15 @@ export class Puja{
         logger.debug("Puja eliminada:", result.changes);
     }
 
-    static getPujaByUser(id_producto, id_user_session) {
-        const puja = this.#getPujaByProductIdStmt.all({id_producto});
-        if (puja === undefined)return null;
-        const pujaExistente = puja.find(
-            (puja) =>
-                ((puja.id_u === id_user_session))    
-            );
-        if (pujaExistente) {
-            logger.debug("Puja existente:", pujaExistente);
-            return pujaExistente;
-        } else {
-            return null;
-        }
-    }
-
+    //Obtener una puja por su id
     static getPujaById(id_puja) {
         const puja = this.#getPujaByIdStmt.get({ id_puja });
         if (puja === undefined) throw new PujaNoEncontrada(id_puja);
-        logger.debug("Chat encontrado:", chat);
-        return chat;
+        logger.debug("Puja encontrada:", puja);
+        return puja;
     }
 
+    //Obtener una pujada por el id de la puja en si
     static getPujadasByPujaId(id_puja) {
         const pujadas = this.#getPujasStmt.all({ id_puja });
         logger.debug("Pujadas encontradas:", pujadas);
@@ -150,7 +140,7 @@ export class Puja{
     #update(puja) {
         const producto = puja.#id_p;
         const id_u = puja.id_u;
-        puja.#updateStmt.run({ id_p: producto, id_u: id_u});
+        Puja.#updateStmt.run({ id_p: producto, id_u: id_u});
         return puja;
     }
 
