@@ -1,5 +1,6 @@
 import { config } from './config.js';
 import { app } from './app.js';
+import './puja/pujasCron.js';
 
 //Para Db
 import { getConnection, checkConnection, closeConnection } from './db.js';

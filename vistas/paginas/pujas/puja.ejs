@@ -2,6 +2,20 @@
     <div class="product-info">
         <img src="/imagenes/imagen/<%= productId %>/<%= imagenes %>" alt="Imagen del Producto" class="product-image-circle">
         <h3>Producto: <%= productName %></h3>
+        <p id="timer"></p>
+        <script>
+            const tiempoRestante = puja.fecha_limite - Date.now();
+            let tiempo = Math.floor(tiempoRestante / 1000);
+            const timer = document.getElementById('timer');
+            const intervalo = setInterval(() => {
+                if (tiempo <= 0) {
+                    timer.textContent = "¡Puja finalizada!";
+                    clearInterval(intervalo);
+                } else {
+                    timer.textContent = `Tiempo restante: ${tiempo--}s`;
+                }
+            }, 1000);
+        </script>
     </div>
     <h2>Puja de <%= usuario %></h2>
     <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">

@@ -16,6 +16,7 @@ export class Puja {
   static #getPujasStmt = null;
   static #selectPujaStmtProductId = null;
   static #updateValorMax = null;
+  static #getExpiradasStmt = null;
 
   valor_max;
   id_u;
@@ -45,6 +46,7 @@ export class Puja {
     this.#getPujasStmt = db.prepare(`SELECT valor, id_u FROM Pujar WHERE id_puja = @id_puja`);
     this.#lastPujarIdStmt = db.prepare(`SELECT id FROM Pujar WHERE id_puja = @id_puja ORDER BY id DESC LIMIT 1`);
     this.#updateValorMax = db.prepare(`UPDATE Puja SET valor_max = @valor_max, id_u = @id_u WHERE id = @id_puja`);
+    this.#getExpiradasStmt = db.prepare(`SELECT * FROM Puja WHERE fecha_limite <= @ahora`);
   }
 
   // Obtener todas las pujas de un usuario
@@ -85,8 +87,22 @@ export class Puja {
 
   // Insertar una nueva puja
   static crearPuja(id_u, id_producto) {
-    const nuevaPuja = new Puja({ id_producto, id_u });
-    return nuevaPuja.persist();
+    const fecha_limite = Date.now() + 60_000; // 1 minuto desde ahora
+    const nuevaPuja = new Puja({ id_producto, id_u, valor_max: 0 });
+
+    const info = this.#insertStmt.run({
+      producto: id_producto,
+      usuario: id_u,
+      valor_max: 0,
+      fecha_limite
+    });
+
+    nuevaPuja.id = info.lastInsertRowid || info.lastID;
+    return nuevaPuja;
+  }
+
+  static getPujasExpiradas(ahora) {
+    return this.#getExpiradasStmt.all({ ahora });
   }
 
   // Ejecutar una nueva pujada y actualizar el valor máximo
@@ -107,7 +123,7 @@ export class Puja {
   // Eliminar una puja por ID
   static eliminarPuja(id) {
     const result = this.#deleteStmt.run({ id });
-    logger.debug("Puja eliminada:", result.changes);
+    logger.info(`Puja eliminada: ${id}, filas afectadas: ${result.changes}`);
   }
 
   // Eliminar una puja por ID de producto
