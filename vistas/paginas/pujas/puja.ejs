@@ -7,7 +7,7 @@
     <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
         <input type="hidden" name="id_puja" value="<%= puja.id %>">
         <input type="hidden" name="id_u" value="<%= session.user_id %>">
-        <input type="number" name="pujada" placeholder="Escribe tu puja aquí...">
+        <input type="number" name="valor" placeholder="Escribe tu puja aquí...">
         <button type="submit">Enviar</button>
     </form>
     

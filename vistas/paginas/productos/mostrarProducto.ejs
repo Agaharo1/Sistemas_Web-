@@ -34,7 +34,7 @@
             <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Chat</a>
             <% if (pujaActiva && pujaActiva.length > 0) { %>
                 <!-- Si hay una puja activa, mostrar el botón con la puja actual -->
-                <p>Puja actual: <%= pujaActiva[0].valor_max %> por el usuario con id <%= pujaActiva[0].id_u %></p>
+                <p>Puja actual: <%= pujaActiva[pujaActiva.length - 1].valor_max %> por el usuario con id <%= pujaActiva[pujaActiva.length - 1].id_u %></p>
                 <a href="/pujas/puja/<%= pujaActiva[0].id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Pujar</a>
             <% } else { %>
                 <!-- Si no hay una puja activa, mostrar el botón para iniciar una nueva puja -->

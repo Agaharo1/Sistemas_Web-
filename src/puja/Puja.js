@@ -32,7 +32,7 @@ export class Puja{
     static initStatements(db) {
         if (this.#getByUserIdStmt !== null) return;
         this.#getByUserIdStmt = db.prepare(
-          `SELECT p.id as PujaId, p.producto as producto, p.id_u
+          `SELECT *
            FROM Puja p
            WHERE (p.id_u == @usuario)`
         );

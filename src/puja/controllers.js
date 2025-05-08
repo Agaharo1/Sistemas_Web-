@@ -67,20 +67,21 @@ export function viewPuja(req, res) {
 }
 
 export function viewMisPujas(req, res) {
- 
-  const pujas = Puja.getPujaByUser(parseInt(req.session.user_id));
+  const {id_u} = req.params;
+  const pujas = Puja.getPujaByUser(id_u);
+  console.log(pujas);
  
   const params = {
     contenido: "paginas/pujas/misPujas",
     session: req.session,
-    pujas
-    
+    pujas: pujas
   };
   res.render("pagina", params);
 }
 
 export function pujar(req, res) {
-  const { valor, id_puja, id_u } = req.body;
+  const {id_puja} = req.params;
+  const { valor, id_u } = req.body;
 
   let puja = Puja.getPujaById(id_puja);
 
@@ -90,7 +91,6 @@ export function pujar(req, res) {
   }
 
   const nuevaPujada = Puja.pujar(id_puja, valor, id_u);
-  id_u = req.session.id;
   res.redirect(`/pujas/misPujas/${id_u}`);
 }
 
