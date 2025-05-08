@@ -40,6 +40,8 @@ export function viewPuja(req, res) {
     return res.status(404).send(error.message);
   }
 
+  puja.fecha_limite = new Date(puja.fecha_limite).getTime();
+
   const usuario = Usuario.getUsuarioById(puja.id_u);
   const producto = Producto.getProductById(puja.producto);
   const imagenes = Imagen.getImagenByProductId(puja.producto);
@@ -97,27 +99,21 @@ export function pujar(req, res) {
   const { id_puja } = req.params;
   const { valor, id_u } = req.body;
 
-  if (!valor || !id_u || !id_puja) {
-    return res.status(400).send("Faltan datos para pujar");
-  }
-
   const puja = Puja.getPujaById(id_puja);
-  if (!puja) {
-    return res.status(404).send("Puja no encontrada");
+
+  const ahora = Date.now();
+  if (puja.fecha_limite <= ahora) {
+    console.log("La puja ha expirado.");
+    return res.status(403).send("La puja ha expirado.");
   }
 
-  const valorFloat = parseFloat(valor);
-  if (isNaN(valorFloat)) {
-    return res.status(400).send("Valor inválido");
-  }
-
-  if (valorFloat <= puja.valor_max) {
-    console.log("No se puede realizar la puja, debe ser mayor al valor actual");
+  if (puja.valor_max >= valor) {
+    console.log("No se puede realizar la puja");
     return res.redirect(`/pujas/puja/${id_puja}`);
   }
 
-  Puja.pujar(id_puja, valorFloat, id_u);
-  return res.redirect(`/pujas/misPujas`);
+  Puja.pujar(id_puja, valor, id_u);
+  res.redirect("/pujas/misPujas");
 }
 
 

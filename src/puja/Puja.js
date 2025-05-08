@@ -87,7 +87,7 @@ export class Puja {
 
   // Insertar una nueva puja
   static crearPuja(id_u, id_producto) {
-    const fecha_limite = Date.now() + 60_000; // 1 minuto desde ahora
+    const fecha_limite = Date.now() + 60_0000000000000000000000000; // 1 minuto desde ahora
     const nuevaPuja = new Puja({ id_producto, id_u, valor_max: 0 });
 
     const info = this.#insertStmt.run({
