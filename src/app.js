@@ -48,6 +48,6 @@ app.use('/productos', productossRouter);
 app.use('/imagenes', imagenRouter);
 app.use('/envios', envioRouter);
 app.use('/chats', chatRouter);
-app.use('/puja', pujaRouter);
+app.use('/pujas', pujaRouter);
 app.use('/pie',pieRouter);
 app.use(errorHandler)

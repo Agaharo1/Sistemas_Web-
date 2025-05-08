@@ -4,17 +4,10 @@
         <h3>Producto: <%= productName %></h3>
     </div>
     <h2>Puja de <%= usuario %></h2>
-    <div class="pujadas">
-        <% pujadas.forEach(pujada => { %>
-            <div class="pujada <%= pujada.id_u === session.user_id ? 'mi-puja' : '' %>">
-                <p><%= pujada.valor %></p>
-            </div>
-        <% }); %>
-    </div>
-    <form action="/pujas/pujar" method="POST" class="pujada-form">
+    <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
         <input type="hidden" name="id_puja" value="<%= puja.id %>">
         <input type="hidden" name="id_u" value="<%= session.user_id %>">
-        <textarea name="pujada" placeholder="Escribe tu puja aquí..." required></textarea>
+        <input type="number" name="pujada" placeholder="Escribe tu puja aquí...">
         <button type="submit">Enviar</button>
     </form>
     

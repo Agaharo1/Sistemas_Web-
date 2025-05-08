@@ -5,6 +5,7 @@ import { Imagen } from "../imagenes/Imagen.js";
 import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
 import { ProductoNoEncontrado } from "./Productos.js";
+import { Puja } from "../puja/Puja.js";
 import { logger } from "../logger.js";
 import fs from 'fs';
 import path from 'path';
@@ -28,10 +29,14 @@ export function pagoProducto(req, res) {
 export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);
+
+  const puja = Puja.getPujaByProductId(id);
+  console.log(puja);
   
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
+    pujaActiva: puja,
     producto,
   };
   res.render("pagina", params);

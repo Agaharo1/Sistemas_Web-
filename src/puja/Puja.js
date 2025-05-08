@@ -39,6 +39,9 @@ export class Puja{
         this.#selectPujaStmtProductId = db.prepare(
           "SELECT id FROM Puja WHERE producto = @id_producto"
         );
+        this.#getPujaByProductIdStmt = db.prepare(
+            "SELECT id, id_u, producto, valor_max FROM Puja WHERE producto = @id_producto"
+        );
         this.#insertStmt = db.prepare(
           "INSERT INTO Puja(producto, id_u, valor_max) VALUES (@producto, @usuario, @valor_max)"
         );
@@ -92,6 +95,17 @@ export class Puja{
             return null;
         }
     }
+
+    static getPujaByProductId(id_producto){
+            let puja = this.#getPujaByProductIdStmt.all({id_producto:id_producto});
+
+        if (puja === 0){
+            console.log('No existe puja para este producto');
+        }
+        else{
+            return puja;
+        }
+    }
     
     //Eliminar una puja dado su id
     static eliminarPuja(id) {
@@ -126,17 +140,17 @@ export class Puja{
         return pujadas;
     }
 
-    #insert(puja) 
+    static #insert(puja) 
     {
         const producto = puja.#id_p;
         const id_u = puja.id_u;
         const valor_max = puja.valor_max;
-        const { lastInsertRowid } = Puja.#insertStmt.run({ producto:producto, usuario:id_u, valor_max:valor_max });
-        puja.id = lastInsertRowid;
+        const info = Puja.#insertStmt.run({ producto: producto, usuario: id_u, valor_max: valor_max });
+        puja.id = info.lastInsertRowid || info.lastInsertRowId || info.lastID;
         return puja;
     }
 
-    #update(puja) {
+    static #update(puja) {
         const producto = puja.#id_p;
         const id_u = puja.id_u;
         Puja.#updateStmt.run({ id_p: producto, id_u: id_u});
@@ -144,7 +158,8 @@ export class Puja{
     }
 
     static crearPuja(id_u, id_producto, id = null) {
-        const nuevaPuja = new Puja({ id_producto, id, id_u });
+        console.log(id_u, id_producto);
+        const nuevaPuja = new Puja({ id_producto, id_u });
         console.log("Puja creada:", nuevaPuja);
         return nuevaPuja.persist();
     }
@@ -157,8 +172,8 @@ export class Puja{
     }
 
     persist() {
-        if (this.id === null) return this.#insert(this);
-        return this.#update(this);
+        if (this.id === null) return Puja.#insert(this);
+        return Puja.#update(this);
     }
 
 }
