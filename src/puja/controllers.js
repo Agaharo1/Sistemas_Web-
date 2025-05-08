@@ -10,10 +10,10 @@ import { logger } from "../logger.js";
 export function nuevaPuja(req, res){
     const { id_producto} = req.params;
     const {id_user_sesion } = req.query;
-
     //Comprobamos si ya existe una puja
     const pujaExistente = Puja.getPujaByUser(id_user_sesion);
-    if (pujaExistente !== null) {
+    console.log(pujaExistente);
+    if (pujaExistente !== null && pujaExistente.length > 0) {
         //Si existe, redirigimos a la puja existente
         return res.redirect(`/pujas/puja/${pujaExistente.id}`);
     }

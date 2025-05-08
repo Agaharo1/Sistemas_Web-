@@ -30,13 +30,15 @@ export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);
 
-  const puja = Puja.getPujaByProductId(id);
-  console.log(puja);
+  const pujas = Puja.getPujaByProductId(id);
+
+  // Si hay pujas, coger la última
+  const pujaActiva = Array.isArray(pujas) && pujas.length > 0 ? pujas[pujas.length - 1] : null;
   
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
-    pujaActiva: puja,
+    pujaActiva: pujaActiva,
     producto,
   };
   res.render("pagina", params);
