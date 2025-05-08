@@ -37,7 +37,7 @@ export class Puja {
     this.#getAllStmt = db.prepare(`SELECT * FROM Puja`);
     this.#getPujaByProductIdStmt = db.prepare(`SELECT * FROM Puja WHERE producto = @id_producto`);
     this.#getPujaByIdStmt = db.prepare(`SELECT * FROM Puja WHERE id = @id_puja`);
-    this.#insertStmt = db.prepare(`INSERT INTO Puja(producto, id_u, valor_max) VALUES (@producto, @usuario, @valor_max)`);
+    this.#insertStmt = db.prepare(`INSERT INTO Puja(producto, id_u, valor_max, fecha_limite) VALUES (@producto, @usuario, @valor_max, @fecha_limite)`);
     this.#updateStmt = db.prepare(`UPDATE Puja SET id_u = @id_u WHERE producto = @id_p`);
     this.#deleteStmt = db.prepare(`DELETE FROM Puja WHERE id = @id`);
     this.#deletePujaStmtProductId = db.prepare(`DELETE FROM Puja WHERE producto = @productId`);
@@ -87,7 +87,7 @@ export class Puja {
 
   // Insertar una nueva puja
   static crearPuja(id_u, id_producto) {
-    const fecha_limite = Date.now() + 60_0000000000000000000000000; // 1 minuto desde ahora
+    const fecha_limite = Date.now() + 60_000; // 1 minuto desde ahora
     const nuevaPuja = new Puja({ id_producto, id_u, valor_max: 0 });
 
     const info = this.#insertStmt.run({
