@@ -38,7 +38,7 @@ export class Puja{
            WHERE (p.id_u == @usuario)`
         );
         this.#updateValorMax = db.prepare(
-            "UPDATE Puja SET valor_max = @valor_max WHERE id = @id_puja"
+            "UPDATE Puja SET valor_max = @valor_max, id_u = @id_u WHERE id = @id_puja"
         );
         this.#selectPujaStmtProductId = db.prepare(
           "SELECT id FROM Puja WHERE producto = @id_producto"
@@ -86,23 +86,17 @@ export class Puja{
 
     //Mostrar las pujas de un usuario dada su sesión
     static getPujaByUser(id_user_sesion) {
-        const puja = this.#getByUserIdStmt.all({usuario:id_user_sesion});
-        if (puja === undefined)return null;
-        const pujaExistente = puja.find(
-            (puja) =>
-                ((puja.id_u === id_user_sesion))                
-            );
-        if (pujaExistente) {
-            logger.debug("Puja existente:", pujaExistente);
-            return pujaExistente;
-        } else {
-            return null;
+        const pujas = this.#getByUserIdStmt.all({ usuario: id_user_sesion });
+        if (!pujas || pujas.length === 0) {
+            logger.debug("No hay pujas para el usuario:", id_user_sesion);
+            return [];
         }
+        logger.debug("Pujas del usuario:", pujas);
+        return pujas;
     }
 
-    static updateValorMaximo(valor_max, id_puja){
-        const actualizar = this.#updateValorMax.run({valor_max, id_puja});
-
+    static updateValorMaximo(valor_max, id_puja, id_u) {
+        const actualizar = this.#updateValorMax.run({ valor_max, id_puja, id_u });
         return actualizar;
     }
 
@@ -178,7 +172,7 @@ export class Puja{
         const nuevaPujada = { id_puja, valor, id_u };
         const { lastInsertRowid } = this.#insertPujarStmt.run(nuevaPujada);
         nuevaPujada.id = lastInsertRowid;
-        this.updateValorMaximo(valor, id_puja);
+        this.updateValorMaximo(valor, id_puja, id_u);
         return nuevaPujada;
     }
 
