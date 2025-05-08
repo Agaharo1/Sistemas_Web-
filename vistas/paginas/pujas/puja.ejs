@@ -4,34 +4,28 @@
         <img src="/imagenes/imagen/<%= productId %>/<%= imagenes %>" alt="Imagen del Producto" class="product-image-circle">
         <h3>Producto: <%= productName %></h3>
         <p>Tiempo restante: <span id="contador"><%= tiempoRestante %></span> segundos</p>
-    </div>
+        <script>
+            const span = document.getElementById('contador');
+            let tiempo = parseInt(span.innerText);
 
-    <!-- Formulario con ID para ocultar -->
-    <form id="form-pujar" action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
+            const intervalo = setInterval(() => {
+                tiempo--;
+                if (tiempo <= 0) {
+                    clearInterval(intervalo);
+                    span.innerText = "¡Finalizado!";
+
+                } else {
+                    span.innerText = tiempo;
+                }
+            }, 1000);
+        </script>   
+    </div>
+    <h2>Puja de <%= usuario %></h2>
+    <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
         <input type="hidden" name="id_puja" value="<%= puja.id %>">
         <input type="hidden" name="id_u" value="<%= session.user_id %>">
-        <input type="number" name="valor" placeholder="Escribe tu puja aquí..." min="1" required>
+        <input type="number" name="valor" placeholder="Escribe tu puja aquí...">
         <button type="submit">Enviar</button>
     </form>
-    <p id="mensaje-finalizado" style="display:none; color: red; font-weight: bold;">
-        ¡La puja ha terminado!
-    </p>
-    <script>
-        const span = document.getElementById('contador');
-        const form = document.getElementById('form-puja');
-        const mensaje = document.getElementById('mensaje-finalizado');
-      
-        let tiempo = parseInt(span.innerText);
-      
-        const intervalo = setInterval(() => {
-          tiempo--;
-          span.innerText = tiempo;
-      
-          if (tiempo <= 0) {
-            clearInterval(intervalo);
-            form.style.display = 'none';
-            mensaje.style.display = 'block';
-          }
-        }, 1000);
-      </script>
+    
 </div>

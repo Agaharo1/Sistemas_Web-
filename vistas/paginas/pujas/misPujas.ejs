@@ -12,6 +12,13 @@
                 <p>Usuario: <%= puja.nombreUsuario %></p>
             </div>
         </div>
+
+        <% if (puja.ganada) { %>
+          <p class="puja-ganada-msg">🎉 <strong>¡Felicidades!</strong> Has ganado la puja. Contacta con el dueño del producto para concretar los pasos finales.</p>
+        <% } else { %>
+          <a href="/pujas/puja/<%= puja.id %>" class="puja-item">Pujar</a>
+        <% } %>
+
           <a href="/pujas/puja/<%= puja.id %>" class="puja-item">Pujar</a>
           <form action="/pujas/eliminarPuja/<%= puja.id %>" method="get" class="delete-form">
             <button type="submit" class="delete-puja-link">Eliminar Puja</button>

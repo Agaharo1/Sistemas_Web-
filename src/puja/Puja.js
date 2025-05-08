@@ -1,5 +1,7 @@
 import { logger } from '../logger.js';
 import { Imagen } from '../imagenes/Imagen.js';
+import {Producto} from '../productos/Productos.js'
+import {Usuario} from '../usuarios/Usuario.js'
 
 export class Puja {
   static #getByUserIdStmt = null;
@@ -169,3 +171,5 @@ export class PujaNoEncontrada extends Error {
     this.name = "PujaNoEncontrada";
   }
 }
+
+

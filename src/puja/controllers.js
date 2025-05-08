@@ -73,17 +73,22 @@ export function viewPuja(req, res) {
 export function viewMisPujas(req, res) {
   const id_u = req.session.user_id;
   let pujas = Puja.getPujaByUser(id_u) || [];
+  const ahora = Date.now();
 
   pujas = pujas.map(puja => {
     const producto = Producto.getProductById(puja.producto);
     const imagen = Imagen.getImagenByProductId(puja.producto);
     const usuario = Usuario.getUsuarioById(puja.id_u);
+
+    const tiempoRestante = puja.fecha_limite - ahora;
+    const ganada = (tiempoRestante <= 0 && puja.id_u === id_u);
     return {
       ...puja,
       productName: producto?.nombre || "Sin nombre",
       productId: producto?.id || puja.producto,
-      imagen: imagen || "default.jpg", // sin .nombre ni [0]
-      nombreUsuario: usuario?.nombre || "Anónimo"
+      imagen: imagen || "default.jpg",
+      nombreUsuario: usuario?.nombre || "Anónimo",
+      ganada
     };
   });
 
