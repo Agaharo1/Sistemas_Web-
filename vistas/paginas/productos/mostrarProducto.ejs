@@ -32,11 +32,10 @@
             <p><strong>Nombre:</strong> <%= producto.usuario_nombre %></p>
             <p><strong>Email:</strong> <%= producto.username %></p>
             <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Chat</a>
-            <% if (pujaActiva !== null && pujaActiva.length > 0) { %>
+            <% if (pujaActiva && pujaActiva.id) { %>
                 <p>Puja actual: <%= pujaActiva.valor_max %> por el usuario con id <%= pujaActiva.id_u %></p>
                 <a href="/pujas/puja/<%= pujaActiva.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Pujar</a>
             <% } else { %>
-                <!-- Si no hay una puja activa, mostrar el botón para iniciar una nueva puja -->
                 <a href="/pujas/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>
             <% } %>
         </div>

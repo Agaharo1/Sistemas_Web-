@@ -34,7 +34,7 @@ export function mostrarProducto(req, res) {
 
   // Si hay pujas, coger la última
   const pujaActiva = Array.isArray(pujas) && pujas.length > 0 ? pujas[pujas.length - 1] : null;
-  
+  console.log(pujaActiva);
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
