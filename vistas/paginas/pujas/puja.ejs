@@ -1,23 +1,21 @@
-<h2>Detalle de Puja</h2>
-
-<% if (!puja) { %>
-  <p>Puja no encontrada.</p>
-<% } else { %>
-  <ul>
-    <li><strong>ID:</strong> <%= puja.id %></li>
-    <li><strong>Producto ID:</strong> <%= puja.id_p %></li>
-    <li><strong>Usuario que Pujó:</strong> <%= puja.id_u %></li>
-    <li><strong>Valor Actual:</strong> <%= puja.valor_max %> €</li>
-    <li><strong>Ganador Actual:</strong> <%= puja.id_ganador ?? 'No definido' %></li>
-  </ul>
-
-  <hr>
-  <h3>Enviar nueva puja</h3>
-  <form action="/pujas/enviarPuja" method="POST">
-    <input type="hidden" name="id" value="<%= puja.id %>">
-    <input type="hidden" name="ganador" value="<%= session.user_id %>">
-    <label for="valor">Cantidad (€):</label>
-    <input type="number" step="0.01" name="valor" required>
-    <button type="submit">Pujar</button>
-  </form>
-<% } %>
+<div class="puja-container">
+    <div class="product-info">
+        <img src="/imagenes/imagen/<%= productId %>/<%= imagenes %>" alt="Imagen del Producto" class="product-image-circle">
+        <h3>Producto: <%= productName %></h3>
+    </div>
+    <h2>Puja de <%= usuario %></h2>
+    <div class="pujadas">
+        <% pujadas.forEach(pujada => { %>
+            <div class="pujada <%= pujada.id_u === session.user_id %>">
+                <p><%= pujada.valor %></p>
+            </div>
+        <% }); %>
+    </div>
+    <form action="/pujas/pujar" method="POST" class="pujada-form">
+        <input type="hidden" name="id_puja" value="<%= puja.id %>">
+        <input type="hidden" name="id_u" value="<%= session.user_id %>">
+        <textarea name="pujada" placeholder="Escribe tu puja aquí..." required></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+    
+</div>

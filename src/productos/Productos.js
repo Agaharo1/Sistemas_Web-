@@ -1,5 +1,6 @@
 import { Imagen } from "../imagenes/Imagen.js";
 import {Chat} from "../chat/Chat.js";
+import { Puja } from "../puja/Puja.js";
 import fs from 'fs';
 import path from 'path';
 
@@ -163,6 +164,7 @@ static getProductNameById(id) {
   
   static eliminarProducto(id) {
     Chat.eliminarChatByProduct(id);
+    Puja.eliminarPujaByProduct(id)
     Imagen.eliminarImagen(id);
     const result = this.#deleteStmt.run({ id });
     if (result.changes === 0) throw new ProductoNoEncontrado(id);
