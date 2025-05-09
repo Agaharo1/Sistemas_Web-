@@ -2,59 +2,36 @@
 /*@@author meriwen*/
 /*@@author dabarr02*/
 
-.nav-container{
-	background-color: #85aab0;
-}
-nav .menu.oculto{
-	display: none; /* Oculta el menú */
-}
+/* ESTILOS DEL MENU DESPLEGABLE */
 
-nav .menu{
+
+
+.menu{
+	background-color: #85aab0;
 	display: flex; /* Muestra el menú */
 	flex-direction: column; /* Cambia la dirección a columna */
-	padding: 0; /* Elimina el padding */
+	padding: 10px; /* Elimina el padding */
 	margin: 0; /* Elimina el margin */
 }
-
-nav .menu li{
-	list-style: none; /* Elimina los puntos de la lista */
-	padding: 0; /* Elimina el padding */
-	margin: 0; /* Elimina el margin */
-}	
-
-/* Estilo para los enlaces del menú */
-nav a{
-	color: black;
-	text-align: left;
-	text-decoration: none;
-	display: block;
+.menu.oculto{
+	display: none; /* Oculta el menú */
 }
-.nav-button-top:hover{
-	background-color: #57838a;
-	color: black;
-	font-weight: bold;
+.menu li{
+	list-style: none;
+}
+/*Contiene la navegación*/
+.nav-container{
+	/*background-color: black;*/
 }
 
-
-nav .menu a.active{
-	background-color: #57838a;
-	color: black;
-	font-weight: bold;
+/*Controla los links del menú*/
+.nav-button-top{
+	text-align: center; /* Centra el texto */
+	color: white; /* Cambia el color del texto */
+	/*background-color: white;*/
+	justify-content: center;
 }
 
-@media(min-width: 700px){
-	nav .icon {
-		display: none;
-	  }
-	nav .menu{
-		flex-direction: row; /* Cambia la dirección a fila */
-	}
-	nav .menu li{
-		margin-right: 20px; /* Espacio entre los elementos del menú */
-	}
-	nav .menu a.active{
-		background-color: #57838a;
-		color: black;
-		font-weight: bold;
-	}
+a.boton{
+	background-color: #85aab0;
 }

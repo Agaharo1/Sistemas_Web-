@@ -29,8 +29,11 @@ header {
 	color: black;
 
 }
+header a{
+	text-decoration: none;
+}
 
-header a, header a:visited {
+header .saludo a, header .saludo a:visited  {
 	color: black;
 	font-weight: normal;
 	text-decoration: none;
