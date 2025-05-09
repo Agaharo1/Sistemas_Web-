@@ -1,16 +1,6 @@
 <div class="send-container">
   <h1 class="titulo-centrado">Compra del Producto</h1>
 
-  
-  <div class="dir-envio-container">
-    <a class="nav-button dir-envio" href="/envios/formEnvioProducto/<%= producto.id %>">Añadir dirección de envío</a>
-    <a class="nav-button dir-envio" href="/envios/formPuntoRecogida/<%= producto.id %>">Añadir punto de recogida</a>
-    <a class="nav-button dir-envio" href="/envios/editarDireccion/<%= producto.id %>">Editar dirección de envío</a>
-  </div>
-  <div class="tarjeta-container">
-    <a class="nav-button tarjerta-button" href="/envios/formTarjeta/<%= producto.id %>">Añadir tarjeta de crédito</a>
-    <a class="nav-button tarjerta-button" href="/envios/deleteformTarjeta/<%= producto.id %>">Editar información tarjeta de crédito</a>
-</div>
 
   <div class="pay-summary">
     <h3>Direcciones Guardadas</h3>
@@ -34,9 +24,10 @@
     <% } else { %>
       <p>No tienes direcciones guardadas.</p>
     <% } %>
-    
+    <a class="nav-button dir-envio" href="/envios/formEnvioProducto/<%= producto.id %>">Añadir dirección de envío</a>
+    <a class="nav-button dir-envio" href="/envios/formPuntoRecogida/<%= producto.id %>">Añadir punto de recogida</a>
+    <a class="nav-button dir-envio" href="/envios/editarDireccion/<%= producto.id %>">Editar dirección de envío</a>
 
- 
     <h3>Tarjetas Guardadas</h3>
     <% if (tarjetas && tarjetas.length > 0) { %>
       <select id="tarjeta-guardada" name="tarjeta_guardada" onchange="actualizarCamposOcultos()">
@@ -49,6 +40,8 @@
     <% } else { %>
       <p>No tienes tarjetas guardadas.</p>
     <% } %>
+    <a class="nav-button tarjerta-button" href="/envios/formTarjeta/<%= producto.id %>">Añadir tarjeta de crédito</a>
+    <a class="nav-button tarjerta-button" href="/envios/deleteformTarjeta/<%= producto.id %>">Editar información tarjeta de crédito</a>
   
 
   

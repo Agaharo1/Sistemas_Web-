@@ -3,7 +3,8 @@
     <div class="formulario-container">
         <form action="/envios/eliminarTarjeta" method="POST">
             <p>
-                <label for="tarjeta_seleccionada">Selecciona una tarjeta :</label>
+                <h3>Selecciona tarjeta para eliminar: </h3>
+
                 <select id="tarjeta_seleccionada" name="tarjeta_id" required>
                     <% if (tarjetas && tarjetas.length > 0) { %>
                         <% tarjetas.forEach(tarjeta => { %>
