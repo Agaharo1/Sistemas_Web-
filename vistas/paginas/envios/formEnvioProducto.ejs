@@ -1,8 +1,8 @@
 <section class="formulario-section">
     <h2>Añadir Dirección de Envío</h2>
     <div class="formulario-container">
-        <form action="/envios/formEnvioProducto/<%= producto.id %>" method="POST">
-            <input type="hidden" name="productoId" value="<%= producto.id %>">
+        <form action="/envios/formEnvioProducto/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%= id %>">
             <input type="hidden" name="punto_recogida" value="0">
             <p>
                 <label for="nombre">Nombre: </label>

@@ -1,16 +1,25 @@
 import express from 'express';
 
 import { config } from '../config.js';
-import { formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
+import { editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 import { body } from 'express-validator';
 
 const envioRouter = express.Router();
 
-
+//Gets
 envioRouter.get('/formPuntoRecogida/:id', autenticado('/usuarios/login'), formularioPuntoRecogida);
 envioRouter.get('/formEnvioProducto/:id', autenticado('/usuarios/login'), formularioEnvioProducto);
+envioRouter.get('/editarDireccion/:id', autenticado('/usuarios/login'), editarDireccion);
 envioRouter.get('/resumenProducto/:id', autenticado('/usuarios/login'), envioProducto); 
+envioRouter.get('/formTarjeta/:id', autenticado('/usuarios/login'),formularioTarjeta);
+envioRouter.get('/deleteformTarjeta/:id', autenticado('/usuarios/login'), mostrarTarjetas);
+envioRouter.get('/confirmacionCompra/:id', autenticado('/usuarios/login'), mostrarTicket);
+envioRouter.get('/resumenCompras', autenticado('/usuarios/login'), mostarHistorial);
+envioRouter.get('/resumenVentas', autenticado('/usuarios/login'), mostrarHisVentas);
+
+//Posts
+envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
 envioRouter.post('/formPuntoRecogida/:id',
     [
         autenticado('/usuarios/login'),
@@ -45,7 +54,7 @@ envioRouter.post('/formEnvioProducto/:id',
         body('direccion_entrega').notEmpty().withMessage('La dirección de entrega es obligatoria'),
     ],
     crearDireccion);
-envioRouter.get('/formTarjeta/:id', autenticado('/usuarios/login'),formularioTarjeta);
+
 envioRouter.post(
     '/formTarjeta/:id',
     [
@@ -58,16 +67,6 @@ envioRouter.post(
     ],
     crearTarjeta
 );
-
-envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
-
-envioRouter.get('/confirmacionCompra/:id', autenticado('/usuarios/login'), mostrarTicket);
-
-envioRouter.get('/resumenCompras', autenticado('/usuarios/login'), mostarHistorial);
-
-envioRouter.get('/resumenVentas', autenticado('/usuarios/login'), mostrarHisVentas);
-
-
 
 export default envioRouter;
 

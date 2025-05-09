@@ -105,8 +105,6 @@ export async function confirmacionCompra(req, res) {
 
 
 
-
-
 export function mostrarPuntoRecogida(req, res) {
   const { puntoId, productoId } = req.body;
   console.log("Producto ID recibido:", productoId);
@@ -119,56 +117,16 @@ export function mostrarPuntoRecogida(req, res) {
   }
 }
 
-export async function crearTarjeta(req, res) {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    const errores = result.mapped();
-    const datos = matchedData(req);
-    const { id } = req.params;
-    const producto = Producto.getProductById(id);
-    return res.render("pagina", {
-      contenido: "paginas/envios/formTarjeta",
-      session: req.session,
-      producto,
-      datos,
-      errores,
-      helpers: {
-        error: (errores, campo) => errores[campo]?.msg || "",
-      },
-    });
-  }
-  const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
-  try {
-    const usuario_id = req.session.user_id;
 
-    await Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
-    return res.redirect(`/envios/resumenProducto/${req.params.id}`);
-  } catch (e) {
-    console.error("Error al crear la tarjeta:", e.message);
-    const { id } = req.params;
-    const producto = Producto.getProductById(id);
-    return res.render("pagina", {
-      contenido: "paginas/envios/formTarjeta",
-      session: req.session,
-      producto,
-      error: "No se ha podido guardar la tarjeta",
-      datos: {},
-      errores: {},
-      helpers: {
-        error: (errores, campo) => errores[campo]?.msg || "",
-      },
-    });
-  }
-}
+
+
 export function formularioTarjeta(req, res) {
   const { id } = req.params;
-  console.log("ID del producto recibido:", id);
-  const producto = Producto.getProductById(id);
-  console.log(producto);
+
   const params = {
     contenido: "paginas/envios/formTarjeta",
     session: req.session,
-    producto,
+    id,
     datos: {},
     errores: {},
     helpers: {
@@ -178,16 +136,53 @@ export function formularioTarjeta(req, res) {
   res.render("pagina", params);
 
 }
+
+
+export function mostrarTarjetas(req, res) {
+  const { id } = req.params;
+  const usuario_id = req.session.user_id;
+  const tarjetas = Tarjeta.getTarjetasByUsuarioId(usuario_id);
+  console.log("Tarjetas:", tarjetas);
+
+  return res.render("pagina", {
+    contenido: "paginas/envios/deleteformTarjeta",
+    session: req.session,
+    id,
+    tarjetas,
+    helpers: {
+      error: (errores, campo) => errores[campo]?.msg || "",
+    },
+  });
+}
+
+
+export function editarDireccion(req, res) {
+
+  const { id } = req.params;
+  const usuario_id = req.session.user_id;
+  const direcciones = DirEnvio.getDireccionesByUsuarioId(usuario_id);
+  console.log("Direcciones:", direcciones);
+
+  return res.render("pagina", {
+    contenido: "paginas/envios/editarDireccion",
+    session: req.session,
+    id,
+    direcciones,
+    helpers: {
+      error: (errores, campo) => errores[campo]?.msg || "",
+    },
+  });
+}
+
 export function formularioPuntoRecogida(req, res) {
   const { id } = req.params;
   console.log("ID del producto recibido:", id);
-  const producto = Producto.getProductById(id);
-  console.log(producto);
+
   const puntoRecogida = PuntoRecogida.getPuntoRecogidaById(id);
   const params = {
     contenido: "paginas/envios/formPuntoRecogida",
     session: req.session,
-    producto,
+    id,
     puntoRecogida,
     datos: {},
     errores: {},
@@ -204,17 +199,10 @@ export function formularioPuntoRecogida(req, res) {
 
 export function formularioEnvioProducto(req, res) {
   const { id } = req.params;
-  console.log("ID del producto recibido:", id);
-  const producto = Producto.getProductById(id);
-  console.log(producto);
-
-  if (!producto) {
-    return res.status(404).send("Producto no encontrado");
-  }
   const params = {
     contenido: "paginas/envios/formEnvioProducto",
     session: req.session,
-    producto,
+    id,
     datos: {},
     errores: {},
     helpers: {
@@ -232,9 +220,7 @@ export function envioProducto(req, res) {
   const usuario = Usuario.getUsuarioById(producto.id_user);
   const imagen = Imagen.getImagenByProductId(id);
 
-
   const puntoRecogida = req.session.puntoRecogidaSeleccionado;
-  logger.debug("Punto de recogida seleccionado:", puntoRecogida);
 
   const direcciones = DirEnvio.getDireccionesByUsuarioId(req.session.user_id);
   const tarjetas = Tarjeta.getTarjetasByUsuarioId(req.session.user_id);
@@ -262,11 +248,10 @@ export async function crearPuntoRecogida(req, res) {
     const puntoRecogida = PuntoRecogida.getPuntoRecogidaById(id)
     const errores = result.mapped();
     const datos = matchedData(req);
-    const producto = Producto.getProductById(id);
     return res.render("pagina", {
       contenido: "paginas/envios/formPuntoRecogida",
       session: req.session,
-      producto,
+      id,
       datos,
       puntoRecogida,
       errores,
@@ -276,11 +261,8 @@ export async function crearPuntoRecogida(req, res) {
     });
   }
   const { nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida, productoId } = req.body;
-
   try {
     const usuario_id = req.session.user_id;
-
-
     await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (e) {
@@ -297,11 +279,10 @@ export async function crearDireccion(req, res) {
     const { id } = req.params;
     const errores = result.mapped();
     const datos = matchedData(req);
-    const producto = Producto.getProductById(id);
     return res.render("pagina", {
       contenido: "paginas/envios/formEnvioProducto",
       session: req.session,
-      producto,
+      id,
       datos,
       errores,
       helpers: {
@@ -321,3 +302,31 @@ export async function crearDireccion(req, res) {
   }
 }
 
+
+export async function crearTarjeta(req, res) {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errores = result.mapped();
+    const datos = matchedData(req);
+    const { id } = req.params;
+    return res.render("pagina", {
+      contenido: "paginas/envios/formTarjeta",
+      session: req.session,
+      id,
+      datos,
+      errores,
+      helpers: {
+        error: (errores, campo) => errores[campo]?.msg || "",
+      },
+    });
+  }
+  const { numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular } = req.body;
+  try {
+    const usuario_id = req.session.user_id;
+    await Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
+    return res.redirect(`/envios/resumenProducto/${req.params.id}`);
+  } catch (e) {
+    console.error("Error al crear la tarjeta:", e.message);
+    return res.status(500).send("Error al crear la dirección.");
+  }
+}

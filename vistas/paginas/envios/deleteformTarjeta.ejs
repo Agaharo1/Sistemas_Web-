@@ -1,0 +1,26 @@
+<section class="formulario-section">
+    <h2>Gestionar Tarjetas</h2>
+    <div class="formulario-container">
+        <form action="/envios/eliminarTarjeta" method="POST">
+            <p>
+                <label for="tarjeta_seleccionada">Selecciona una tarjeta :</label>
+                <select id="tarjeta_seleccionada" name="tarjeta_id" required>
+                    <% if (tarjetas && tarjetas.length > 0) { %>
+                        <% tarjetas.forEach(tarjeta => { %>
+                            <option value="<%= tarjeta.id %>">
+                                **** **** **** <%= tarjeta.numero_tarjeta.slice(-4) %> - <%= tarjeta.nombre_titular %> 
+                            </option>
+                        <% }); %>
+                    <% } else { %>
+                        <option disabled>No hay tarjetas disponibles</option>
+                    <% } %>
+                </select>
+            </p>
+            <% if (tarjetas && tarjetas.length > 0) { %>
+                <p style="text-align: center;">
+                    <button type="submit" class="btn-eliminar">Eliminar Tarjeta</button>
+                </p>
+            <% } %>
+        </form>
+    </div>
+</section>
