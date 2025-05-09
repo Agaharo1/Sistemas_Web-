@@ -19,6 +19,7 @@ export class Puja {
   static #selectPujaStmtProductId = null;
   static #updateValorMax = null;
   static #getExpiradasStmt = null;
+  static #deletePujarByPujaIdStmt = null;
 
   valor_max;
   id_u;
@@ -36,6 +37,7 @@ export class Puja {
     if (this.#getByUserIdStmt !== null) return;
 
     this.#getByUserIdStmt = db.prepare(`SELECT * FROM Puja WHERE id_u = @usuario`);
+    this.#deletePujarByPujaIdStmt = db.prepare(`DELETE FROM Pujar WHERE id_puja = @id_puja`);
     this.#getAllStmt = db.prepare(`SELECT * FROM Puja`);
     this.#getPujaByProductIdStmt = db.prepare(`SELECT * FROM Puja WHERE producto = @id_producto`);
     this.#getPujaByIdStmt = db.prepare(`SELECT * FROM Puja WHERE id = @id_puja`);
@@ -124,6 +126,10 @@ export class Puja {
 
   // Eliminar una puja por ID
   static eliminarPuja(id) {
+
+    // Borra primero todas las pujadas relacionadas
+    this.#deletePujarByPujaIdStmt.run({ id_puja: id });
+
     const result = this.#deleteStmt.run({ id });
     logger.info(`Puja eliminada: ${id}, filas afectadas: ${result.changes}`);
   }
