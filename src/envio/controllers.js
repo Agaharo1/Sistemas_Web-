@@ -102,7 +102,23 @@ export async function confirmacionCompra(req, res) {
 
 
 }
+export async function eliminarTarjeta(req, res) {
+    const { tarjeta_id, productoId, } = req.body;
+    await Tarjeta.eliminarTarjetaById(tarjeta_id);
+    return res.redirect(`/envios/resumenProducto/${productoId}`);
+}
 
+export async function eliminarDireccion(req, res) {
+  const { direccion_id, productoId } = req.body;
+  console.log("ID de la dirección a eliminar:", direccion_id);
+  try {
+    await DirEnvio.eliminarDireccionById(direccion_id);
+    return res.redirect(`/envios/resumenProducto/${productoId}`);
+  } catch (error) {
+    console.error("Error al eliminar la dirección:", error);
+    return res.status(500).send("Error al eliminar la dirección.");
+  }
+}
 
 
 export function mostrarPuntoRecogida(req, res) {

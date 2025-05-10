@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { config } from '../config.js';
-import { editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
+import { eliminarDireccion,eliminarTarjeta,editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 import { body } from 'express-validator';
 
@@ -20,6 +20,8 @@ envioRouter.get('/resumenVentas', autenticado('/usuarios/login'), mostrarHisVent
 
 //Posts
 envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
+envioRouter.post('/deleteformTarjeta/:id', autenticado('/usuarios/login'), eliminarTarjeta);
+envioRouter.post('/editarDireccion/:id',autenticado('/usuarios/login'), eliminarDireccion);
 envioRouter.post('/formPuntoRecogida/:id',
     [
         autenticado('/usuarios/login'),
@@ -67,6 +69,8 @@ envioRouter.post(
     ],
     crearTarjeta
 );
+
+
 
 export default envioRouter;
 

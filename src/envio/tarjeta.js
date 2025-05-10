@@ -6,6 +6,7 @@ export class Tarjeta {
     static #getByUserIdStmt = null;
     static #getNombreByIdStmt = null;
     static #getIdByUserIdStmt = null;
+    static #deleteByIdStmt = null;
 
     #id;
     #usuario_id;     
@@ -42,8 +43,18 @@ export class Tarjeta {
         this.#getIdByUserIdStmt = db.prepare(`
             SELECT id FROM tarjeta WHERE usuario_id = @usuario_id
         `);
+        this.#deleteByIdStmt = db.prepare(`
+        DELETE FROM tarjeta WHERE id = @id
+    `);
         
     }
+    static eliminarTarjetaById(tarjeta_id) {
+    const result = this.#deleteByIdStmt.run({ id: tarjeta_id });
+    if (result.changes === 0) {
+        throw new TarjetaNoEncontrada(tarjeta_id);
+    }
+    console.log(`Tarjeta con ID ${tarjeta_id} eliminada correctamente.`);
+}
 
     static getIdTargetaById(usuario_id) {
         const result = this.#getIdByUserIdStmt.get({ usuario_id });
