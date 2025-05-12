@@ -7,6 +7,6 @@ const chatRouter = express.Router();
 chatRouter.get('/chat/:id',  viewChat);
 chatRouter.get('/misChats',  viewMisChats);
 chatRouter.post('/enviarMensaje', body('mensaje', 'No puede ser vacío').trim().notEmpty(), enviarMensaje);
-chatRouter.get('/nuevoChat/:id',  nuevoChat);
-chatRouter.get('/eliminarChat/:id',  eliminarChat);
+chatRouter.get('/nuevoChat/:id',autenticado("/usuarios/login") , nuevoChat);
+chatRouter.post('/eliminarChat/:id',  eliminarChat);
 export default chatRouter;

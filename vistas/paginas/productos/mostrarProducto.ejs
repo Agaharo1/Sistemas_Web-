@@ -26,8 +26,8 @@
                     <a href="/pujas/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>
                 <% } %>
             <% } else { %> 
-                <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
-                <form action="/productos/eliminarProducto" method="POST">
+                <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
+                <form action="/productos/eliminarProducto/<%= producto.id %>" method="POST">
                     <button type="submit" class="button-link">Eliminar</button>
                 </form>
             <% } %>
