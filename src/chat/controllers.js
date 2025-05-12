@@ -87,6 +87,13 @@ export function enviarMensaje(req, res) {
   res.redirect(`/chats/chat/${id_chat}`);
 }
 
+export function enviarMensajeJS(req, res) {
+  const { mensaje, id_chat,senderId } = req.body;
+  const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
+  res.redirect(`/chats/chat/${id_chat}`);
+}
+
+
 export function eliminarChat(req, res) {
   const { id } = req.params;
   try {

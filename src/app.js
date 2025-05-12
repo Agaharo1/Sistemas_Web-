@@ -14,6 +14,7 @@ import { errorHandler } from './middleware/error.js';
 import chatRouter from './chat/router.js';
 import pujaRouter from './puja/router.js';
 import pieRouter from './pie/router.js';
+import notificacionesRouter from './notificaciones/router.js';
 
 
 export const app = express();
@@ -26,6 +27,7 @@ app.set('views', config.vistas);
 app.use(pinoMiddleware);
 
 // Middleware para manejar sesiones
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session(config.session));
 app.use(flashMessages);
@@ -50,4 +52,5 @@ app.use('/envios', envioRouter);
 app.use('/chats', chatRouter);
 app.use('/pujas', pujaRouter);
 app.use('/pie',pieRouter);
+app.use('/notificaciones', notificacionesRouter);
 app.use(errorHandler)
