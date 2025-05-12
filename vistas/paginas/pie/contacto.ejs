@@ -1,0 +1,27 @@
+<div class="contacto-container">
+    <h1>Contáctanos</h1>
+    <p>
+        Si tienes preguntas, comentarios o sugerencias, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte.
+    </p>
+
+    <h2>Información de Contacto</h2>
+    <ul>
+        <li><strong>Email:</strong> <a href="mailto:contacto@truequehub.com">contacto@truequehub.com</a></li>
+        <li><strong>Teléfono:</strong> +34 123 456 789</li>
+        <li><strong>Dirección:</strong> Calle Trueque, 123, Madrid, España</li>
+    </ul>
+
+    <h2>Formulario de Contacto</h2>
+    <form action="/pie/contacto" method="POST" class="contacto-form">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <button type="submit" class="button">Enviar</button>
+    </form>
+</div>

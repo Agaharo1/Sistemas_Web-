@@ -5,10 +5,14 @@
 </head>
 
 <body>
-
+  <% var esPerfil = typeof esPerfil !== 'undefined' ? esPerfil : false; %>
  <div id="contenedor">
   <%- include('./partials/cabecera.ejs', { session: locals.session }) %>
-  <%- include('./partials/sidebarIzq.ejs') %>
+  <% if (locals.session && esPerfil) { %>
+    <%- include('./partials/sidebarIzqProfile.ejs') %>
+  <% } else { %>
+    <%- include('./partials/sidebarIzq.ejs') %>
+  <% } %>
 
   <main>
     <article>
@@ -19,6 +23,30 @@
   <%- include('./partials/sidebarDer.ejs', { session: locals.session }) %>
   <%- include('./partials/pie.ejs') %>
 </div> <!-- Fin del contenedor -->
+
+<!-- JavaScript para manejar el menú desplegable -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const botonMenu = document.querySelector('nav .boton');
+    const menuEl = document.querySelector('nav .menu');
+
+    if (botonMenu && menuEl) {
+        botonMenu.addEventListener('click', () => {
+            const isHidden = menuEl.classList.toggle('oculto');
+            const menuIcon = botonMenu.querySelector('.menu-icon');
+            if (menuIcon) {
+                menuIcon.textContent = isHidden ? '▶' : '▼';
+            }
+        });
+        // Manejar el cambio de tamaño de la pantalla
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 700) {
+                menuEl.classList.remove('oculto'); // Mostrar el menú en pantallas anchas
+              }
+            });
+              }
+});
+</script>
 
 </body>
 </html>

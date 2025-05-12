@@ -6,20 +6,29 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
-    "dev:watch": "nodemon -w ./src ./src/server.js"
+    "start": "node  ./src/server.js",
+    "dev:watch": "nodemon -w  ./src ./src/server.js",
+    "debug": "node --inspect ./src/server.js"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
     "express-session": "^1.18.1",
-    "express-validator": "^7.2.1"
+    "express-validator": "^7.2.1",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^7.0.2",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "pino-pretty": "^13.0.0"
   }
 }

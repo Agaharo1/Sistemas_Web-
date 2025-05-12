@@ -1,0 +1,36 @@
+
+/*@@author meriwen*/
+/*@@author dabarr02*/
+
+.sidebarIz{
+	position:fixed;
+	width: 20vh;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: #e3edd2;
+}
+
+.sidebarIz nav{
+    display: flex;
+    justify-content: space-between; 
+    gap: 1%; 
+	flex-direction: column;
+	padding: 2vh;
+
+}
+.nav-button-iz {
+	color: black;
+    flex: 1; 
+    text-align: left; 
+    padding: 1%;
+    border-radius: 5px;
+    font-size: 14px;
+
+	text-decoration: none;
+}
+.nav-button-iz:hover {
+	color: black;
+    background-color: #aab498;
+}
+

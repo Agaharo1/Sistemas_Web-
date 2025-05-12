@@ -1,0 +1,44 @@
+/*@@author meriwen*/
+/*@@author dabarr02*/
+
+/*Estilo forms */
+.formulario-container{
+	/* display: flex;
+	flex-direction: column; */
+    max-width: 50vw; 
+    padding: 5vh;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.formulario-section{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+	flex-direction: column;
+	padding: 2vh;
+}
+form{
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+/*Estilo para el formulario del envio "modificar" */
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option input[type="radio"] {
+    margin-right: 10px; 
+}
+
+.modDirec-button {
+    margin-left: 10px; 
+}
+
+

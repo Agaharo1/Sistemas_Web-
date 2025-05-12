@@ -1,0 +1,90 @@
+
+/*Estilos pagina de productos*/
+.productos-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	padding: 20px;
+	border-radius: 10px;
+	justify-content: flex-start
+}
+
+.producto {
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: calc(33.333% - 20px); 
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	padding: 15px;
+	text-align: center;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.producto img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+	margin-bottom: 10px;
+}
+
+.producto p {
+	margin: 10px 0;
+	font-size: 14px;
+	color: #333;
+}
+
+
+.sold-product {
+    background-color: #ffcccc; 
+    color: #cc0000; 
+    padding: 5px; 
+    border: 1px solid #cc0000; 
+    border-radius: 4px; 
+    text-align: center;
+    font-size: 12px; 
+    font-weight: bold;
+    margin-top: 10px; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+}
+
+
+#mercado h2 {
+    text-align: center; 
+    margin: 20px 0; 
+}
+
+
+.titulo-centrado {
+    text-align: center; 
+    margin: 20px 0; 
+}
+
+button {
+	background-color: #5cb397; /* Color de fondo */
+	color: white; /* Color del texto */
+	border: none; /* Sin bordes */
+	border-radius: 4px; /* Bordes redondeados */
+	cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+	padding: 10px 15px; /* Espaciado interno */
+	margin-left: 5px; /* Espaciado a la izquierda */
+	margin-top: 5px; /* Espaciado superior */
+	width: auto; /* Ajusta el ancho automáticamente al contenido */
+	flex-shrink: 0; /* Evita que el botón se reduzca */
+	text-align: center; /* Centra el texto dentro del botón */
+	text-decoration: none; /* Quita el subrayado del enlace */
+	font-family: 'Times New Roman', TimesNewRomanPSMT, serif;
+}
+
+.formEliminar{
+	align-items: center; /* Centra el contenido verticalmente */
+}
+

@@ -1,35 +1,109 @@
-import { body } from 'express-validator';
+
 import { Usuario,RolesEnum } from './Usuario.js';
+import { render } from '../utils/render.js';
+import { logger } from '../logger.js';
+import { body, validationResult, matchedData } from 'express-validator';
+import { redirige } from '../middleware/utils.js';
 
 export function viewLogin(req, res) {
-    const params = {
-        contenido: 'paginas/usuario/login',
-        session: req.session
-    }
-    res.render('pagina', params)
+    render(req, res, 'paginas/usuario/login', {
+        datos: {},
+        errores: {}
+    });
 }
 
 export function viewRegister(req, res) {
-    const params = {
-        contenido: 'paginas/usuario/registro',
-        session: req.session
-    }
-    res.render('pagina', params)
+   
+    render(req, res, 'paginas/usuario/registro', {
+        datos: {},
+        errores: {}
+    });
 }
 
-export function doRegister(req, res) {
+export function viewProfile(req, res) {
+    render(req, res, 'pagina', {
+        contenido: 'paginas/usuario/profile',
+        session: req.session,
+        esPerfil: true,
+        datos: {},
+        errores: {}
+    });
+}
+
+export function viewEditarPerfil(req, res) {
+    const id = parseInt(req.session.user_id);
+    if (isNaN(id)) {    
+        return redirige(req, res, '/usuarios/login');
+    }
+    const usuario = Usuario.getUsuarioById(id);
+    const params = {
+        contenido: "paginas/usuario/editarPerfil",
+        usuario,
+        session: req.session
+    };
+    res.render("pagina", params);
+}
+
+export function doEditarPerfil(req, res) {
+    const userId = parseInt(req.session.user_id);
+    const {nombre, username, password } = req.body;
+    try {
+        console.log("Editando perfil:", userId, nombre, username, password);
+        Usuario.editarPerfil(nombre, username, password, userId);
+        res.redirect("/contenido/normal");
+    } catch (e) {
+        res.status(400).send(e.message);
+    }
+}
+
+export async function doRegister(req, res) {
+
+    const result = validationResult(req);
+    if (! result.isEmpty()) {
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        return render(req, res, 'paginas/usuario/registro', {
+            datos,
+            errores
+        });
+    }
+
+
+
     const {nombre, username, password} = req.body;
     try{
-    const result = Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
-    res.redirect('/usuarios/login');
+        const result = await Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
+        req.session.login = true;
+        req.session.nombre = nombre;
+        req.session.esAdmin = result.rol === RolesEnum.ADMIN;
+        req.session.user_id = result.id;
+        return res.redirect('/usuarios/index');
     } catch(e) {
-        res.status(400).send(e.message);
+          // Log de nivel error
+        logger.error('Error en el proceso de registro.');
+
+          // Log de nivel debug con detalles de la excepción
+        logger.debug(`Detalles del error en registro: ${e.message}`);
+
+        render(req, res, 'paginas/usuario/registro', {
+            error: 'No se ha podido crear el usuario',
+            datos: {},
+            errores: {}
+        });
     }
     
 
 }
 
-export function doLogin(req, res) {
+export function viewBaja(req, res) {
+    const params = {
+        contenido: 'paginas/usuario/baja',
+        session: req.session
+    }
+    res.render('pagina', params)
+}
+
+export function doBaja(req, res,next) {
     body('username').escape(); // Se asegura que eliminar caracteres problemáticos
     body('password').escape(); // Se asegura que eliminar caracteres problemáticos
     
@@ -37,23 +111,58 @@ export function doLogin(req, res) {
     const password = req.body.password.trim();
 
     try {
-        const usuario = Usuario.login(username, password);
-        req.session.login = true;
-        req.session.nombre = usuario.nombre;
-        req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
-        console.log(`Usuario logueado: ${username}`);
-        req.session.user_id = usuario.id;
-        return res.render('pagina', {
-            contenido: 'paginas/index',
-            session: req.session
-        });
+        const usuario = Usuario.eliminarUsuario(username, password);
+        console.log(`Usuario dado de baja: ${username}`);
+        next();
 
     } catch (e) {
         res.render('pagina', {
-            contenido: 'paginas/usuario/login',
-            error: 'El usuario o contraseña no son válidos',
-            userErr : username
+            contenido: 'paginas/usuario/baja',
+            error: 'Contraseña erronea',
+            userErr : username,
+            session: req.session
         })
+    }
+}
+
+
+
+export async function doLogin(req, res) {
+    const result = validationResult(req);
+    if (! result.isEmpty()) {
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        return render(req, res, 'paginas/usuario/login', {
+            errores,
+            datos,
+            session: req.session
+        });
+    }
+
+    body('username').escape(); // Se asegura que eliminar caracteres problemáticos
+    body('password').escape(); // Se asegura que eliminar caracteres problemáticos
+    
+    const username = req.body.username.trim();
+    const password = req.body.password.trim();
+
+    try {
+        const usuario = await Usuario.login(username, password);
+        req.session.login = true;
+        req.session.nombre = usuario.nombre;
+        req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
+        req.log.debug(`Usuario logueado: ${username}`);
+        req.session.user_id = usuario.id;
+        return res.redirect('/usuarios/index');
+    } catch (e) {
+
+        const datos = matchedData(req);
+        req.log.warn("Problemas al hacer login del usuario '%s'", username);
+        req.log.debug('El usuario %s, no ha podido logarse: %s', username, e.message);
+        render(req, res, 'paginas/usuario/login', {
+            error: 'El usuario o contraseña no son válidos',
+            datos,
+            errores: {}
+        });
     }
 }
 
@@ -72,4 +181,7 @@ export function doLogout(req, res) {
         res.redirect('/');
     }
     
+}
+export function viewHome(req, res) {
+    return render(req, res, 'paginas/index');
 }

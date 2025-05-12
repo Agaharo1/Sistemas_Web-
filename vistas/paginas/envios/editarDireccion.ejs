@@ -1,0 +1,29 @@
+<section class="formulario-section">
+    <h2>Gestionar información de envío</h2>
+    <div class="formulario-container">
+        <form action="/envios/editarDireccion/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%= id %>">
+            <div class="form-group">
+                <h3>Selecciona dirección para editar:</h3>
+                <select id="direccion_seleccionada" name="direccion_id" class="form-input" required>
+                    <% if (direcciones && direcciones.length > 0) { %>
+                        <% direcciones.forEach(direccion => { %>
+                            <option value="<%= direccion.id %>">
+                              Dirección: <%= direccion.direccion_entrega %>,  Codigo postal: <%= direccion.codigo_postal %>
+                            </option>
+                        <% }); %>
+                    <% } else { %>
+                        <option disabled>No hay direcciones disponibles</option>
+                    <% } %>
+                </select>
+            </div>
+            <% if (direcciones && direcciones.length > 0) { %>
+                <div class="form-group">
+                    <button type="submit" class="btn-editar">Eliminar Dirección</button>
+                </div>
+            <% } %>
+        </form>
+
+        
+    </div>
+</section>

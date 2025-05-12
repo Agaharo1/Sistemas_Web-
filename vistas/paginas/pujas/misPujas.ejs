@@ -1,0 +1,32 @@
+<div class="puja-list">
+    <h2>Mis Pujas Activas</h2>
+  
+    <% if (pujas.length > 0) { %>
+      <% pujas.forEach(puja => { %>
+        <div class="puja-item-container">
+        <div class="puja-info">
+            <div class="product-info">
+                <img src="/imagenes/imagen/<%= puja.productId %>/<%= puja.imagen %>" alt="Imagen del Producto" class="product-image-circle">
+                <h3><%= puja.productName %></h3>
+                <p>Valor actual: <strong><%= puja.valor_max %> €</strong></p>
+                <p>Usuario: <%= puja.nombreUsuario %></p>
+            </div>
+        </div>
+
+        <% if (puja.ganada) { %>
+          <p class="puja-ganada-msg">🎉 <strong>¡Felicidades!</strong> Has ganado la puja. Contacta con el dueño del producto para concretar los pasos finales.</p>
+        <% } else { %>
+          <a href="/pujas/puja/<%= puja.id %>" class="puja-item">Pujar</a>
+        <% } %>
+
+          <a href="/pujas/puja/<%= puja.id %>" class="puja-item">Pujar</a>
+          <form action="/pujas/eliminarPuja/<%= puja.id %>" method="get" class="delete-form">
+            <button type="submit" class="delete-puja-link">Eliminar Puja</button>
+          </form>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No tienes pujas activas.</p>
+    <% } %>
+  </div>
+  

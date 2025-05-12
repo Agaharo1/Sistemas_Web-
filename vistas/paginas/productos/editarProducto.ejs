@@ -1,0 +1,19 @@
+<section class="formulario-section">
+    <h2>Editar producto</h2>
+    <div class="formulario-container">
+        <form action="/productos/editar" method="POST">
+            <p><label for="nombre">Nombre: </label>
+                <input type="text" id="nombre" name="nombre" value="<%= producto.nombre %>" required>
+            </p>
+            <p><label for="descripcion">Descripción: </label>
+            <input type="text" id="descripcion" name="descripcion" value="<%= producto.descripcion %>" required></p>
+            <p><label for="precio">Precio: </label>
+                <input type="number" id="precio" name="precio" value="<%= producto.precio %>" required></p>
+            <p>
+                
+                <input type="hidden" id="id" name="id" value="<%= id %>">
+            <p><button type="submit">Enviar</button></p>
+                
+        </form>
+    </div>
+</section>

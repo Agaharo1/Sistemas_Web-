@@ -1,0 +1,38 @@
+<section class="formulario-section">
+    <h2>Añadir Dirección de Envío</h2>
+    <div class="formulario-container">
+        <form action="/envios/formEnvioProducto/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%= id %>">
+            <input type="hidden" name="punto_recogida" value="0">
+            <p>
+                <label for="nombre">Nombre: </label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" value="<%= datos.nombre %>">
+                <%- helpers.error(errores, 'nombre') %>
+            </p>
+            <p>
+                <label for="direccion">Dirección: </label>
+                <input type="text" id="direccion" name="direccion_entrega" placeholder="Dirección completa" value="<%= datos.direccion_entrega %>">
+                <%- helpers.error(errores, 'direccion_entrega') %>
+            </p>
+            <p>
+                <label for="codigo_postal">Código Postal: </label>
+                <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Código postal" value="<%= datos.codigo_postal %>">
+                <%- helpers.error(errores, 'codigo_postal') %>
+            </p>
+            <p>
+                <label for="telefono">Teléfono: </label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono" value="<%= datos.telefono %>">
+                <%- helpers.error(errores, 'telefono') %>
+            </p>
+            <p>
+                <label for="dni">DNI: </label>
+                <input type="text" id="dni" name="dni" placeholder="Documento de identidad" value="<%= datos.dni %>">
+                <%- helpers.error(errores, 'dni') %>
+            </p>
+            <input type="hidden" id="user_id" name="user_id" value="<%= session.user_id %>">
+            <p style="text-align: center;">
+                <button type="submit">Guardar Dirección</button>
+            </p>
+        </form>
+    </div>
+</section>

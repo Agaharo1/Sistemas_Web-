@@ -1,0 +1,21 @@
+<div class="chat-container">
+    <div class="product-info">
+        <img src="/imagenes/imagen/<%= productId %>/<%= imagenes %>" alt="Imagen del Producto" class="product-image-circle">
+        <h3>Producto: <%= productName %></h3>
+    </div>
+    <h2>Chat con <%= otherUserName %></h2>
+    <div class="messages">
+        <% mensajes.forEach(message => { %>
+            <div class="message <%= message.senderId === session.user_id ? 'sent' : 'received' %>">
+                <p><%= message.contenido %></p>
+            </div>
+        <% }); %>
+    </div>
+    <form action="/chats/enviarMensaje" method="POST" class="message-form">
+        <input type="hidden" name="id_chat" value="<%= chat.id %>">
+        <input type="hidden" name="senderId" value="<%= session.user_id %>">
+        <textarea name="mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+    
+</div>

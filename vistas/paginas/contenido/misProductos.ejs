@@ -1,0 +1,49 @@
+<div id="mercado">
+    <h2 class="titulo-centrado">Mis Productos</h2>
+    <div class="productos-container">
+        <% if (productos.length > 0) { %>
+            <% productos.forEach(producto => { %>
+                <div class="producto">
+                    <% if (producto.imagen) { %>
+                        <a href="/productos/producto/<%= producto.id %>">
+                            <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="<%= producto.nombre %>" class="product-image">
+                        </a>
+                    <% } else { %>
+                        <p>No hay imágenes disponibles para este producto.</p>
+                    <% } %>
+                    <p>
+                        Producto: <%= producto.nombre %> -
+                        Precio: <%= producto.precio %>
+                    </p>
+                    <p>
+                        Descripción:
+                        <% if (!producto.descripcion) { %>
+                            Este producto no tiene descripción.
+                        <% } else { %>
+                            <%= producto.descripcion %>
+                        <% } %>
+                    </p>
+                    <% if (producto.vendido) { %>
+                       
+                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                            <div class="sold-product">
+                                <p><strong>Producto vendido</strong></p>
+                            </div>
+                       
+                    <% } else { %>
+                        <div>
+                            <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
+                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No hay productos disponibles.</p>
+        <% } %>
+    </div>
+</div>

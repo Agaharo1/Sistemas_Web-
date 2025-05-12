@@ -10,6 +10,8 @@ export class Usuario {
     static #getByUsernameStmt = null;
     static #insertStmt = null;
     static #updateStmt = null;
+    static #deleteStmt= null;
+    static #getByIdStmt = null;
 
     static initStatements(db) {
         if (this.#getByUsernameStmt !== null) return;
@@ -17,6 +19,16 @@ export class Usuario {
         this.#getByUsernameStmt = db.prepare('SELECT id,password,nombre,rol FROM Usuarios WHERE username = @username');
         this.#insertStmt = db.prepare('INSERT INTO Usuarios(username, password, nombre, rol) VALUES (@username, @password, @nombre, @rol)');
         this.#updateStmt = db.prepare('UPDATE Usuarios SET username = @username, password = @password, rol = @rol, nombre = @nombre WHERE id = @id');
+        this.#deleteStmt = db.prepare('DELETE FROM Usuarios WHERE username = @username');
+        this.#getByIdStmt = db.prepare('SELECT username,nombre FROM Usuarios WHERE id = @id');
+    }
+
+    static getUsuarioById(id) {
+        const usuario = this.#getByIdStmt.get({ id });
+        if (usuario === undefined) throw new UsuarioNoEncontrado(id);
+    
+        const { username, nombre } = usuario;
+        return new Usuario(username, null, nombre, RolesEnum.USUARIO, id);
     }
 
     static getUsuarioByUsername(username) {
@@ -50,11 +62,12 @@ export class Usuario {
     }
 
     static #update(usuario) {
+        const id = usuario.#id
         const username = usuario.#username;
         const password = usuario.#password;
         const nombre = usuario.nombre;
         const rol = usuario.rol;
-        const datos = {username, password, nombre, rol};
+        const datos = {id, username, password, nombre, rol};
 
         const result = this.#updateStmt.run(datos);
         if (result.changes === 0) throw new UsuarioNoEncontrado(username);
@@ -62,8 +75,77 @@ export class Usuario {
         return usuario;
     }
 
+    static #delete(usuario) {
+        const usuario_d = this.getUsuarioByUsername(usuario.username);
+        const result = this.#deleteStmt.run({ username: usuario_d.username });
 
-    static login(username, password) {
+        if (result.changes === 0) {
+            throw new UsuarioNoEncontrado(usuario.username);
+        }
+
+        return usuario;
+    }
+
+    setUsername(username) {
+        this.#username = username;
+    }
+
+    setPassword(password) {
+        this.#password = password;
+    }
+
+    static async editarPerfil(nombre, username, password, id) {
+        console.log('Intentando editar el perifl con ID: ', id);
+        const usuario = this.getUsuarioById(id);
+    
+        if (!usuario) {
+            throw new UsuarioNoEncontrado(id);
+        }
+
+        console.log('Usuario encontrado');
+    
+        usuario.nombre = nombre;
+        usuario.setUsername(username);
+    
+        if (password) {
+            usuario.cambiaPassword(password);
+        }
+
+        console.log("Usuario después de la actualización:", usuario);
+    
+        const result = usuario.persist();
+    
+        console.log("Resultado de persistencia en BD:", result);
+
+        if (result.changes === 0) {
+            throw new UsuarioNoEncontrado(id);
+        }
+    
+        return usuario;
+    }
+
+    static eliminarUsuario(username, password) {
+        try {
+            // Obtener usuario y verificar contraseña
+            const usuario = this.getUsuarioByUsername(username);
+            if (!bcrypt.compareSync(password, usuario.#password)) {
+                throw new UsuarioOPasswordNoValido(username);
+            }
+    
+            // Si la contraseña es correcta, proceder con la eliminación
+            this.#delete(usuario);
+            
+        } catch (e) {
+            // Solo relanzamos el error si no es del tipo esperado
+            if (!(e instanceof UsuarioNoEncontrado || e instanceof UsuarioOPasswordNoValido)) {
+                throw new Error('Error inesperado al eliminar usuario', { cause: e });
+            }
+            throw e;
+        }
+    }
+
+
+    static async login(username, password) {
         let usuario = null;
         try {
             usuario = this.getUsuarioByUsername(username);
@@ -71,18 +153,17 @@ export class Usuario {
             throw new UsuarioOPasswordNoValido(username, { cause: e });
         }
       
-        // XXX: En el ej3 / P3 lo cambiaremos para usar async / await o Promises
-        const hashedPassword = bcrypt.hashSync(password);
-        console.log('Hashed password:', hashedPassword);
-        console.log('Hashed password from DB:', usuario.#password);
-        if ( ! bcrypt.compareSync(password, usuario.#password) ) throw new UsuarioOPasswordNoValido(username);
+        
+        const isPasswordValid = await bcrypt.compare(password, usuario.#password);
+        if (!isPasswordValid) {
+            throw new UsuarioOPasswordNoValido(username);
+        }
         return usuario;
     }
 
-    static crearUsuario(username, password, nombre) {
+    static async crearUsuario(username, password, nombre) {
         const Tusuario = new Usuario(username, password, nombre);
-        Tusuario.password = password;
-        console.log('Contraseña del usuario creado:', Tusuario.#password);
+        await Tusuario.cambiaPassword(password);
         
         try {
             this.getUsuarioByUsername(username);
@@ -95,6 +176,10 @@ export class Usuario {
         }
         
         
+    }
+    async cambiaPassword(nuevoPassword) {
+            
+        this.#password = bcrypt.hashSync(nuevoPassword);    
     }
     #id;
     #username;

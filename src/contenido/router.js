@@ -1,8 +1,29 @@
 import express from 'express';
+import {Producto} from '../productos/Productos.js'
+import {Imagen} from '../imagenes/Imagen.js'
 
 const contenidoRouter = express.Router();
 
+contenidoRouter.get('/misProductos', (req, res) => {
+    let contenido = 'paginas/contenido/noPermisos';
+    let productos = [];
+    let productosImagenes = {}; // Diccionario para asociar productos con imágenes
 
+    if (req.session.login) {
+        productos = Producto.getProductByUserId(req.session.user_id);
+        console.log(productos);
+
+        // Crear el diccionario de productos e imágenes
+
+        contenido = 'paginas/contenido/misProductos';
+    }
+
+    res.render('pagina', {
+        contenido,
+        session: req.session,
+        productos
+    });
+});
 
 contenidoRouter.get('/flogin', (req, res) => {
 
@@ -23,13 +44,16 @@ contenidoRouter.get('/vlogin', (req, res) => {
 })
 
 contenidoRouter.get('/normal', (req, res) => {
-    let contenido = 'paginas/contenido/noPermisos';
-    if (req.session.login) {
-        contenido = 'paginas/contenido/normal';
-    }
+    let contenido = 'paginas/contenido/normal';
+    let productos = [];
+    let productosImagenes = {}; // Diccionario para asociar productos con imágenes
+
+    productos = Producto.getProducts();
+    console.log(productos);
     res.render('pagina', {
         contenido,
-        session: req.session
+        session: req.session,
+        productos
     });
 });
 

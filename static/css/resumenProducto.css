@@ -1,0 +1,106 @@
+.titulo-centrado {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+
+ .pay-summary{
+    width: 50%;
+    margin: 0 auto; 
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+}
+.product-container {
+    width: 30%; 
+    margin: 20px auto; 
+    padding: 15px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+}
+
+.address-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+p {
+    margin: 8px 0;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+
+.nav-button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 10px 5px;
+    background-color: #5cb397;;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.nav-button:hover {
+    background-color:  #5cb397;;
+}
+
+.continue-button {
+    display: block;
+    width: 10%;
+    padding: 8px; 
+    background-color: #5cb397;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem; 
+    cursor: pointer;
+    margin: 10px auto;
+}
+
+
+
+
+.product-container {
+    text-align: center;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.product-details {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.product-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.product-details p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+

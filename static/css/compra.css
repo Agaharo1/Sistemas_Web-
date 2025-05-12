@@ -1,0 +1,75 @@
+
+.button-link {
+    background-color: #5cb397; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 2%; /* Espaciado interno */
+    margin-left: 5px; /* Espaciado a la izquierda */
+    margin-top: 5px; /* Espaciado superior */
+    width: 25%; /* Ancho del botón */
+    flex-shrink: 0; /* Evita que el botón se reduzca */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    display: inline-block; /* Permite que el ancho tenga efecto */
+    height: 10%;;
+}
+
+.user-info button:hover {
+	background-color: #58aca7;
+}
+
+.product-details button {
+    background-color: #5cb397; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 5px; /* Espaciado interno */
+    margin-left: 5px; /* Espaciado a la izquierda */
+    margin-top: 5px; /* Espaciado superior */
+    width: 15%; /* Ancho del botón */
+    flex-shrink: 0; /* Evita que el botón se reduzca */
+    text-align: center; /* Centra el texto dentro del botón */
+}
+
+.product-details button:hover {
+    background-color: #428d75; /* Color de fondo al pasar el ratón */
+}
+
+.nav-button{
+    flex: 1; 
+    text-align: center; 
+    padding: 1%;
+    border-radius: 5px;
+    font-size: 20px;
+	color:black; 
+	background-color: #8fd8d6;
+	text-decoration: none;
+}
+
+.nav-button:hover {
+    background-color: #69adab; 
+	text-decoration: none;
+
+}
+.dir-envio-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+    margin: 0 auto 20px auto; 
+    width: 30%; 
+}
+
+.tarjeta-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+    margin: 0 auto 20px auto; 
+    width: 30%; 
+}
+
+

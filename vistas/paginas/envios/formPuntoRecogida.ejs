@@ -1,0 +1,52 @@
+<div  class="formulario-section" id="mercado">
+    <h2>Puntos de Recogida</h2>
+    <div class="formulario-container">
+        <form action="/envios/formPuntoRecogida/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%= id %>">
+            <input type="hidden" name="punto_recogida" value="1">
+            <input type="hidden" id="direccion_entrega" name="direccion_entrega" value="<%= puntoRecogida.length > 0 ? puntoRecogida[0].direccion : '' %>">
+            <p>
+                <label for="puntoId">Selecciona:</label>
+                <select name="puntoId" id="puntoId" required onchange="updateDireccionEntrega()">
+                    <% if (puntoRecogida.length > 0) { %>
+                        <% puntoRecogida.forEach((punto, index) => { %>
+                            <option value="<%= punto.id %>" data-direccion="<%= punto.direccion %>" <%= index === 0 ? 'selected' : '' %>>
+                                <%= punto.provincia %> - <%= punto.direccion %>
+                            </option>
+                        <% }) %>
+                    <% } else { %>
+                        <option value="" disabled>No hay puntos de recogida disponibles</option>
+                    <% } %>
+                </select>
+            </p>
+            <h3 style="text-align: center;">Datos del Destinatario</h3>
+            <p>
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" value="<%= datos.nombre %>">
+                <%- helpers.error(errores, 'nombre') %>
+            </p>
+
+            <p>
+                <label for="codigo_postal">Código Postal:</label>
+                <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Código Postal" value="<%= datos.codigo_postal %>">
+                <%- helpers.error(errores, 'codigo_postal') %>
+            </p>
+
+            <p>
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Teléfono de contacto" value="<%= datos.telefono %>">
+                <%- helpers.error(errores, 'telefono') %>
+            </p>
+
+            <p>
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" placeholder="DNI" value="<%= datos.dni %>">
+                <%- helpers.error(errores, 'dni') %>
+            </p>
+
+            <p style="text-align: center;"><button type="submit">Confirmar Envío</button></p>
+        </form>
+    </div>
+</div>
+
+<script src="/js/formPuntoRecogida.js"></script>

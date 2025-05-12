@@ -2,14 +2,72 @@
 <%
 function mostrarSaludo(session){
 	if (session == null || ! session.login){
-		return `<p>Usuario desconocido. <a href="/usuarios/login">Login</a></p>`;
+		return `<a href="/usuarios/login">Inicia sesión</a></p>`;
 	}
 
-	return `<p>Bienvenido ${session.nombre}. <a href="/usuarios/logout">(salir)</a></p>`;
+	return `<p>Bienvenido ${session.nombre}.</p>`;
 }
-%><header>
-		<h1>Mi gran página web</h1>
+function mostrarMenu(session){
+	if (session == null || ! session.login){
+		return `
+		<nav class="nav-container">
+			<p><a href="#" class = "boton icon"><span class="menu-icon">▶</span></a></p>
+			<ul class = "menu oculto">
+				<li><a href="/" class="nav-button-top">Inicio</a></li>
+				<li><a href="/contenido/normal"class="nav-button-top">Mercado</a></li>
+				<li><a href="/usuarios/registro"class="nav-button-top">Registro</a></li>
+			</ul>
+
+		</nav>`;
+	}
+
+	return `
+	<nav class="nav-container">
+		<p><a href="#" class = "boton icon"><span class="menu-icon">▶</span></a></p>
+
+		<ul class = "menu oculto">
+			<li><a href="/" class="nav-button-top">Inicio</a></li>
+			<li><a href="/usuarios/profile" class="nav-button-top">Mi perfil</a></li>
+			<li><a href="/contenido/normal" class="nav-button-top">Mercado</a></li>
+			<li><a href="/productos/subir" class="nav-button-top">Subir producto</a></li>
+			<li><a href="/usuarios/baja" class="nav-button-top">Darme de baja</a></li>
+			<li><a href="/usuarios/logout" class="nav-button-top">Logout</a></li>
+		</ul>
+	</nav>`;
+}
+
+%>
+
+<header>
+	
+	<div class="contenido_cabecera">
+		<!-- Contenido: título, barra de búsqueda y login -->
+		<!-- Título -->
+		<h1><a href="/">TruequeHub</a></h1>
+
+		<!-- Barra de búsqueda -->
+		<div class="barra_busqueda">
+			<form action="/productos/buscar" method="GET">
+				<div style="display: flex; align-items: center;">
+					<input type="text" name="query" placeholder="Busca un producto" required style="flex-grow: 1;">
+					<button type="submit" style="margin-left: 10px;">Buscar</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- Login -->
 		<div class="saludo">
 			<%- mostrarSaludo(session) %>
 		</div>
+
+		
+		
+
+	</div>
+	<!-- Barra de navegación -->
+	<div class = "menu">
+		<%- mostrarMenu(session) %>
+	</div>
+
 </header>
+
