@@ -73,6 +73,9 @@ export async function doRegister(req, res) {
     if (! result.isEmpty()) {
         const errores = result.mapped();
         const datos = matchedData(req);
+        if (esAjax) {
+            return res.status(400).json({ status: 400, errores });
+        }
         return render(req, res, 'paginas/usuario/registro', {
             datos,
             errores
@@ -89,6 +92,11 @@ export async function doRegister(req, res) {
         req.session.nombre = nombre;
         req.session.esAdmin = result.rol === RolesEnum.ADMIN;
         req.session.user_id = result.id;
+
+         if (esAjax) {
+            return res.status(200).json({ ok: true });
+        }
+        
         return res.redirect('/usuarios/index');
     } catch(e) {
           // Log de nivel error
