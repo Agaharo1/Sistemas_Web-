@@ -18,7 +18,7 @@ pujaRouter.get('/puja/:id', viewPuja);
 pujaRouter.get('/misPujas', viewMisPujas);
 
 // Crear una nueva puja para un producto
-pujaRouter.get('/nuevaPuja/:id_producto', nuevaPuja);
+pujaRouter.post('/nuevaPuja/:id_producto', nuevaPuja);
 
 // Realizar una pujada (puja sobre una puja existente)
 pujaRouter.post(
