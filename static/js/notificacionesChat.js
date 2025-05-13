@@ -36,17 +36,17 @@ function init() {
 
     notificaciones.addEventListener('message', e => {
         try {
-        // Aquí se recibe el mensaje del servidor
-        //Pintamos el mensaje en la pantalla
-        const message = JSON.parse(e.data);
-        // Añade el nuevo mensaje al contenedor de mensajes
-        const newMessage = document.createElement('div');
-        newMessage.classList.add('message', message.senderId === sessionUserId ? 'sent' : 'received');
-        newMessage.innerHTML = `<p>${message.contenido}</p>`;
-        messagesContainer.appendChild(newMessage);
-        // Desplaza el contenedor de mensajes hacia abajo
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        console.log('Mensaje recibido:', message);
+            // Aquí se recibe el mensaje del servidor
+            //Pintamos el mensaje en la pantalla
+            const message = JSON.parse(e.data);
+            // Añade el nuevo mensaje al contenedor de mensajes
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message', message.senderId === sessionUserId ? 'sent' : 'received');
+            newMessage.innerHTML = `<p>${message.contenido}</p>`;
+            messagesContainer.appendChild(newMessage);
+            // Desplaza el contenedor de mensajes hacia abajo
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            console.log('Mensaje recibido:', message);
         }catch(e){
             console.error('Mensaje no esta en formato:', e);
         }
@@ -67,20 +67,9 @@ function init() {
             const response = await postJson('/chats/enviarMensajeJS', jsonData); 
             messageForm.querySelector('textarea[name="mensaje"]').value = '';
             if (response.ok) {
-                //Si el mensaje se envía correctamente, pintamos el mensaje en la pantalla
+                
                 console.log('Formulario enviado con éxito');
-                /*
-                // Añade el nuevo mensaje al contenedor de mensajes
-                const newMessage = document.createElement('div');
-                newMessage.classList.add('message', 'sent'); // Añade las clases CSS necesarias
-                newMessage.innerHTML = `<p>${jsonData.mensaje}</p>`;
-                messagesContainer.appendChild(newMessage);
-
-                // Limpia el campo de texto del formulario
-                messageForm.querySelector('textarea[name="mensaje"]').value = '';
-
-                // Desplaza el contenedor de mensajes hacia abajo
-                messagesContainer.scrollTop = messagesContainer.scrollHeight; */
+               
             } else {
                 console.error('Error al enviar el formulario:', response.statusText);
             }
