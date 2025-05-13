@@ -19,11 +19,10 @@ export function socketConnectionRequest(req, res, categoria = 'global') {
     const socket = {
         socketId,
         res,
-        rol: req.usuario.rol,
-        usuario: req.usuario.userId,
+        usuario: req.session.user_Id,
     }
 
-    logger.debug(`New connection established for user id=%s of connection Id=%s`, req.usuario.userId, socketId);
+    logger.debug(`New connection established for user id=%s of connection Id=%s`, req.session.user_Id, socketId);
     //logger.debug(`New connection established: %s`, socketId);
     publishMessage(socket, 'Connection Established, We\'ll now start receiving messages from the server.');
 

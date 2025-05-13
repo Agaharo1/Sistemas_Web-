@@ -7,6 +7,7 @@ import { Usuario } from "../usuarios/Usuario.js";
 import { Producto } from "../productos/Productos.js";
 import session from "express-session";
 import { logger } from "../logger.js";
+import {  broadcastMessage } from '../sse/utils.js';
 
 export function nuevoChat(req, res) {
     const { id} = req.params;
@@ -88,9 +89,25 @@ export function enviarMensaje(req, res) {
 }
 
 export function enviarMensajeJS(req, res) {
+  
   const { mensaje, id_chat,senderId } = req.body;
-  const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
-  res.redirect(`/chats/chat/${id_chat}`);
+  try{
+    const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
+    // Construir el JSON para el broadcast
+    const mensajeBroadcast = JSON.stringify({
+      senderId,
+      contenido: mensaje,
+  });
+    broadcastMessage( // Mensaje enviado a todos los sockets
+      mensajeBroadcast,
+      { categoria: id_chat }
+    );
+    res.status(200).send('Mensaje enviado');
+  }catch(e){
+    logger.error("Error al enviar el mensaje", e);
+    return res.status(500).send("Error al enviar el mensaje");
+  }
+  //res.redirect(`/chats/chat/${id_chat}`);
 }
 
 

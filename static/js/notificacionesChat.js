@@ -11,10 +11,15 @@ document.addEventListener('DOMContentLoaded', init);
  * Inicializa la página
  */
 function init() {
-   /*
-    const chatIdInput = document.querySelector('form.message-form input[name="id_chat"]');
-    const chatId = chatIdInput ? chatIdInput.value : null;
-    const notificaciones = new EventSource("/notificaciones/chat/" + chatId);
+   
+   
+
+    
+    const messageForm = document.querySelector('form.message-form'); // Selecciona el formulario de mensajes
+    const messagesContainer = document.querySelector('.messages'); // Selecciona el contenedor de mensajes
+    const chatId = messageForm.querySelector('input[name="id_chat"]').value; // Obtiene el ID del chat desde el formulario
+    // Establece la conexión SSE
+    const notificaciones = new EventSource(`/notificaciones/chat/${chatId}`);
 
     notificaciones.addEventListener('open', e => {
         console.log('SSE connection established.');
@@ -30,13 +35,24 @@ function init() {
     });
 
     notificaciones.addEventListener('message', e => {
-        console.log('RECEIVED', e.data);
-        listaNotificaciones.appendChild(createElement('li', {}, e.data));
+        try {
+        // Aquí se recibe el mensaje del servidor
+        //Pintamos el mensaje en la pantalla
+        const message = JSON.parse(e.data);
+        // Añade el nuevo mensaje al contenedor de mensajes
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message', message.senderId === sessionUserId ? 'sent' : 'received');
+        newMessage.innerHTML = `<p>${message.contenido}</p>`;
+        messagesContainer.appendChild(newMessage);
+        // Desplaza el contenedor de mensajes hacia abajo
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        console.log('Mensaje recibido:', message);
+        }catch(e){
+            console.error('Mensaje no esta en formato:', e);
+        }
     });
-    */
-    const messageForm = document.querySelector('form.message-form'); // Selecciona el formulario de mensajes
-    const messagesContainer = document.querySelector('.messages'); // Selecciona el contenedor de mensajes
-
+    
+    
     messageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -49,10 +65,11 @@ function init() {
         
         try {
             const response = await postJson('/chats/enviarMensajeJS', jsonData); 
+            messageForm.querySelector('textarea[name="mensaje"]').value = '';
             if (response.ok) {
                 //Si el mensaje se envía correctamente, pintamos el mensaje en la pantalla
                 console.log('Formulario enviado con éxito');
-
+                /*
                 // Añade el nuevo mensaje al contenedor de mensajes
                 const newMessage = document.createElement('div');
                 newMessage.classList.add('message', 'sent'); // Añade las clases CSS necesarias
@@ -63,7 +80,7 @@ function init() {
                 messageForm.querySelector('textarea[name="mensaje"]').value = '';
 
                 // Desplaza el contenedor de mensajes hacia abajo
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight; */
             } else {
                 console.error('Error al enviar el formulario:', response.statusText);
             }

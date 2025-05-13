@@ -9,8 +9,7 @@ export function listNotificaciones(req, res) {
         const errores = result.array();
         return res.status(400).json({ status: 400, errores });
     }
-    socketConnectionRequest(req, res, datos.categoria);
-    sseRandom(req, res);
+    socketConnectionRequest(req, res, datos.id_chat);
 }
 
 // SSE random number

@@ -8,8 +8,8 @@ const notificacionesRouter = express.Router();
 
 notificacionesRouter.use(autenticado('/usuarios/login'));
 
-notificacionesRouter.get('/chat/:id'        //Encargado de gestionar las notificaciones de chats
-    , param('categoria', 'Falta categoria')
+notificacionesRouter.get('/chat/:id_chat'        //Encargado de gestionar las notificaciones de chats
+    , param('id_chat', 'Falta id de chat')
     , asyncHandler(listNotificaciones));
 
 export default notificacionesRouter;
