@@ -1,3 +1,4 @@
+
 /*
  * Inicializamos el JS cuando se ha terminado de procesar todo el HTML de la página.
  *
@@ -16,7 +17,7 @@ async function init() {
             throw new Error(`Error al obtener productos: ${response.statusText}`);
         }
         const totalProductos = await response.json();
-        const productosPorPagina = 4;
+        const productosPorPagina = 3;
         const totalPaginas = Math.ceil(totalProductos / productosPorPagina);
 
         let paginaActual = 1;
@@ -31,30 +32,78 @@ async function init() {
  * @param {SubmitEvent} e 
  */
 
- async function renderPagina(pagina,totalPaginas) {
-            while (productosContainer.firstChild) {
-            productosContainer.removeChild(productosContainer.firstChild);
-            }
-            const response = await safeFetch(`/api/productos?pagina=${pagina}`);
-            if (!response.ok) {
-                throw new Error(`Error al obtener productos de la página: ${response.statusText}`);
-            }
-            const productosPagina = await response.json();
+ async function renderPagina(paginaActual,totalPaginas) {
+    const productosContainer = document.getElementById('productos-container');
 
-            productosPagina.forEach(producto => {
-                const productoElement = document.createElement('div');
-                productoElement.className = 'producto';
-                productoElement.textContent = `${producto.nombre} - $${producto.precio}`;
-                productosContainer.appendChild(productoElement);
-            });
+    while (productosContainer.firstChild) {
+        productosContainer.removeChild(productosContainer.firstChild);
+    }
+    const response = await safeFetch(`/api/productos?pagina=${paginaActual}`);
+    if (!response.ok) {
+        throw new Error(`Error al obtener productos de la página: ${response.statusText}`);
+    }
+    const productosPagina = await response.json();
+    addProductos(productosPagina);
 
-            renderBotones(totalPaginas);
+    renderBotones(totalPaginas,paginaActual);
 }
 
-function renderBotones(totalPaginas) {
+function addProductos(productosPagina) {
+    const productosContainer = document.getElementById('productos-container');
+     if (productosPagina.length > 0) {
+        productosPagina.forEach(producto => {
+            const productoElement = document.createElement('div');
+            productoElement.className = 'producto';
+            // Si el producto tiene una imagen
+            if (producto.imagen) {
+                const link = document.createElement('a');
+                link.href = `/productos/producto/${producto.id}`;
+                const img = document.createElement('img');
+                img.src = `/imagenes/imagen/${producto.id}/${producto.imagen}`;
+                img.alt = producto.nombre;
+                img.className = 'product-image';
+                link.appendChild(img);
+                productoElement.appendChild(link);
+            } else {
+                const noImageText = document.createElement('p');
+                noImageText.textContent = 'No hay imágenes disponibles para este producto.';
+                productoElement.appendChild(noImageText);
+            }
+
+            // Información del producto
+            const productInfo = document.createElement('p');
+            productInfo.innerHTML = `
+                Producto: <a href="/productos/producto/${producto.id}">${producto.nombre}</a> -
+                Precio: ${producto.precio}
+            `;
+            productoElement.appendChild(productInfo);
+
+            // Descripción del producto
+            const productDescription = document.createElement('p');
+            productDescription.innerHTML = `
+                Descripción: ${
+                    producto.descripcion
+                        ? producto.descripcion
+                        : 'Este producto no tiene descripción -'
+                }
+            `;
+            productoElement.appendChild(productDescription);
+
+            // Agrega el producto al contenedor
+            productosContainer.appendChild(productoElement);
+        });
+    } else {
+        // Si no hay productos
+        const noProductsText = document.createElement('p');
+        noProductsText.textContent = 'No hay productos disponibles.';
+        productosContainer.appendChild(noProductsText);
+    }
+}
+
+function renderBotones(totalPaginas,paginaActual) {
     const botonesContainer = document.getElementById('paginas-container');
     while (botonesContainer.firstChild) {
-    botonesContainer.removeChild(botonesContainer.firstChild);
+        botonesContainer.removeChild(botonesContainer.firstChild);
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
@@ -66,7 +115,7 @@ function renderBotones(totalPaginas) {
     }
     boton.addEventListener('click', () => {
         paginaActual = i;
-        renderPagina(paginaActual);
+        renderPagina(paginaActual,totalPaginas);
     });
     botonesContainer.appendChild(boton);
     }

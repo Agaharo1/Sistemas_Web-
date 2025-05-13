@@ -16,6 +16,7 @@ import pujaRouter from './puja/router.js';
 import pieRouter from './pie/router.js';
 import notificacionesRouter from './notificaciones/router.js';
 import  usuariosApiRouter from './usuarios/api/router.js';
+import  productosApiRouter from './productos/api/router.js';
 
 
 export const app = express();
@@ -55,4 +56,5 @@ app.use('/pujas', pujaRouter);
 app.use('/pie',pieRouter);
 app.use('/notificaciones', notificacionesRouter);
 app.use('/api/usuarios', usuariosApiRouter);
+app.use('/api/productos', productosApiRouter);
 app.use(errorHandler)
