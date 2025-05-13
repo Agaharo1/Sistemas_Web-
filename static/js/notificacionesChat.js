@@ -34,7 +34,8 @@ function init() {
         listaNotificaciones.appendChild(createElement('li', {}, e.data));
     });
     */
-    const messageForm = document.querySelector('form.message-form');
+    const messageForm = document.querySelector('form.message-form'); // Selecciona el formulario de mensajes
+    const messagesContainer = document.querySelector('.messages'); // Selecciona el contenedor de mensajes
 
     messageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -49,7 +50,20 @@ function init() {
         try {
             const response = await postJson('/chats/enviarMensajeJS', jsonData); 
             if (response.ok) {
+                //Si el mensaje se envía correctamente, pintamos el mensaje en la pantalla
                 console.log('Formulario enviado con éxito');
+
+                // Añade el nuevo mensaje al contenedor de mensajes
+                const newMessage = document.createElement('div');
+                newMessage.classList.add('message', 'sent'); // Añade las clases CSS necesarias
+                newMessage.innerHTML = `<p>${jsonData.mensaje}</p>`;
+                messagesContainer.appendChild(newMessage);
+
+                // Limpia el campo de texto del formulario
+                messageForm.querySelector('textarea[name="mensaje"]').value = '';
+
+                // Desplaza el contenedor de mensajes hacia abajo
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             } else {
                 console.error('Error al enviar el formulario:', response.statusText);
             }
