@@ -1,5 +1,5 @@
 export function autenticado(urlNoAutenticado = '/usuarios/login', urlAutenticado) {
-    console.log("Autenticado", urlNoAutenticado, urlAutenticado);
+    
     return (req, res, next) => {
         if (req.session != null && req.session.login) {
             if (urlAutenticado != undefined) return res.redirect(urlAutenticado);
