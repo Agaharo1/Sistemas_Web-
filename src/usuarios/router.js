@@ -36,7 +36,7 @@ usuariosRouter.post('/baja', doBaja,doLogout);
 
 //Procesar login
 //usuariosRouter.post('/login', doLogin);
-usuariosRouter.post('/login', autenticado(null, '/usuarios/home')
+usuariosRouter.post('/login', autenticado(null, '/usuarios/index')
     , body('username', 'No puede ser vacío').trim().notEmpty()
     , body('password', 'No puede ser vacío').trim().notEmpty()
     , doLogin);

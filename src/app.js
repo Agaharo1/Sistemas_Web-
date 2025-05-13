@@ -15,6 +15,7 @@ import chatRouter from './chat/router.js';
 import pujaRouter from './puja/router.js';
 import pieRouter from './pie/router.js';
 import notificacionesRouter from './notificaciones/router.js';
+import  usuariosApiRouter from './usuarios/api/router.js';
 
 
 export const app = express();
@@ -53,4 +54,5 @@ app.use('/chats', chatRouter);
 app.use('/pujas', pujaRouter);
 app.use('/pie',pieRouter);
 app.use('/notificaciones', notificacionesRouter);
+app.use('/api/usuarios', usuariosApiRouter);
 app.use(errorHandler)

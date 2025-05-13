@@ -1,7 +1,12 @@
-body {
+html, body {
 	background-color: #CDCDCD;
 	margin: 0;
-	
+	height: 100vh;
+}
+article {
+	margin: 0;
+	padding: 0;
+	min-width: 100%;
 }
 
 div#contenedor {
@@ -12,6 +17,11 @@ div#contenedor {
 	margin-top: 0;
 }
 
+div#contenedorMain {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
 
 .link-mercado {
     font-weight: normal;
@@ -58,8 +68,11 @@ main {
 	padding: 0;
 	float: left;
 	min-height: 600px;
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 	background-color: white;
+	justify-content: center;
 }
 
 footer	 {

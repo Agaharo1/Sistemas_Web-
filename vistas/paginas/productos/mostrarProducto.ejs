@@ -5,7 +5,7 @@
     <title>Detalles del ProductA</title>    
 </head>
 
-    <div class="product-container">
+    <div class="product-container-normal">
         <h1>Detalles del Producto</h1>
         <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="Imagen del Producto" class="product-image">
         <div class="product-details">
@@ -26,10 +26,12 @@
                     <a href="/pujas/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>
                 <% } %>
             <% } else { %> 
-                <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
-                <form action="/productos/eliminarProducto/<%= producto.id %>" method="POST">
-                    <button type="submit" class="button-link">Eliminar</button>
-                </form>
+                <div class ="botonContainer">
+                    <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
+                    <form action="/productos/eliminarProducto/<%= producto.id %>" method="POST">
+                        <button type="submit" class="button-link">Eliminar</button>
+                    </form>
+                </div>
             <% } %>
         </div>
         <% if (producto.id_user !== session.user_id) { %>

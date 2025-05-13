@@ -29,7 +29,7 @@
     padding: 5px; /* Espaciado interno */
     margin-left: 5px; /* Espaciado a la izquierda */
     margin-top: 5px; /* Espaciado superior */
-    width: 15%; /* Ancho del botón */
+    width: 39%; /* Ancho del botón */
     flex-shrink: 0; /* Evita que el botón se reduzca */
     text-align: center; /* Centra el texto dentro del botón */
 }

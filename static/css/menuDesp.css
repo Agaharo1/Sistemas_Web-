@@ -42,7 +42,7 @@ nav .menu a.active{
 	font-weight: bold;
 }
 
-@media(min-width: 700px){
+@media(min-width: 1000px){
 	nav .icon {
 		display: none;
 	  }
