@@ -21,9 +21,13 @@
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
                 <% if (pujaActiva && pujaActiva.id) { %>
                     <p>Puja actual: <%= pujaActiva.valor_max %> por el usuario con id <%= pujaActiva.id_u %></p>
-                    <a href="/pujas/puja/<%= pujaActiva.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Pujar</a>
+                    <form action="/pujas/pujar/<%= pujaActiva.id %>?id_user_sesion=<%= session.user_id %>" method="POST">
+                        <button type="submit" class="button-link">Pujar</button>
+                    </form>
                 <% } else { %>
-                    <a href="/pujas/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Puja</a>
+                    <form action="/pujas/nuevaPuja/<%= producto.id %>?id_user_sesion=<%= session.user_id %>" method="POST">
+                        <button type="submit" class="button-link">Iniciar Puja</button>
+                    </form>
                 <% } %>
             <% } else { %> 
                 <div class ="botonContainer">
