@@ -53,3 +53,26 @@ export function perteneceAlChat(redirectUrl ="/usuarios/index") {
         }
     };
 }
+
+export function chatExistente(){
+    return async (req, res, next) => {
+        try {
+            const datos = matchedData(req, { includeOptionals: true });
+            const id_user_producto = parseInt(datos.id_user_producto);
+            const id_user_sesion = parseInt(datos.id_user_sesion);
+            const id = parseInt(datos.id);
+            
+            //Comprobamos si ya existe un chat entre los dos usuarios
+            const chatExistente = Chat.getChatByUsers(id_user_producto,id_user_sesion, id);
+            if (chatExistente !== null) {
+            //Si existe, redirigimos al chat existente
+                return res.redirect(`/chats/chat/${chatExistente.id}`);
+            }
+            // Si no existe, continuamos con la creación del nuevo chat
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error interno del servidor.' });
+        }
+    };
+}
