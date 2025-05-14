@@ -1,31 +1,38 @@
-<link rel="stylesheet" href="../../../static/css/puja.css">
+<link rel="stylesheet" href="/css/pujas.css">
+
 <div class="puja-container">
     <div class="product-info">
         <img src="/imagenes/imagen/<%= productId %>/<%= imagenes %>" alt="Imagen del Producto" class="product-image-circle">
-        <h3>Producto: <%= productName %></h3>
+        <h2><%= productName %></h2>
+        <p>Precio actual: <strong><%= puja.valor_max %> €</strong></p>
+        <p>Vendedor: <%= vendedorNombre %></p>
         <p>Tiempo restante: <span id="contador"><%= tiempoRestante %></span> segundos</p>
-        <script>
-            const span = document.getElementById('contador');
-            let tiempo = parseInt(span.innerText);
-
-            const intervalo = setInterval(() => {
-                tiempo--;
-                if (tiempo <= 0) {
-                    clearInterval(intervalo);
-                    span.innerText = "¡Finalizado!";
-
-                } else {
-                    span.innerText = tiempo;
-                }
-            }, 1000);
-        </script>   
     </div>
-    <h2>Puja de <%= usuario %></h2>
-    <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
-        <input type="hidden" name="id_puja" value="<%= puja.id %>">
-        <input type="hidden" name="id_u" value="<%= session.user_id %>">
-        <input type="number" name="valor" placeholder="Escribe tu puja aquí...">
-        <button type="submit">Enviar</button>
-    </form>
-    
+
+    <div class="historial-pujas">
+        <h3>Historial de pujas</h3>
+        <% if (pujadas.length > 0) { %>
+            <ul>
+                <% pujadas.forEach(p => { %>
+                    <li><%= p.valor %> € por <%= p.nombreUsuario %></li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No hay pujas aún</p>
+        <% } %>
+    </div>
+    <% if (session.user_id !== puja.propietario) { %>
+        <% if (tiempoRestante > 0 && session.user_id !== puja.propietario) { %>
+            <form action="/pujas/pujar/<%= puja.id %>" method="POST" class="pujada-form">
+                <input type="hidden" name="id_u" value="<%= session.user_id %>">
+                <input type="number" name="valor" placeholder="Introduce tu puja..." required>
+                <% if (query.error) { %>
+                    <p style="color: red;"><%= query.error %></p>
+                <% } %>
+                <button type="submit">Pujar</button>
+            </form>
+        <% } else { %>
+            <p>La puja ha finalizado</p>
+        <% } %>
+    <% } %>
 </div>

@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="/css/pujas.css">
+
+<div class="puja-form-container">
+    <h2>Iniciar Puja para: <%= producto.nombre %></h2>
+    <form action="/pujas/nuevaPuja/<%= producto.id %>" method="POST">
+      <label for="valor_max">Precio de salida (€):</label>
+      <input type="number" step="0.01" name="valor_max" required min="0.01" />
+  
+      <button type="submit" class="btn">Iniciar Puja</button>
+    </form>
+  </div>
+  
