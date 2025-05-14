@@ -96,3 +96,8 @@ button {
 	padding: 10px; /* Espaciado interno */	
 }
 
+@media (max-width: 750px) {
+	.productos-container {
+		flex-direction: column;
+	}
+}

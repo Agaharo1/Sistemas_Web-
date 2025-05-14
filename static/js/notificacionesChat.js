@@ -41,7 +41,7 @@ function init() {
             const message = JSON.parse(e.data);
             // Añade el nuevo mensaje al contenedor de mensajes
             const newMessage = document.createElement('div');
-            newMessage.classList.add('message', message.senderId === sessionUserId ? 'sent' : 'received');
+            newMessage.classList.add('message', parseInt(message.senderId) === parseInt(sessionUserId) ? 'sent' : 'received');
             newMessage.innerHTML = `<p>${message.contenido}</p>`;
             messagesContainer.appendChild(newMessage);
             // Desplaza el contenedor de mensajes hacia abajo

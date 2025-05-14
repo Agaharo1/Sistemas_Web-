@@ -38,11 +38,12 @@ app.use('/', express.static(config.recursos));
 
 // Ruta principal
 app.get('/', (req, res) => {
-    const params = {
+    /*const params = {
         contenido: 'paginas/index',
         session: req.session
     };
-    res.render('pagina', params);
+    res.render('pagina', params);*/
+    res.redirect('/contenido/normal');
 });
 
 // Usar routers

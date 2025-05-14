@@ -165,3 +165,9 @@
 	background-color: #cc0000; /* Color más oscuro al pasar el mouse */
 	text-decoration: underline; /* Subrayado al pasar el mouse */
 }
+
+@media (max-width: 750px) {
+	.chat-info {
+		flex-direction: column;
+	}
+}

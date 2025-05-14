@@ -5,13 +5,13 @@ import { body } from 'express-validator';
 const usuariosRouter = express.Router();
 
 //Pagina de login
-usuariosRouter.get('/login', viewLogin);
+usuariosRouter.get('/login', autenticado(null, '/usuarios/index'), viewLogin);
 
 //Pagina de registro
 usuariosRouter.get('/registro', viewRegister);
 
 //Perfil del usuario
-usuariosRouter.get('/profile', viewProfile);
+usuariosRouter.get('/profile',autenticado('/usuarios/login'), viewProfile);
 
 //Edicion perfil del usuario
 usuariosRouter.get('/editarPerfil', viewEditarPerfil);
