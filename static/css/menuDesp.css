@@ -35,3 +35,9 @@
 a.boton{
 	background-color: #85aab0;
 }
+
+@media(min-width: 800px){
+	nav.menu-icon{
+		display: none; /* Oculta el icono */
+	}
+}
