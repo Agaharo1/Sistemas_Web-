@@ -54,15 +54,14 @@ export async function mostrarTicket(req, res) {
   const { id } = req.params;
   console.log("El id de la compra es: ", id)
   const comp = compra.getCompraById(id);
-  const tarjeta = Tarjeta.getTarjetaById(comp.tarjeta_id);
   const producto = Producto.getProductById(comp.producto_id);
   return res.render("pagina", {
     contenido: "paginas/envios/confirmacionCompra",
     session: req.session,
     direccionSeleccionada: comp.direccion_entrega,
-    tarjetaSeleccionada: {
-      numero_tarjeta: tarjeta.numero_tarjeta,
-      nombre_titular: tarjeta.nombre_titular,
+    compra: {
+      numero_tarjeta: comp.numero_tarjeta,
+      nombre_titular: comp.nombre_titular,
     },
     total: comp.precio,
     producto,
@@ -89,14 +88,17 @@ export async function confirmacionCompra(req, res) {
     return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
   }
   const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
-  const nombre = Tarjeta.getNombreById(usuario_id);
+ // const nombre = Tarjeta.getNombreById(usuario_id);
+  const tarjeta = Tarjeta.getTarjetaById(id_targeta);
+  //     this.numero_tarjeta = numero_tarjeta;
+  //     this.nombre_titular = nombre_titular;
 
   const produ = producto;
   const dni = DirEnvio.getDniByUsuarioId(usuario_id);
   const telefono = DirEnvio.getTelefonoByUsuarioId(usuario_id);
   const direccionEntrega = direccionSeleccionada || "Dirección no especificada";
   Producto.venderProducto(id); // Para marcar el producto como vendido en la base de datos
-  const compraId = await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, nombre, usuario_id, id_targeta);
+  const compraId = await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, tarjeta.nombre, usuario_id, id_targeta, tarjeta.numero_tarjeta, tarjeta.nombre_titular);
   console.log("Compra id = ", compraId)
   return res.redirect(`/envios/confirmacionCompra/${compraId}`);
 
