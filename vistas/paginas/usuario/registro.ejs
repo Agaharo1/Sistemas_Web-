@@ -1,31 +1,31 @@
 <section class="formulario-section">
     <h2>Registro</h2>
     <div class="formulario-container">
-        <form action="/usuarios/registro" method="POST">
+        <form action="/usuarios/registro" method="POST" id="registro">
             <% if (locals.error) { %>
                 <p><strong><%= locals.error %></strong></p>
             <% } %>
             <p>
                 <label for="usuario">Nombre: </label>
-                <input type="text" name="nombre" value="<%= datos.nombre %>" />
+                <input type="text" name="nombre" value="<%= datos.nombre %>" /><span class="error"></span> 
                 <%- helpers.error(errores, 'nombre') %>
             </p>
 
             <p>
                 <label>Correo:</label>
-                <input type="email" name="username" value="<%= datos.username %>" />
+                <input type="email" name="username" id="username" value="<%= datos.username %>" /><span class="error"></span><span class="feedback"></span>
                 <%- helpers.error(errores, 'username') %>
             </p>
 
             <p>
                 <label for="contraseña">Contraseña: </label>
-                <input type="password" name="password" />
+                <input type="password" name="password" /><span class="error"></span>
                 <%- helpers.error(errores, 'password') %>
             </p>
 
             <p>
                 <label>Repetir contraseña:</label>
-                <input type="password" name="passwordConfirmacion" />
+                <input type="password" name="passwordConfirmacion" /><span class="error"></span>
                 <%- helpers.error(errores, 'passwordConfirmacion') %>
             </p>
 
@@ -35,3 +35,5 @@
         </form>
     </div>
 </section>
+<script src="/js/fetch.js"></script>
+<script src="/js/registroValidar.js"></script>

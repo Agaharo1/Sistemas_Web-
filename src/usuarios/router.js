@@ -5,13 +5,13 @@ import { body } from 'express-validator';
 const usuariosRouter = express.Router();
 
 //Pagina de login
-usuariosRouter.get('/login', viewLogin);
+usuariosRouter.get('/login', autenticado(null, '/usuarios/index'), viewLogin);
 
 //Pagina de registro
 usuariosRouter.get('/registro', viewRegister);
 
 //Perfil del usuario
-usuariosRouter.get('/profile', viewProfile);
+usuariosRouter.get('/profile',autenticado('/usuarios/login'), viewProfile);
 
 //Edicion perfil del usuario
 usuariosRouter.get('/editarPerfil', viewEditarPerfil);
@@ -36,7 +36,7 @@ usuariosRouter.post('/baja', doBaja,doLogout);
 
 //Procesar login
 //usuariosRouter.post('/login', doLogin);
-usuariosRouter.post('/login', autenticado(null, '/usuarios/home')
+usuariosRouter.post('/login', autenticado(null, '/usuarios/index')
     , body('username', 'No puede ser vacío').trim().notEmpty()
     , body('password', 'No puede ser vacío').trim().notEmpty()
     , doLogin);

@@ -4,6 +4,7 @@ import { render } from '../utils/render.js';
 import { logger } from '../logger.js';
 import { body, validationResult, matchedData } from 'express-validator';
 import { redirige } from '../middleware/utils.js';
+import { Producto } from '../productos/Productos.js';
 
 export function viewLogin(req, res) {
     render(req, res, 'paginas/usuario/login', {
@@ -21,10 +22,15 @@ export function viewRegister(req, res) {
 }
 
 export function viewProfile(req, res) {
+    let productos = [];
+    if (req.session.login) {
+            productos = Producto.getProductByUserId(req.session.user_id);   
+    }
     render(req, res, 'pagina', {
-        contenido: 'paginas/usuario/profile',
+        contenido: 'paginas/contenido/misProductos',
         session: req.session,
         esPerfil: true,
+        productos: productos,
         datos: {},
         errores: {}
     });
@@ -59,9 +65,17 @@ export function doEditarPerfil(req, res) {
 export async function doRegister(req, res) {
 
     const result = validationResult(req);
+    const datos = matchedData(req);
+    
+    const requestWith = req.get('X-Requested-With');
+    const esAjax = requestWith != undefined && ['xmlhttprequest', 'fetch'].includes(requestWith.toLowerCase());
+
     if (! result.isEmpty()) {
         const errores = result.mapped();
         const datos = matchedData(req);
+        if (esAjax) {
+            return res.status(400).json({ status: 400, errores });
+        }
         return render(req, res, 'paginas/usuario/registro', {
             datos,
             errores
@@ -70,13 +84,19 @@ export async function doRegister(req, res) {
 
 
 
-    const {nombre, username, password} = req.body;
+    const {nombre, username, password} = datos;
+    
     try{
         const result = await Usuario.crearUsuario(username, password, nombre); //nuestro username es el correo electronico
         req.session.login = true;
         req.session.nombre = nombre;
         req.session.esAdmin = result.rol === RolesEnum.ADMIN;
         req.session.user_id = result.id;
+
+         if (esAjax) {
+            return res.status(200).json({ ok: true });
+        }
+        
         return res.redirect('/usuarios/index');
     } catch(e) {
           // Log de nivel error
@@ -152,7 +172,7 @@ export async function doLogin(req, res) {
         req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
         req.log.debug(`Usuario logueado: ${username}`);
         req.session.user_id = usuario.id;
-        return res.redirect('/usuarios/index');
+        return res.redirect('/usuarios/profile');
     } catch (e) {
 
         const datos = matchedData(req);
@@ -183,5 +203,5 @@ export function doLogout(req, res) {
     
 }
 export function viewHome(req, res) {
-    return render(req, res, 'paginas/index');
+    return res.redirect('/contenido/normal');
 }

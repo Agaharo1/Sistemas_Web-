@@ -8,17 +8,19 @@
   <% var esPerfil = typeof esPerfil !== 'undefined' ? esPerfil : false; %>
  <div id="contenedor">
   <%- include('./partials/cabecera.ejs', { session: locals.session }) %>
-  <% if (locals.session && esPerfil) { %>
-    <%- include('./partials/sidebarIzqProfile.ejs') %>
-  <% } else { %>
-    <%- include('./partials/sidebarIzq.ejs') %>
-  <% } %>
-
-  <main>
-    <article>
-    <%- include(contenido) %>
-    </article>
-  </main>
+  
+  <div id="contenedorMain">
+      <% if (locals.session && esPerfil) { %>
+      <%- include('./partials/sidebarIzqProfile.ejs') %>
+      <% } else { %>
+      <%- include('./partials/sidebarIzq.ejs') %>
+      <% } %>
+    <main>    
+      <article>
+      <%- include(contenido) %>
+      </article>
+    </main>
+  </div>
 
   <%- include('./partials/sidebarDer.ejs', { session: locals.session }) %>
   <%- include('./partials/pie.ejs') %>

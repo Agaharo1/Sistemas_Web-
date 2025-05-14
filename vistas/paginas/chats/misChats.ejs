@@ -7,14 +7,16 @@
                         <div class="chat-info">
                             <div class="chat-left">
                                 <img src="/imagenes/imagen/<%= chat.producto %>/<%= chat.imagen %>" alt="Imagen del producto" class="product-image-circle">
-                                <h4><%= chat.nombre %></h4>
+                                <h4><%= chat.nombre === "nouser" ? "Chat eliminado" : chat.nombre %></h4>
                             </div>
                             <p class="chat-last-message"><%= chat.lastMensaje %></p>
                             
                         </div>
                         
                     </a>
-                    <a href="/chats/eliminarChat/<%= chat.chatId %>" class="delete-chat-link">Eliminar Chat</a>
+                    <form action="/chats/eliminarChat/<%= chat.chatId %>" method="POST">
+                        <button type="submit" class="delete-chat-link">Eliminar Chat</button>
+                    </form>
                 </div>
             <% }); %>
         <% } else { %>

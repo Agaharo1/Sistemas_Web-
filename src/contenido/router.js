@@ -11,10 +11,7 @@ contenidoRouter.get('/misProductos', (req, res) => {
 
     if (req.session.login) {
         productos = Producto.getProductByUserId(req.session.user_id);
-        console.log(productos);
-
         // Crear el diccionario de productos e imágenes
-
         contenido = 'paginas/contenido/misProductos';
     }
 
@@ -25,23 +22,7 @@ contenidoRouter.get('/misProductos', (req, res) => {
     });
 });
 
-contenidoRouter.get('/flogin', (req, res) => {
 
-    const params = {
-        contenido: 'paginas/contenido/flogin',
-        session: req.session
-    }
-    res.render('pagina', params);
-})
-
-contenidoRouter.get('/vlogin', (req, res) => {
-
-    const params = {
-        contenido: 'paginas/contenido/vlogin',
-        session: req.session
-    }
-    res.render('pagina', params);
-})
 
 contenidoRouter.get('/normal', (req, res) => {
     let contenido = 'paginas/contenido/normal';

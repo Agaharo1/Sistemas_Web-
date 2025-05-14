@@ -1,28 +1,23 @@
-<h2>Mis Pujas</h2>
+<link rel="stylesheet" href="/css/pujas.css">
 
-<% if (!pujas || pujas.length === 0) { %>
-  <p>No has realizado ninguna puja aún.</p>
-<% } else { %>
-  <table>
-    <thead>
-      <tr>
-        <th>ID Puja</th>
-        <th>ID Producto</th>
-        <th>Valor Máximo</th>
-        <th>Fecha</th>
-        <th>Ver</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% pujas.forEach(puja => { %>
-        <tr>
-          <td><%= puja.id %></td>
-          <td><%= puja.id_p %></td>
-          <td><%= puja.lastPuja || puja.valor_max %> €</td>
-          <td><%= puja.fecha || 'N/D' %></td>
-          <td><a href="/puja/<%= puja.id %>">Ver</a></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
-<% } %>
+<h1>Mis Pujas Activas</h1>
+<div class="puja-list">
+  <% if (pujas.length > 0) { %>
+    <% pujas.forEach(puja => { %>
+      <div class="puja-item">
+        <img src="/imagenes/imagen/<%= puja.productId %>/<%= puja.imagen %>" alt="Imagen" class="product-image-circle">
+        <h3><%= puja.productName %></h3>
+        <p>Valor actual: <%= puja.valor_max %> €</p>
+        <p>Tiempo restante: <%= Math.floor((puja.fecha_limite - Date.now()) / 1000) %> segundos</p>
+
+        <% if (puja.ganada) { %>
+          <p class="ganada">🎉 Felicidades, has ganado la puja. Contacta con el vendedor.</p>
+        <% } %>
+
+        <a href="/pujas/puja/<%= puja.id %>" class="button-link">Ver Puja</a>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <p>No estás participando en ninguna puja.</p>
+  <% } %>
+</div>

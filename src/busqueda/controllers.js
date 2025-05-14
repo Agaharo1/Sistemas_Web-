@@ -1,4 +1,5 @@
-
+import { Producto } from "../productos/Productos.js";
+import { Imagen } from "../imagenes/Imagen.js";
 export function mostrarResultados(req, res) {
   const { busqueda } = req.query;
   let productos = [];

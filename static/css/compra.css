@@ -29,7 +29,7 @@
     padding: 5px; /* Espaciado interno */
     margin-left: 5px; /* Espaciado a la izquierda */
     margin-top: 5px; /* Espaciado superior */
-    width: 15%; /* Ancho del botón */
+    width: 39%; /* Ancho del botón */
     flex-shrink: 0; /* Evita que el botón se reduzca */
     text-align: center; /* Centra el texto dentro del botón */
 }
@@ -54,10 +54,22 @@
 	text-decoration: none;
 
 }
-.add-address-links{
-	display: flex;
-	text-align: center;
-	border-radius: 5px;
-	justify-content: space-between; 
-    gap: 1%; 
+.dir-envio-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+    margin: 0 auto 20px auto; 
+    width: 30%; 
 }
+
+.tarjeta-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+    margin: 0 auto 20px auto; 
+    width: 30%; 
+}
+
+

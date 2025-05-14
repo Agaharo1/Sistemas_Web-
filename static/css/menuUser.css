@@ -3,12 +3,17 @@
 /*@@author dabarr02*/
 
 .sidebarIz{
-	position:fixed;
+	
 	width: 20vh;
-	height: 100vh;
+	height: 65vh;
 	display: flex;
 	flex-direction: column;
 	background-color: #e3edd2;
+	align-self: flex-start;
+	flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+	
 }
 
 .sidebarIz nav{

@@ -4,8 +4,8 @@ import { config } from "../config.js";
 import { Imagen } from "../imagenes/Imagen.js";
 import { body } from "express-validator";
 import { Usuario } from "../usuarios/Usuario.js";
-import {Pujas} from "../pujas/Pujas.js";
 import { ProductoNoEncontrado } from "./Productos.js";
+import { Puja } from "../puja/Puja.js";
 import { logger } from "../logger.js";
 import fs from 'fs';
 import path from 'path';
@@ -29,10 +29,16 @@ export function pagoProducto(req, res) {
 export function mostrarProducto(req, res) {
   const { id } = req.params;
   const producto = Producto.getProductById(id);
-  
+
+  const pujas = Puja.getPujaByProductId(id);
+
+  // Si hay pujas, coger la última
+  const pujaActiva = Array.isArray(pujas) && pujas.length > 0 ? pujas[pujas.length - 1] : null;
+  console.log(pujaActiva);
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
+    pujaActiva: pujaActiva,
     producto,
   };
   res.render("pagina", params);
@@ -109,7 +115,7 @@ export function doEditarProducto(req, res) {
 }
 
 export function buscarProducto(req, res) {
-  const { query } = req.query; // Use req.query to get data from a GET request
+  const { query } = req.query; 
 
   let productos = [];
   try{

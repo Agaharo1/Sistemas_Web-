@@ -5,7 +5,7 @@
     <title>Detalles del ProductA</title>    
 </head>
 
-    <div class="product-container">
+    <div class="product-container-normal">
         <h1>Detalles del Producto</h1>
         <img src="/imagenes/imagen/<%= producto.id %>/<%= producto.imagen %>" alt="Imagen del Producto" class="product-image">
         <div class="product-details">
@@ -19,9 +19,22 @@
                 </div>
             <% } else if (producto.id_user !== session.user_id) { %> 
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
+                <% if (pujaActiva && pujaActiva.id && pujaActiva.fecha_limite > Date.now()) { %>
+                    <p>Puja actual: <%= pujaActiva.valor_max %></p>
+                    <form action="/pujas/pujar/<%= pujaActiva.id %>?id_user_sesion=<%= session.user_id %>" method="POST">
+                        <button type="submit" class="button-link">Pujar</button>
+                    </form>
+                <% } %>
             <% } else { %> 
-                <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a> |
-                <form action="/productos/eliminarProducto" method="POST">
+                <% if (!pujaActiva){ %>
+                    <form action="/pujas/nuevaPuja/<%= producto.id %>" method="POST" style="margin-top: 10px;">
+                        <label for="precio_salida"><strong>Precio de salida:</strong></label>
+                        <input type="number" name="precio_salida" min="0" required placeholder="Precio inicial">
+                        <button type="submit" class="button-link">Iniciar Puja</button>
+                    </form>
+                <% } %>
+                <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
+                <form action="/productos/eliminarProducto/<%= producto.id %>" method="POST">
                     <button type="submit" class="button-link">Eliminar</button>
                 </form>
             <% } %>
@@ -31,8 +44,9 @@
             <h3>Información del Usuario</h3>
             <p><strong>Nombre:</strong> <%= producto.usuario_nombre %></p>
             <p><strong>Email:</strong> <%= producto.username %></p>
-            <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Chat</a>
-        </div>
+            <form action="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" method="POST">
+                <button type="submit" class="button-link">Iniciar Chat</button>
+            </form>
         <% } %>
     </div>
 

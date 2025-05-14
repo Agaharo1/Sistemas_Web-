@@ -16,6 +16,8 @@ export class Chat{
     static #deleteMensajeStmtChatId = null;
     static #deleteChatStmtProductId = null;
     static #selectChatStmtProductId = null;
+    
+  
     id_2;
     id_1;
     id;
@@ -88,6 +90,18 @@ export class Chat{
             "DELETE FROM Mensajes WHERE chatId = @chatId"
         );
     }  
+
+    static async userPerteneceChat(id_chat,id_usuario) {
+        const chat = this.#chatByIdStmt.get({ id_chat });
+        if (chat === undefined) return false;
+        if (chat.usuario1 === id_usuario || chat.usuario2 === id_usuario) {
+            logger.debug("El usuario pertenece al chat:", chat);
+            return true;
+        } else {
+            logger.debug("El usuario no pertenece al chat:", chat);
+            return false;
+        }
+    }
     
     static eliminarChat(chatId, usuarioId) {
         //Eliminar el chat de la tabla Chats (borrar usuario de la conversacion)

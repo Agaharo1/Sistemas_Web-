@@ -144,7 +144,17 @@ export class Usuario {
         }
     }
 
-
+    static existeUsername(username) {
+        try {
+            this.getUsuarioByUsername(username);
+            return true;
+        } catch (e) {
+            if (e instanceof UsuarioNoEncontrado) {
+                return false;
+            }
+            throw e;
+        }
+    }
     static async login(username, password) {
         let usuario = null;
         try {

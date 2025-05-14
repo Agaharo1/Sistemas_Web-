@@ -1,7 +1,7 @@
 
 <div id="mercado">
     <h2 class="titulo-centrado">Productos</h2>
-    <div class="productos-container">
+    <div class="productos-container" id="productos-container">
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <div class="producto">
@@ -30,4 +30,7 @@
             <p>No hay productos disponibles.</p>
         <% } %>
     </div>
+    <div class="paginas-container" id="paginas-container"></div>
 </div>
+<script  src="/js/fetch.js"></script>
+<script  src="/js/mostradorProductos.js"></script>

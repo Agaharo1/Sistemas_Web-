@@ -13,9 +13,13 @@
     </div>
     <form action="/chats/enviarMensaje" method="POST" class="message-form">
         <input type="hidden" name="id_chat" value="<%= chat.id %>">
-        <input type="hidden" name="senderId" value="<%= session.user_id %>">
         <textarea name="mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
         <button type="submit">Enviar</button>
     </form>
     
 </div>
+<script>
+    const sessionUserId = "<%= session.user_id %>";
+</script>
+<script  src="/js/notificacionesChat.js"></script>
+<script src="/js/fetch.js"></script>

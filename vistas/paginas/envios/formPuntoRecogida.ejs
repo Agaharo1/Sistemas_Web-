@@ -1,8 +1,8 @@
 <div  class="formulario-section" id="mercado">
     <h2>Puntos de Recogida</h2>
     <div class="formulario-container">
-        <form action="/envios/formPuntoRecogida/<%= producto.id %>" method="POST">
-            <input type="hidden" name="productoId" value="<%= producto.id %>">
+        <form action="/envios/formPuntoRecogida/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%= id %>">
             <input type="hidden" name="punto_recogida" value="1">
             <input type="hidden" id="direccion_entrega" name="direccion_entrega" value="<%= puntoRecogida.length > 0 ? puntoRecogida[0].direccion : '' %>">
             <p>

@@ -5,7 +5,7 @@
 	padding-left: 2vh;
 }
 
-.product-container {
+.product-container-normal {
 	border: 1px solid #ccc;
 	padding: 20px;
 	border-radius: 10px;
@@ -24,4 +24,11 @@
 	margin-top: 30px;
 	padding-top: 20px;
 	border-top: 1px solid #ccc;
+}
+.botonContainer {
+	
+}
+.formBoton {
+	display: flex;
+	justify-content: center;
 }

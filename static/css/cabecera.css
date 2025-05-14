@@ -32,3 +32,8 @@
 	justify-content: center;
 }
 
+@media (max-width: 750px) {
+	.contenido_cabecera {
+		flex-direction: column;
+	}
+}

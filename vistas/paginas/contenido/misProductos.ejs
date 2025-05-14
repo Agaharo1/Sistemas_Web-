@@ -25,7 +25,7 @@
                     </p>
                     <% if (producto.vendido) { %>
                        
-                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                            <form action="/productos/eliminarProducto/<%= producto.id %>" class ="formEliminar"method="POST">
                                 <button type="submit">Eliminar</button>
                             </form>
                             <div class="sold-product">
@@ -35,7 +35,7 @@
                     <% } else { %>
                         <div>
                             <a href="/productos/editarProducto/<%= producto.id %>" class="button-link">Editar</a>
-                            <form action="/productos/eliminarProducto" class ="formEliminar"method="POST">
+                            <form action="/productos/eliminarProducto/<%= producto.id %>" class ="formEliminar"method="POST">
                                 <button type="submit">Eliminar</button>
                             </form>
                         </div>
@@ -46,4 +46,5 @@
             <p>No hay productos disponibles.</p>
         <% } %>
     </div>
+    <div class="paginas-container"></div>
 </div>

@@ -1,8 +1,8 @@
 <section class="formulario-section">
     <h2>Añadir Tarjeta de Crédito</h2>
     <div class="formulario-container">
-        <form action="/envios/formTarjeta/<%= producto.id %>" method="POST">
-            <input type="hidden" name="productoId" value="<%= producto.id %>">
+        <form action="/envios/formTarjeta/<%= id %>" method="POST">
+            <input type="hidden" name="productoId" value="<%=id %>">
             <p>
                 <label for="nombre_titular">Nombre Titular: </label>
                 <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Nombre completo del titular" value="<%= datos.nombre_titular %>">

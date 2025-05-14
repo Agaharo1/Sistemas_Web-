@@ -4,6 +4,7 @@ export class DirEnvio {
     static #getByUserIdStmt = null;
     static #getDniByUserIdStmt = null;
     static #getTelefonoByUserIdStmt = null;
+    static #deleteByIdStmt = null;
 
     #id;
     #usuario_id ;     
@@ -44,8 +45,18 @@ export class DirEnvio {
         this.#getTelefonoByUserIdStmt = db.prepare(`
             SELECT telefono FROM direccion WHERE usuario_id = @usuario_id
         `);
+        this.#deleteByIdStmt = db.prepare(`
+        DELETE FROM direccion WHERE id = @id
+    `);
     }
 
+    static eliminarDireccionById(id) {
+    const result = this.#deleteByIdStmt.run({ id });
+    if (result.changes === 0) {
+        throw new DireccionNoEncontrada(id);
+    }
+    console.log(`Dirección con ID ${id} eliminada correctamente.`);
+    }
     static getDireccionById(id) {
         const direccion = this.#getByIdStmt.get({ id });
         if (direccion === undefined) throw new DireccionNoEncontrada(id);
