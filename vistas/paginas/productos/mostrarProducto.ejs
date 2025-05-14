@@ -19,8 +19,8 @@
                 </div>
             <% } else if (producto.id_user !== session.user_id) { %> 
                 <a class="button-link" href='/envios/resumenProducto/<%= producto.id %>'">Comprar</a>
-                <% if (pujaActiva && pujaActiva.id) { %>
-                    <p>Puja actual: <%= pujaActiva.valor_max %> por el usuario con id <%= pujaActiva.id_u %></p>
+                <% if (pujaActiva && pujaActiva.id && pujaActiva.fecha_limite > Date.now()) { %>
+                    <p>Puja actual: <%= pujaActiva.valor_max %></p>
                     <form action="/pujas/pujar/<%= pujaActiva.id %>?id_user_sesion=<%= session.user_id %>" method="POST">
                         <button type="submit" class="button-link">Pujar</button>
                     </form>

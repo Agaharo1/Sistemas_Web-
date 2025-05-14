@@ -41,6 +41,7 @@ export function viewMisSubastas(req, res) {
     const imagen = Imagen.getImagenByProductId(puja.producto);
     const tiempoRestante = Math.max(0, puja.fecha_limite - ahora);
     const sinPujas = (tiempoRestante <= 0 && puja.valor_max === puja.precio_salida);
+    const ganador = puja.id_u ? Usuario.getUsuarioById(puja.id_u) : null;
 
     return {
       ...puja,
@@ -48,7 +49,8 @@ export function viewMisSubastas(req, res) {
       productId: producto.id,
       imagen: imagen,
       tiempoRestante: Math.floor(tiempoRestante / 1000),
-      sinPujas
+      sinPujas,
+      nombreGanador: ganador ? ganador.nombre : null
     };
   });
 
@@ -63,8 +65,6 @@ export function viewMisSubastas(req, res) {
 export function viewPuja(req, res) {
   const { id } = req.params;
 
-  if (!id) return res.status(400).send("ID de puja no válido");
-
   let puja;
   try {
     puja = Puja.getPujaById(id);
@@ -72,30 +72,32 @@ export function viewPuja(req, res) {
     return res.status(404).send(error.message);
   }
 
-  puja.fecha_limite = new Date(puja.fecha_limite).getTime();
-
-  const usuario = puja.id_u ? Usuario.getUsuarioById(puja.id_u) : null;
-  const producto = Producto.getProductById(puja.producto);
-  const imagenes = Imagen.getImagenByProductId(puja.producto);
-  const pujadas = Puja.getPujadasByPujaId(id) || [];
   const ahora = Date.now();
   const tiempoRestante = Math.max(0, Math.floor((puja.fecha_limite - ahora) / 1000));
 
-  if (!producto || !imagenes) {
-    return res.status(500).send("Error al recuperar datos relacionados");
-  }
+  const producto = Producto.getProductById(puja.producto);
+  const imagenes = Imagen.getImagenByProductId(puja.producto);
+  const vendedor = Usuario.getUsuarioById(producto.id_user);
+  const pujadas = Puja.getPujadasByPujaId(id);
+  const pujadasConNombre = pujadas.map(p => {
+    const usuario = Usuario.getUsuarioById(p.id_u);
+    return {
+      ...p,
+      nombreUsuario: usuario ? usuario.nombre : `Usuario ${p.id_u}`
+    };
+  });
 
   const params = {
     contenido: "paginas/pujas/puja",
     session: req.session,
     puja,
-    usuario: usuario?.nombre || "Sin pujador",
     productName: producto.nombre,
     productId: producto.id,
     imagenes,
-    ahora,
-    tiempoRestante,
-    pujadas
+    vendedorNombre: vendedor.nombre,
+    pujadas: pujadasConNombre,
+    query: req.query,
+    tiempoRestante
   };
 
   res.render("pagina", params);
@@ -131,6 +133,25 @@ export function viewMisPujas(req, res) {
   });
 }
 
+export function eliminarPujaPropietario(req, res) {
+  const { id } = req.params;
+  const userId = req.session.user_id;
+
+  try {
+    const puja = Puja.getPujaById(id);
+    const producto = Producto.getProductById(puja.producto);
+
+    if (producto.id_user !== userId) {
+      return res.status(403).send("No tienes permiso para eliminar esta puja.");
+    }
+
+    Puja.eliminarPuja(id);
+    res.redirect("/pujas/misSubastas");
+  } catch (e) {
+    res.status(400).send("Error al eliminar la puja: " + e.message);
+  }
+}
+
 // Procesar una puja nueva (pujar sobre una existente)
 export function pujar(req, res) {
   const { id_puja } = req.params;
@@ -143,13 +164,14 @@ export function pujar(req, res) {
     return res.status(403).send("La puja ha expirado.");
   }
 
-  if (puja.valor_max >= valor) {
-    return res.redirect(`/pujas/puja/${id_puja}`);
+  if (valor <= puja.valor_max) {
+    return res.redirect(`/pujas/puja/${id_puja}?error=La puja debe ser mayor que la actual`);
   }
 
   Puja.pujar(id_puja, valor, id_u);
-  res.redirect("/pujas/misPujas");
+  return res.redirect("/pujas/misPujas");
 }
+
 
 // Eliminar una puja
 export function eliminarPuja(req, res) {

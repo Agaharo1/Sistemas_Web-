@@ -84,7 +84,7 @@ export class Puja {
   }
 
   static crearPuja(propietario, id_producto, precio_salida) {
-    const fecha_limite = Date.now() + 60_000; // 1 minuto
+    const fecha_limite = Date.now() + 60_0500; // Esto se puede modificar
     const nuevaPuja = new Puja({ id_producto, id_u: null, precio_salida });
   
     const info = this.#insertStmt.run({
