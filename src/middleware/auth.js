@@ -1,5 +1,6 @@
 import { matchedData } from 'express-validator';
 import { Chat } from '../chat/Chat.js';
+import { Producto } from '../productos/Productos.js';
 
 
 export function autenticado(urlNoAutenticado = '/usuarios/login', urlAutenticado) {
@@ -63,16 +64,27 @@ export function chatExistente(){
             const id = parseInt(datos.id);
             
             //Comprobamos si ya existe un chat entre los dos usuarios
-            const chatExistente = Chat.getChatByUsers(id_user_producto,id_user_sesion, id);
+            const chatExistente = await Chat.getChatByUsers(id_user_producto,id_user_sesion, id);
             if (chatExistente !== null) {
             //Si existe, redirigimos al chat existente
                 return res.redirect(`/chats/chat/${chatExistente.id}`);
             }
-            // Si no existe, continuamos con la creación del nuevo chat
             next();
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error interno del servidor.' });
+        }
+    };
+}
+
+export  function esMiProducto(){
+    return async (req, res, next) =>{
+        const datos = matchedData(req, { includeOptionals: true });
+        const producto = await Producto.getProductById(datos.id);
+        if (req.session.user_id != producto.id_user) {
+            res.status(400).send("No puedes editar un producto que no es tuyo");
+        } else {
+            next();
         }
     };
 }

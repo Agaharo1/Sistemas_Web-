@@ -132,7 +132,7 @@ export class Chat{
         const result = this.#deleteChatStmtProductId.run({productId: productId });
         logger.debug("Chats eliminado:", result.changes);
     }
-    static getChatByUsers(id_user_producto, id_user_sesion, id_producto) {
+    static async getChatByUsers(id_user_producto, id_user_sesion, id_producto) {
         const chat = this.#getChatByProductIdStmt.all({id_usuario:id_user_producto, id_producto});
         if (chat === undefined)return null;
         const chatExistente = chat.find(
@@ -148,13 +148,13 @@ export class Chat{
             return null;
         }
       }
-    static getChatById(id_chat) {
+    static async getChatById(id_chat) {
         const chat = this.#chatByIdStmt.get({ id_chat });
         if (chat === undefined) throw new ChatNoEncontrado(id_chat);
         logger.debug("Chat encontrado:", chat);
         return chat;
       }
-    static getChatsByUserId(id_usuario) {
+    static async getChatsByUserId(id_usuario) {
         const id = id_usuario;
         let chats = this.#getByUserIdStmt.all({idUsuario:id});
         if (chats === undefined) throw new ChatNoEncontrado(id_usuario);
@@ -165,7 +165,7 @@ export class Chat{
         return chats;
       }
    
-    static getMensajesByChatId(id_chat) {
+    static async getMensajesByChatId(id_chat) {
         const Mensajes = this.#getMessagesStmt.all({ id_chat });
         logger.debug("Mensajes encontrados:", Mensajes);
         return Mensajes;
@@ -188,13 +188,13 @@ export class Chat{
         return chat;
       }
 
-    static crearChat(usuario1, usuario2, id_p,id) {
+    static async crearChat(usuario1, usuario2, id_p,id) {
         const nuevoChat = new Chat( id_p, id, usuario1, usuario2);
         console.log("Chat creado:", nuevoChat);
         return nuevoChat.persist();
       }
     
-    static enviarMensaje(id_chat, contenido, senderId) {
+    static async enviarMensaje(id_chat, contenido, senderId) {
         const nuevoMensaje = { id_chat, contenido, senderId };
         const { lastInsertRowid } = this.#insertMensajeStmt.run(nuevoMensaje);
         nuevoMensaje.id = lastInsertRowid;

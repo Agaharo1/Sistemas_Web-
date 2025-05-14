@@ -147,7 +147,7 @@ static getProductNameById(id) {
     return result;
   }
 
-  static getProductById(id) {
+  static async getProductById(id) {
     const producto = this.#getByIdStmt.get({ id });
     if (producto === undefined) throw new ProductoNoEncontrado(id);
     return producto;
@@ -211,7 +211,7 @@ static getProductNameById(id) {
   }
   
   static eliminarProducto(id) {
-    Chat.eliminarChatByProduct(id);
+    Chat.eliminarChatByProduct(parseInt(id));
     Puja.eliminarPujaByProduct(id)
     Imagen.eliminarImagen(id);
     const result = this.#deleteStmt.run({ id });

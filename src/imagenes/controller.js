@@ -4,6 +4,7 @@ import path from 'path';
 
 export function viewImagen(req, res) {
     const { id, img } = req.params;
-    const imagePath = path.join(config.uploads, id, img);
+    const cleanId = parseInt(id, 10);
+    const imagePath = join(config.uploads, String(cleanId), img);
     res.sendFile(imagePath);
 }

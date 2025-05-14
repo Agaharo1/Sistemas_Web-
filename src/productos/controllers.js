@@ -2,7 +2,7 @@
 import { Producto } from "./Productos.js";
 import { config } from "../config.js";
 import { Imagen } from "../imagenes/Imagen.js";
-import { body } from "express-validator";
+import { matchedData,validationResult,body } from 'express-validator';
 import { Usuario } from "../usuarios/Usuario.js";
 import { ProductoNoEncontrado } from "./Productos.js";
 import { Puja } from "../puja/Puja.js";
@@ -11,9 +11,9 @@ import fs from 'fs';
 import path from 'path';
 
 
-export function pagoProducto(req, res) {
+export async function pagoProducto(req, res) {
   const { id } = req.params;
-  const producto = Producto.getProductById(id);
+  const producto =await Producto.getProductById(id);
   const usuario = Usuario.getUsuarioById(producto.id_user);
  
   const params = {
@@ -26,15 +26,17 @@ export function pagoProducto(req, res) {
 }
 
 
-export function mostrarProducto(req, res) {
-  const { id } = req.params;
-  const producto = Producto.getProductById(id);
+export async function mostrarProducto(req, res) {
+  const datos = matchedData(req, { includeOptionals: true });
+  const { id } = datos;
+  
+  const producto =await Producto.getProductById(id);
 
   const pujas = Puja.getPujaByProductId(id);
 
   // Si hay pujas, coger la última
   const pujaActiva = Array.isArray(pujas) && pujas.length > 0 ? pujas[pujas.length - 1] : null;
-  console.log(pujaActiva);
+
   const params = {
     contenido: "paginas/productos/mostrarProducto",
     session: req.session,
@@ -74,9 +76,9 @@ export function doSubirProducto(req, res) {
     res.status(400).send(e.message);
   }
 }
-export function eliminarProducto(req, res) {
+export async function eliminarProducto(req, res) {
   const { id } = req.params;
-  let producto = Producto.getProductById(id);
+  let producto =await Producto.getProductById(id);
   if( req.session.user_id != producto.id_user){
     res.status(400).send("No puedes eliminar un producto que no es tuyo");
     return;
@@ -88,13 +90,10 @@ export function eliminarProducto(req, res) {
     res.status(400).send(e.message);
   }
 }
-export function editarProducto(req, res) {
-  const { id } = req.params;
-  let producto = Producto.getProductById(id);
-  if( req.session.user_id != producto.id_user){     
-    res.status(400).send("No puedes eliminar un producto que no es tuyo");
-    return;
-  }
+export async function editarProducto(req, res) {
+  const datos = matchedData(req, { includeOptionals: true });
+  const { id } = datos;
+  let producto =await Producto.getProductById(id);
   const params = {
     contenido: "paginas/productos/editarProducto",
     session: req.session,
@@ -104,7 +103,10 @@ export function editarProducto(req, res) {
   res.render("pagina", params);
 }
 export function doEditarProducto(req, res) {
-  const { id, nombre, descripcion, precio } = req.body;
+  
+  const datos = matchedData(req, { includeOptionals: true });
+  const { id, nombre, descripcion, precio } = datos
+
   try {
     logger.info("Editando producto:", id, nombre, descripcion, precio);
     Producto.editarProducto(nombre, descripcion, precio, id);
@@ -115,7 +117,8 @@ export function doEditarProducto(req, res) {
 }
 
 export function buscarProducto(req, res) {
-  const { query } = req.query; 
+  const datos = matchedData(req, { includeOptionals: true });
+  const { query } = datos;
 
   let productos = [];
   try{

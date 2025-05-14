@@ -9,7 +9,7 @@ import session from "express-session";
 import { logger } from "../logger.js";
 import {  broadcastMessage } from '../sse/utils.js';
 
-export function nuevoChat(req, res) {
+export async function nuevoChat(req, res) {
     const result = validationResult(req);
     if (!result.isEmpty()) {
         const errores = result.mapped();
@@ -19,7 +19,7 @@ export function nuevoChat(req, res) {
     const id_user_producto = parseInt(datos.id_user_producto);
     const id_user_sesion = parseInt(datos.id_user_sesion);
     const id = parseInt(datos.id);
-    const nuevoChat = Chat.crearChat(id_user_producto, id_user_sesion, id);
+    const nuevoChat = await Chat.crearChat(id_user_producto, id_user_sesion, id);
     if (nuevoChat) {
         res.redirect(`/chats/chat/${nuevoChat.id}`);
     } else {
@@ -28,9 +28,15 @@ export function nuevoChat(req, res) {
 
 }
 
-export function viewChat(req, res) {
-  const { id } = req.params;
-  const chat = Chat.getChatById(id);
+export async function viewChat(req, res) {
+   const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const errores = result.mapped();
+        return res.status(400).json({ status: 400, errores });
+    }
+  const datos = matchedData(req, { includeOptionals: true });
+  const id =datos.id;
+  const chat = await Chat.getChatById(id);
   let otherUserId = req.session.user_id;
   if(!chat) {
     return res.status(404).send("Chat no encontrado");
@@ -40,38 +46,38 @@ export function viewChat(req, res) {
   }else{
     otherUserId = chat.usuario2;
   }
-const usuario = Usuario.getUsuarioById(otherUserId);
-    if(!usuario) {
-        return res.status(404).send("Usuario no encontrado");
-    }
-const producto = Producto.getProductById(chat.producto);
-    if(!producto) {
-        return res.status(404).send("Producto no encontrado");
-    }
-const imagenes = Imagen.getImagenByProductId(chat.producto);
-    if(!imagenes) {
-        return res.status(404).send("Imagenes no encontradas");
-    }
+  const usuario = await Usuario.getUsuarioById(otherUserId);
+      if(!usuario) {
+          return res.status(404).send("Usuario no encontrado");
+      }
+  const producto = await Producto.getProductById(chat.producto);
+      if(!producto) {
+          return res.status(404).send("Producto no encontrado");
+      }
+  const imagenes = Imagen.getImagenByProductId(chat.producto);
+      if(!imagenes) {
+          return res.status(404).send("Imagenes no encontradas");
+      }
 
-  const mensajes = Chat.getMensajesByChatId(id);
-    if(!mensajes) {
-        return mensajes=[];
-    }
-  const params = {
-    contenido: "paginas/chats/chat",
-    session: req.session,
-    chat,
-    otherUserName : usuario.nombre,
-    productName : producto.nombre,
-    productId : producto.id,
-    imagenes,
-    mensajes
-  };
-  res.render("pagina", params);
+    const mensajes = await Chat.getMensajesByChatId(id);
+      if(!mensajes) {
+          return mensajes=[];
+      }
+    const params = {
+      contenido: "paginas/chats/chat",
+      session: req.session,
+      chat,
+      otherUserName : usuario.nombre,
+      productName : producto.nombre,
+      productId : producto.id,
+      imagenes,
+      mensajes
+    };
+    res.render("pagina", params);
 }
-export function viewMisChats(req, res) {
+export async function viewMisChats(req, res) {
  
-  const chats = Chat.getChatsByUserId(parseInt(req.session.user_id));
+  const chats = await Chat.getChatsByUserId(parseInt(req.session.user_id));
  
   const params = {
     contenido: "paginas/chats/misChats",
@@ -81,7 +87,7 @@ export function viewMisChats(req, res) {
   };
   res.render("pagina", params);
 }
-export function enviarMensaje(req, res) {
+export async function enviarMensaje(req, res) {
   const datos = matchedData(req, { includeOptionals: true });
   const result = validationResult(req);
    if (!result.isEmpty()) {
@@ -89,11 +95,11 @@ export function enviarMensaje(req, res) {
     const datos = matchedData(req);
     return res.redirect(`/chats/chat/${datos.id_chat}`);
   }
-  const nuevoMensaje = Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
+  const nuevoMensaje = await Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
   res.redirect(`/chats/chat/${datos.id_chat}`);
 }
 
-export function enviarMensajeJS(req, res) {
+export async function enviarMensajeJS(req, res) {
   const result = validationResult(req);
   const datos = matchedData(req, { includeOptionals: true });
   if (!result.isEmpty()) {
@@ -102,7 +108,7 @@ export function enviarMensajeJS(req, res) {
     return res.status(400).json({ status: 400, errores });
   }
   try{
-    const nuevoMensaje = Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
+    const nuevoMensaje = await Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
     // Construir el JSON para el broadcast
     const mensajeBroadcast = JSON.stringify({
       senderId: req.session.user_id,
@@ -117,11 +123,11 @@ export function enviarMensajeJS(req, res) {
     logger.error("Error al enviar el mensaje", e);
     return res.status(500).send("Error al enviar el mensaje");
   }
-  //res.redirect(`/chats/chat/${id_chat}`);
+ 
 }
 
 
-export function eliminarChat(req, res) {
+export async function eliminarChat(req, res) {
   const datos=matchedData(req, { includeOptionals: true });
   const result = validationResult(req);
   if (!result.isEmpty()) {
