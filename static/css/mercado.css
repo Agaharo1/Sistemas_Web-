@@ -87,4 +87,17 @@ button {
 .formEliminar{
 	align-items: center; /* Centra el contenido verticalmente */
 }
+.paginas-container { /*Contenedor de botones paginacion*/
+	display: flex;
+	justify-content: center; /* Centra horizontalmente */
+	align-items: center; /* Centra verticalmente */
+	gap: 10px; /* Espaciado entre elementos */
+	margin-top: 20px; /* Espaciado superior */
+	padding: 10px; /* Espaciado interno */	
+}
 
+@media (max-width: 750px) {
+	.productos-container {
+		flex-direction: column;
+	}
+}

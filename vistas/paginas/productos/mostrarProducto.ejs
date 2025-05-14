@@ -44,8 +44,9 @@
             <h3>Información del Usuario</h3>
             <p><strong>Nombre:</strong> <%= producto.usuario_nombre %></p>
             <p><strong>Email:</strong> <%= producto.username %></p>
-            <a href="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" class="button-link">Iniciar Chat</a>
-        </div>
+            <form action="/chats/nuevoChat/<%= producto.id %>?id_user_producto=<%= producto.id_user %>&id_user_sesion=<%= session.user_id %>" method="POST">
+                <button type="submit" class="button-link">Iniciar Chat</button>
+            </form>
         <% } %>
     </div>
 

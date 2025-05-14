@@ -2,7 +2,7 @@
 import { config } from "../config.js";
 import {Chat} from "../chat/Chat.js";
 import { Imagen } from "../imagenes/Imagen.js";
-import { body } from "express-validator";
+import { matchedData,validationResult,body } from 'express-validator';
 import { Usuario } from "../usuarios/Usuario.js";
 import { Producto } from "../productos/Productos.js";
 import session from "express-session";
@@ -10,17 +10,16 @@ import { logger } from "../logger.js";
 import {  broadcastMessage } from '../sse/utils.js';
 
 export function nuevoChat(req, res) {
-    const { id} = req.params;
-    const { id_user_producto, id_user_sesion } = req.query;
-    
-    //Comprobamos si ya existe un chat entre los dos usuarios
-    const chatExistente = Chat.getChatByUsers(id_user_producto, id_user_sesion, id);
-    if (chatExistente !== null) {
-        //Si existe, redirigimos al chat existente
-        return res.redirect(`/chats/chat/${chatExistente.id}`);
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        const errores = result.mapped();
+        return res.status(400).json({ status: 400, errores });
     }
+    const datos = matchedData(req, { includeOptionals: true });
+    const id_user_producto = parseInt(datos.id_user_producto);
+    const id_user_sesion = parseInt(datos.id_user_sesion);
+    const id = parseInt(datos.id);
     const nuevoChat = Chat.crearChat(id_user_producto, id_user_sesion, id);
-
     if (nuevoChat) {
         res.redirect(`/chats/chat/${nuevoChat.id}`);
     } else {
@@ -83,24 +82,35 @@ export function viewMisChats(req, res) {
   res.render("pagina", params);
 }
 export function enviarMensaje(req, res) {
-  const { mensaje, id_chat,senderId } = req.body;
-  const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
-  res.redirect(`/chats/chat/${id_chat}`);
+  const datos = matchedData(req, { includeOptionals: true });
+  const result = validationResult(req);
+   if (!result.isEmpty()) {
+    const errores = result.mapped();
+    const datos = matchedData(req);
+    return res.redirect(`/chats/chat/${datos.id_chat}`);
+  }
+  const nuevoMensaje = Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
+  res.redirect(`/chats/chat/${datos.id_chat}`);
 }
 
 export function enviarMensajeJS(req, res) {
-  
-  const { mensaje, id_chat,senderId } = req.body;
+  const result = validationResult(req);
+  const datos = matchedData(req, { includeOptionals: true });
+  if (!result.isEmpty()) {
+    const errores = result.mapped();
+    const datos = matchedData(req);
+    return res.status(400).json({ status: 400, errores });
+  }
   try{
-    const nuevoMensaje = Chat.enviarMensaje(id_chat, mensaje, senderId);
+    const nuevoMensaje = Chat.enviarMensaje(datos.id_chat, datos.mensaje, req.session.user_id);
     // Construir el JSON para el broadcast
     const mensajeBroadcast = JSON.stringify({
-      senderId,
-      contenido: mensaje,
+      senderId: req.session.user_id,
+      contenido: datos.mensaje,
   });
     broadcastMessage( // Mensaje enviado a todos los sockets
       mensajeBroadcast,
-      { categoria: id_chat }
+      { categoria:datos.id_chat }
     );
     res.status(200).send('Mensaje enviado');
   }catch(e){
@@ -112,10 +122,16 @@ export function enviarMensajeJS(req, res) {
 
 
 export function eliminarChat(req, res) {
-  const { id } = req.params;
+  const datos=matchedData(req, { includeOptionals: true });
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errores = result.mapped();
+    const datos = matchedData(req);
+    return res.status(400).json({ status: 400, errores });
+  }
   try {
-    console.log("Eliminando chat:", id);
-    Chat.eliminarChat(parseInt(id),parseInt(req.session.user_id));
+    logger.debug("Eliminando chat:", datos.id);
+    Chat.eliminarChat(parseInt(datos.id),parseInt(req.session.user_id));
     res.redirect("/chats/misChats");
   } catch (e) {
     res.status(400).send(e.message);

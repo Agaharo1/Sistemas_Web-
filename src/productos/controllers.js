@@ -115,7 +115,7 @@ export function doEditarProducto(req, res) {
 }
 
 export function buscarProducto(req, res) {
-  const { query } = req.query; // Use req.query to get data from a GET request
+  const { query } = req.query; 
 
   let productos = [];
   try{
