@@ -54,7 +54,7 @@ export async function mostrarTicket(req, res) {
   const { id } = req.params;
   console.log("El id de la compra es: ", id)
   const comp = compra.getCompraById(id);
-  const producto = Producto.getProductById(comp.producto_id);
+  const producto = await Producto.getProductById(comp.producto_id);
   return res.render("pagina", {
     contenido: "paginas/envios/confirmacionCompra",
     session: req.session,
@@ -82,7 +82,7 @@ export async function confirmacionCompra(req, res) {
     return res.redirect(`/envios/resumenProducto/${id}`);
   }
   const usuario_id = req.session.user_id;
-  const producto = Producto.getProductById(id);
+  const producto = await Producto.getProductById(id);
   if(producto.vendido) {
     console.log("El producto ya ha sido vendido");
     return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
@@ -232,11 +232,11 @@ export function formularioEnvioProducto(req, res) {
 }
 
 
-export function envioProducto(req, res) {
+export async function envioProducto(req, res) {
   const { id } = req.params;
-  const producto = Producto.getProductById(id);
-  const usuario = Usuario.getUsuarioById(producto.id_user);
-  const imagen = Imagen.getImagenByProductId(id);
+  const producto = await Producto.getProductById(id);
+  const usuario = await Usuario.getUsuarioById(producto.id_user);
+  const imagen = await Imagen.getImagenByProductId(id);
 
   const puntoRecogida = req.session.puntoRecogidaSeleccionado;
 

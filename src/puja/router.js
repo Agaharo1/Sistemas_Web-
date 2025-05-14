@@ -10,21 +10,22 @@ import {
 } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body, validationResult } from 'express-validator';
+import asyncHandler from 'express-async-handler';
 
 const pujaRouter = express.Router();
 
 // Ver una puja específica
-pujaRouter.get('/puja/:id',autenticado('/usuarios/login'), viewPuja);
+pujaRouter.get('/puja/:id',autenticado('/usuarios/login'), asyncHandler(viewPuja));
 
 // Ver todas las pujas del usuario actual (usa sesión, no necesita :id_u)
-pujaRouter.get('/misPujas', viewMisPujas);
+pujaRouter.get('/misPujas', asyncHandler(viewMisPujas));
 
-pujaRouter.get('/misSubastas', viewMisSubastas);
+pujaRouter.get('/misSubastas', asyncHandler(viewMisSubastas));
 
-pujaRouter.post('/eliminarPujaPropietario/:id', eliminarPujaPropietario);
+pujaRouter.post('/eliminarPujaPropietario/:id', asyncHandler(eliminarPujaPropietario));
 
 // Crear una nueva puja para un producto
-pujaRouter.post('/nuevaPuja/:id_producto',autenticado('/usuarios/login'), nuevaPuja);
+pujaRouter.post('/nuevaPuja/:id_producto',autenticado('/usuarios/login'), asyncHandler(nuevaPuja));
 
 // Realizar una pujada (puja sobre una puja existente)
 pujaRouter.post(

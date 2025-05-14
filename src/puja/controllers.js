@@ -6,7 +6,7 @@ import { Producto } from "../productos/Productos.js";
 import { logger } from "../logger.js";
 
 // Crear una nueva puja si no existe una para el producto
-export function nuevaPuja(req, res) {
+export async function nuevaPuja(req, res) {
   const { id_producto } = req.params;
   const id_user_sesion = req.session.user_id;
   const precio_salida = req.body.precio_salida;
@@ -15,7 +15,7 @@ export function nuevaPuja(req, res) {
     return res.status(400).send("Debe introducir un precio de salida válido");
   }
 
-  const producto = Producto.getProductById(id_producto);
+  const producto =  Producto.getProductById(id_producto);
   if (!producto || producto.id_user !== id_user_sesion) {
     return res.status(403).send("No autorizado para crear una puja en este producto.");
   }
@@ -30,18 +30,18 @@ export function nuevaPuja(req, res) {
 }
 
 // Mostrar las subastas creadas por el usuario
-export function viewMisSubastas(req, res) {
+export async function viewMisSubastas(req, res) {
   const id_user = req.session.user_id;
   const ahora = Date.now();
 
   const propias = Puja.getPujaByPropietario(id_user) || [];
 
-  const enriched = propias.map(puja => {
-    const producto = Producto.getProductById(puja.producto);
+  const enriched = propias.map( puja => {
+    const producto =  Producto.getProductById(puja.producto);
     const imagen = Imagen.getImagenByProductId(puja.producto);
     const tiempoRestante = Math.max(0, puja.fecha_limite - ahora);
     const sinPujas = (tiempoRestante <= 0 && puja.valor_max === puja.precio_salida);
-    const ganador = puja.id_u ? Usuario.getUsuarioById(puja.id_u) : null;
+    const ganador = puja.id_u ?  Usuario.getUsuarioById(puja.id_u) : null;
 
     return {
       ...puja,
@@ -62,7 +62,7 @@ export function viewMisSubastas(req, res) {
 }
 
 // Vista de una puja concreta
-export function viewPuja(req, res) {
+export async function viewPuja(req, res) {
   const { id } = req.params;
 
   let puja;
@@ -75,12 +75,12 @@ export function viewPuja(req, res) {
   const ahora = Date.now();
   const tiempoRestante = Math.max(0, Math.floor((puja.fecha_limite - ahora) / 1000));
 
-  const producto = Producto.getProductById(puja.producto);
+  const producto =  Producto.getProductById(puja.producto);
   const imagenes = Imagen.getImagenByProductId(puja.producto);
-  const vendedor = Usuario.getUsuarioById(producto.id_user);
+  const vendedor =  Usuario.getUsuarioById(producto.id_user);
   const pujadas = Puja.getPujadasByPujaId(id);
-  const pujadasConNombre = pujadas.map(p => {
-    const usuario = Usuario.getUsuarioById(p.id_u);
+  const pujadasConNombre =  pujadas.map( p => {
+    const usuario =  Usuario.getUsuarioById(p.id_u);
     return {
       ...p,
       nombreUsuario: usuario ? usuario.nombre : `Usuario ${p.id_u}`
@@ -104,15 +104,15 @@ export function viewPuja(req, res) {
 }
 
 // Vista de todas las pujas del usuario actual
-export function viewMisPujas(req, res) {
+export async function viewMisPujas(req, res) {
   const id_u = req.session.user_id;
   let pujas = Puja.getPujaByUser(id_u) || [];
   const ahora = Date.now();
 
-  pujas = pujas.map(puja => {
-    const producto = Producto.getProductById(puja.producto);
+  pujas =  pujas.map( puja => {
+    const producto =  Producto.getProductById(puja.producto);
     const imagen = Imagen.getImagenByProductId(puja.producto);
-    const usuario = Usuario.getUsuarioById(puja.id_u);
+    const usuario =  Usuario.getUsuarioById(puja.id_u);
     const tiempoRestante = puja.fecha_limite - ahora;
     const ganada = (tiempoRestante <= 0 && puja.id_u === id_u);
 
@@ -133,13 +133,13 @@ export function viewMisPujas(req, res) {
   });
 }
 
-export function eliminarPujaPropietario(req, res) {
+export async function eliminarPujaPropietario(req, res) {
   const { id } = req.params;
   const userId = req.session.user_id;
 
   try {
     const puja = Puja.getPujaById(id);
-    const producto = Producto.getProductById(puja.producto);
+    const producto =  Producto.getProductById(puja.producto);
 
     if (producto.id_user !== userId) {
       return res.status(403).send("No tienes permiso para eliminar esta puja.");

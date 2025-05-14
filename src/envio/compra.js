@@ -3,6 +3,7 @@ export class compra {
     static #getByIdStmt = null;
     static #getByUserIdStmt = null;
     static #getProductoIdsByUserIdStmt = null;
+    static #deleteStmt = null;
     #id;
     #usuario_id ;
     
@@ -46,8 +47,14 @@ export class compra {
         this.#getProductoIdsByUserIdStmt = db.prepare(`
             SELECT producto_id FROM compra WHERE usuario_id = @usuario_id
         `);
+        this.#deleteStmt = db.prepare(`
+            DELETE FROM compra WHERE producto_id = @producto_id
+        `);
     }
-
+    static deleteById(id) {
+        
+        this.#deleteStmt.run({ producto_id:id });
+    }
     static getIdProductoByUsuarioId(usuario_id) {
      return this.#getProductoIdsByUserIdStmt.all({ usuario_id });
     }

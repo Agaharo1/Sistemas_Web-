@@ -1,6 +1,7 @@
 import { Imagen } from "../imagenes/Imagen.js";
 import {Chat} from "../chat/Chat.js";
 import { Puja } from "../puja/Puja.js";
+import { compra } from "../envio/compra.js";
 import fs from 'fs';
 import path from 'path';
 
@@ -147,7 +148,7 @@ static getProductNameById(id) {
     return result;
   }
 
-  static async getProductById(id) {
+  static  getProductById(id) {
     const producto = this.#getByIdStmt.get({ id });
     if (producto === undefined) throw new ProductoNoEncontrado(id);
     return producto;
@@ -214,6 +215,7 @@ static getProductNameById(id) {
     Chat.eliminarChatByProduct(parseInt(id));
     Puja.eliminarPujaByProduct(id)
     Imagen.eliminarImagen(id);
+    compra.deleteById(id);
     const result = this.#deleteStmt.run({ id });
     if (result.changes === 0) throw new ProductoNoEncontrado(id);
 

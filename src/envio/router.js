@@ -4,14 +4,14 @@ import { config } from '../config.js';
 import { eliminarDireccion,eliminarTarjeta,editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 import { body } from 'express-validator';
-
+import asyncHandler from 'express-async-handler';
 const envioRouter = express.Router();
 
 //Gets
 envioRouter.get('/formPuntoRecogida/:id', autenticado('/usuarios/login'), formularioPuntoRecogida);
 envioRouter.get('/formEnvioProducto/:id', autenticado('/usuarios/login'), formularioEnvioProducto);
 envioRouter.get('/editarDireccion/:id', autenticado('/usuarios/login'), editarDireccion);
-envioRouter.get('/resumenProducto/:id', autenticado('/usuarios/login'), envioProducto); 
+envioRouter.get('/resumenProducto/:id', autenticado('/usuarios/login'), asyncHandler(envioProducto)); 
 envioRouter.get('/formTarjeta/:id', autenticado('/usuarios/login'),formularioTarjeta);
 envioRouter.get('/deleteformTarjeta/:id', autenticado('/usuarios/login'), mostrarTarjetas);
 envioRouter.get('/confirmacionCompra/:id', autenticado('/usuarios/login'), mostrarTicket);

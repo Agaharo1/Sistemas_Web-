@@ -23,7 +23,7 @@ export class Usuario {
         this.#getByIdStmt = db.prepare('SELECT username,nombre FROM Usuarios WHERE id = @id');
     }
 
-    static async getUsuarioById(id) {
+    static  getUsuarioById(id) {
         const usuario = this.#getByIdStmt.get({ id });
         if (usuario === undefined) throw new UsuarioNoEncontrado(id);
     
