@@ -21,7 +21,7 @@ export function nuevoChat(req, res) {
     const id = parseInt(datos.id);
     
     //Comprobamos si ya existe un chat entre los dos usuarios
-    const chatExistente = Chat.getChatByUsers(id_user_producto,id_user_sesion, datos.id);
+    const chatExistente = Chat.getChatByUsers(id_user_producto,id_user_sesion, id);
     if (chatExistente !== null) {
         //Si existe, redirigimos al chat existente
         return res.redirect(`/chats/chat/${chatExistente.id}`);
