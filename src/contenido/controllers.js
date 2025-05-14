@@ -7,56 +7,57 @@ import session from "express-session";
 import { logger } from "../logger.js";
 import {  broadcastMessage } from '../sse/utils.js';
 
-export function renderMiContenido(req, res) {
+export async function renderMiContenido(req, res) {
     const result = validationResult(req);
     if (!result.isEmpty()) {
         const errores = result.mapped();
         return res.status(400).json({ status: 400, errores });
     }
     const datos = matchedData(req, { includeOptionals: true });
+    let pagina = 1;
     if(datos.pagina){
-        const pagina = parseInt(datos.pagina);
+        pagina = parseInt(datos.pagina);
         if (pagina < 1) {
             return res.status(400).json({ status: 400, error: 'La página debe ser un número entero mayor o igual a 1' });
         }
-    }else{
-        datos.pagina = 1;
     }
 
+    const user_id = req.session.user_id;
+    const contenido = 'paginas/contenido/misProductos';
+    const totalProductos = await Producto.getNumberOfProductsUser(user_id);
+    const totalPaginas = Math.ceil(totalProductos / 3);
     let productos = [];
-    productos = Producto.getProductByUserId(parseInt(req.session.user_id));
-    contenido = 'paginas/contenido/misProductos';
+    productos = await Producto.getPaginaProductosUser(pagina, user_id);
     
 
     res.render('pagina', {
         contenido,
         session: req.session,
         productos,
-        totalPaginas
+        totalPaginas,
+        esPerfil: true
     });
 };
 
-export function renderNormal(req, res) {
-     const result = validationResult(req);
+export async function renderNormal(req, res) {
+    const result = validationResult(req);
     if (!result.isEmpty()) {
         const errores = result.mapped();
         return res.status(400).json({ status: 400, errores });
     }
     const datos = matchedData(req, { includeOptionals: true });
+    let pagina = 1;
     if(datos.pagina){
-        const pagina = parseInt(datos.pagina);
+        pagina = parseInt(datos.pagina);
         if (pagina < 1) {
             return res.status(400).json({ status: 400, error: 'La página debe ser un número entero mayor o igual a 1' });
         }
-    }else{
-        datos.pagina = 1;
     }
-    const totalProductos = Producto.getNumberOfProducts();
+    const totalProductos =await Producto.getNumberOfProducts();
     const totalPaginas = Math.ceil(totalProductos / 3);
     const contenido = 'paginas/contenido/normal';
-    const pagina = parseInt(datos.pagina);
     let productos = [];
-    productos = Producto.getPaginaProductos(pagina);
+    productos = await Producto.getPaginaProductos(pagina);
     
     res.render('pagina', {
         contenido,

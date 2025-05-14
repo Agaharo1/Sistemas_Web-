@@ -22,18 +22,7 @@ export function viewRegister(req, res) {
 }
 
 export function viewProfile(req, res) {
-    let productos = [];
-    if (req.session.login) {
-            productos = Producto.getProductByUserId(req.session.user_id);   
-    }
-    render(req, res, 'pagina', {
-        contenido: 'paginas/contenido/misProductos',
-        session: req.session,
-        esPerfil: true,
-        productos: productos,
-        datos: {},
-        errores: {}
-    });
+    res.redirect('/contenido/misProductos');
 }
 
 export function viewEditarPerfil(req, res) {

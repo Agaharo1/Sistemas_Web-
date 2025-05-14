@@ -2,6 +2,7 @@ import express from 'express';
 import { viewLogin, doLogin, doLogout, viewRegister, doRegister, viewBaja, doBaja, viewHome, viewProfile, viewEditarPerfil, doEditarPerfil } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body } from 'express-validator';
+import asyncHandler from 'express-async-handler';
 const usuariosRouter = express.Router();
 
 //Pagina de login

@@ -92,31 +92,35 @@ export class Producto {
     JOIN Imagenes i ON i.id_producto = p.id
     LIMIT @limit OFFSET @offset
     `);
+    this.#getProductPaginaUserId=db.prepare(`SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+    FROM productos p 
+    JOIN usuarios u ON p.id_user = u.id 
+    JOIN Imagenes i ON i.id_producto = p.id
+    WHERE p.id_user = @id_u
+    LIMIT @limit OFFSET @offset
+    `);
     
 }
-static getPaginaProductos(pagina) {
+static async getPaginaProductos(pagina) {
   const offset = (pagina - 1) * 3;
   const limit = 3;
   const productosPagina = this.#getProductPagina.all({ limit, offset });
   return productosPagina;
 }
 
-static getPaginaProductosUser(pagina, id_u) {
-  const productos = this.#getByUserIdStmt.all({ id_u });
-  const productosPorPagina = 3;
-  const totalPaginas = Math.ceil(productos.length / productosPorPagina);
-  const inicio = (pagina - 1) * productosPorPagina;
-  const fin = inicio + productosPorPagina;
-  const productosPagina = productos.slice(inicio, fin);
+static async getPaginaProductosUser(pagina, id_u) {
+  const offset = (pagina - 1) * 3;
+  const limit = 3;
+  const productosPagina = this.#getProductPaginaUserId.all({ id_u, limit, offset });
   return productosPagina;
 }
 
-static getNumberOfProducts() {
+static async getNumberOfProducts() {
     const result = this.#getNumberOfProducts.get();
     return result.total;
 }
 
-static getNumberOfProductsUser(id_u) {
+static async getNumberOfProductsUser(id_u) {
   const result = this.#getNumberOfProductsByUser.get({ id_u });
   return result.total;
 }

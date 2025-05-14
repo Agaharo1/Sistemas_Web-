@@ -1,6 +1,6 @@
 <div id="mercado">
     <h2 class="titulo-centrado">Mis Productos</h2>
-    <div class="productos-container">
+    <div class="productos-container" id="productos-container">
         <% if (productos.length > 0) { %>
             <% productos.forEach(producto => { %>
                 <div class="producto">
@@ -46,5 +46,11 @@
             <p>No hay productos disponibles.</p>
         <% } %>
     </div>
-    <div class="paginas-container"></div>
+    <div class="paginas-container" id="paginas-container">
+         <% for (let i = 1; i <= totalPaginas; i++) { %>
+            <a href="/misProductos?pagina=<%= i %>" class="boton-pagina"><%= i %></a>
+        <% } %>
+    </div>
 </div>
+<script  src="/js/fetch.js"></script>
+<script  src="/js/mostrarMisProductos.js"></script>
