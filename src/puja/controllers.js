@@ -9,9 +9,9 @@ import { logger } from "../logger.js";
 export function nuevaPuja(req, res) {
   const { id_producto } = req.params;
   const id_user_sesion = req.session.user_id;
-  const valor_max = parseFloat(req.body.valor_max);
+  const precio_salida = req.body.precio_salida;
 
-  if (isNaN(valor_max) || valor_max <= 0) {
+  if (isNaN(precio_salida) || precio_salida <= 0) {
     return res.status(400).send("Debe introducir un precio de salida válido");
   }
 
@@ -20,30 +20,27 @@ export function nuevaPuja(req, res) {
     return res.status(403).send("No autorizado para crear una puja en este producto.");
   }
 
-  const pujasExistentes = Puja.getPujaByProductId(id_producto);
-  if (pujasExistentes.length > 0) {
-    return res.redirect(`/pujas/puja/${pujasExistentes[0].id}`);
-  }
-
-  const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, valor_max);
+  const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, precio_salida);
 
   if (nuevaPuja && nuevaPuja.id) {
-    return res.redirect(`/pujas/misPujas`);
+    return res.redirect(`/pujas/misSubastas`);
   }
 
   res.status(500).send("Error al crear la puja");
 }
 
+// Mostrar las subastas creadas por el usuario
 export function viewMisSubastas(req, res) {
   const id_user = req.session.user_id;
   const ahora = Date.now();
 
-  const propias = Puja.getPujaByUser(id_user)
+  const propias = Puja.getPujaByPropietario(id_user) || [];
 
   const enriched = propias.map(puja => {
     const producto = Producto.getProductById(puja.producto);
     const imagen = Imagen.getImagenByProductId(puja.producto);
     const tiempoRestante = Math.max(0, puja.fecha_limite - ahora);
+    const sinPujas = (tiempoRestante <= 0 && puja.valor_max === puja.precio_salida);
 
     return {
       ...puja,
@@ -51,6 +48,7 @@ export function viewMisSubastas(req, res) {
       productId: producto.id,
       imagen: imagen,
       tiempoRestante: Math.floor(tiempoRestante / 1000),
+      sinPujas
     };
   });
 
@@ -76,14 +74,14 @@ export function viewPuja(req, res) {
 
   puja.fecha_limite = new Date(puja.fecha_limite).getTime();
 
-  const usuario = Usuario.getUsuarioById(puja.id_u);
+  const usuario = puja.id_u ? Usuario.getUsuarioById(puja.id_u) : null;
   const producto = Producto.getProductById(puja.producto);
   const imagenes = Imagen.getImagenByProductId(puja.producto);
   const pujadas = Puja.getPujadasByPujaId(id) || [];
   const ahora = Date.now();
   const tiempoRestante = Math.max(0, Math.floor((puja.fecha_limite - ahora) / 1000));
 
-  if (!usuario || !producto || !imagenes) {
+  if (!producto || !imagenes) {
     return res.status(500).send("Error al recuperar datos relacionados");
   }
 
@@ -91,7 +89,7 @@ export function viewPuja(req, res) {
     contenido: "paginas/pujas/puja",
     session: req.session,
     puja,
-    usuario: usuario.nombre,
+    usuario: usuario?.nombre || "Sin pujador",
     productName: producto.nombre,
     productId: producto.id,
     imagenes,
@@ -113,9 +111,9 @@ export function viewMisPujas(req, res) {
     const producto = Producto.getProductById(puja.producto);
     const imagen = Imagen.getImagenByProductId(puja.producto);
     const usuario = Usuario.getUsuarioById(puja.id_u);
-
     const tiempoRestante = puja.fecha_limite - ahora;
     const ganada = (tiempoRestante <= 0 && puja.id_u === id_u);
+
     return {
       ...puja,
       productName: producto?.nombre || "Sin nombre",
@@ -142,19 +140,16 @@ export function pujar(req, res) {
 
   const ahora = Date.now();
   if (puja.fecha_limite <= ahora) {
-    console.log("La puja ha expirado.");
     return res.status(403).send("La puja ha expirado.");
   }
 
   if (puja.valor_max >= valor) {
-    console.log("No se puede realizar la puja");
     return res.redirect(`/pujas/puja/${id_puja}`);
   }
 
   Puja.pujar(id_puja, valor, id_u);
   res.redirect("/pujas/misPujas");
 }
-
 
 // Eliminar una puja
 export function eliminarPuja(req, res) {

@@ -1,21 +1,24 @@
-<h1>Mis Productos en Subasta</h1>
-
+<h1>Mis Subastas Activas</h1>
 <div class="puja-list">
   <% if (subastas.length > 0) { %>
-    <% subastas.forEach(puja => { %>
-      <div class="puja-item-container">
-        <div class="puja-info">
-          <div class="product-info">
-            <img src="/imagenes/imagen/<%= puja.productId %>/<%= puja.imagen %>" alt="Imagen del Producto" class="product-image-circle">
-            <h3><%= puja.productName %></h3>
-            <p>Precio de salida: <%= puja.valor_max %> €</p>
-            <p>Tiempo restante: <%= puja.tiempoRestante %> segundos</p>
-          </div>
-        </div>
-        <a href="/pujas/puja/<%= puja.id %>" class="puja-item">Ver Detalles</a>
+    <% subastas.forEach(subasta => { %>
+      <div class="puja-item">
+        <img src="/imagenes/imagen/<%= subasta.productId %>/<%= subasta.imagen %>" alt="Imagen" class="product-image-circle">
+        <h3><%= subasta.productName %></h3>
+        <p>Precio de salida: <%= subasta.precio_salida %> €</p>
+        <p>Mayor puja: <%= subasta.valor_max %> €</p>
+        <p>Tiempo restante: <%= subasta.tiempoRestante %> segundos</p>
+        <% if (subasta.tiempoRestante === 0) { %>
+          <% if (subasta.sinPujas) { %>
+            <p style="color: red;"><strong>No se recibieron pujas.</strong></p>
+          <% } else { %>
+            <p style="color: green;"><strong>Subasta finalizada. Ganador con <%= subasta.valor_max %> €</strong></p>
+          <% } %>
+        <% } %>
+        <a href="/pujas/puja/<%= subasta.id %>" class="button-link">Ver Puja</a>
       </div>
     <% }); %>
   <% } else { %>
-    <p>No tienes productos en subasta actualmente.</p>
+    <p>No has creado ninguna subasta aún.</p>
   <% } %>
 </div>

@@ -28,8 +28,8 @@
             <% } else { %> 
                 <% if (!pujaActiva){ %>
                     <form action="/pujas/nuevaPuja/<%= producto.id %>" method="POST" style="margin-top: 10px;">
-                        <label for="valor_max"><strong>Precio de salida:</strong></label>
-                        <input type="number" name="valor_max" min="0" required placeholder="Precio inicial">
+                        <label for="precio_salida"><strong>Precio de salida:</strong></label>
+                        <input type="number" name="precio_salida" min="0" required placeholder="Precio inicial">
                         <button type="submit" class="button-link">Iniciar Puja</button>
                     </form>
                 <% } %>
