@@ -95,7 +95,21 @@ button {
 	margin-top: 20px; /* Espaciado superior */
 	padding: 10px; /* Espaciado interno */	
 }
-
+.boton-pagina{
+	background-color: #5cb397;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-left: 5px;
+    margin-top: 5px;
+    width: auto;
+    flex-shrink: 0;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Times New Roman', TimesNewRomanPSMT, serif;
+}
 @media (max-width: 750px) {
 	.productos-container {
 		flex-direction: column;

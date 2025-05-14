@@ -17,6 +17,8 @@ export class Producto {
   static #getNumberOfProducts=null;
   static #getNumberOfProductsByUser=null;
   static #getProductsByName=null;
+  static #getProductPagina=null;
+  static #getProductPaginaUserId=null;
 
   
 
@@ -83,15 +85,19 @@ export class Producto {
     `);  
     this.#getNumberOfProductsByUser = db.prepare(`
       SELECT COUNT(*) as total FROM productos WHERE id_user = @id_u
-    `);  
+    `);
+    this.#getProductPagina = db.prepare(`SELECT p.id, p.nombre, p.descripcion, p.precio, p.id_user,u.username as username, u.nombre AS usuario_nombre, i.nombre as imagen 
+    FROM productos p 
+    JOIN usuarios u ON p.id_user = u.id 
+    JOIN Imagenes i ON i.id_producto = p.id
+    LIMIT @limit OFFSET @offset
+    `);
+    
 }
 static getPaginaProductos(pagina) {
-  const productos = this.#getAllStmt.all();
-  const productosPorPagina = 3;
-  const totalPaginas = Math.ceil(productos.length / productosPorPagina);
-  const inicio = (pagina - 1) * productosPorPagina;
-  const fin = inicio + productosPorPagina;
-  const productosPagina = productos.slice(inicio, fin);
+  const offset = (pagina - 1) * 3;
+  const limit = 3;
+  const productosPagina = this.#getProductPagina.all({ limit, offset });
   return productosPagina;
 }
 
@@ -109,6 +115,7 @@ static getNumberOfProducts() {
     const result = this.#getNumberOfProducts.get();
     return result.total;
 }
+
 static getNumberOfProductsUser(id_u) {
   const result = this.#getNumberOfProductsByUser.get({ id_u });
   return result.total;
