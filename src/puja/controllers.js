@@ -9,22 +9,56 @@ import { logger } from "../logger.js";
 export function nuevaPuja(req, res) {
   const { id_producto } = req.params;
   const id_user_sesion = req.session.user_id;
+  const valor_max = parseFloat(req.body.valor_max);
 
-  const pujasExistentes = Puja.getPujaByUser(id_user_sesion) || [];
-
-  const pujaExistente = pujasExistentes.find(p => p.producto == id_producto);
-  if (pujaExistente) {
-    return res.redirect(`/pujas/puja/${pujaExistente.id}`);
+  if (isNaN(valor_max) || valor_max <= 0) {
+    return res.status(400).send("Debe introducir un precio de salida válido");
   }
 
-  const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto);
+  const producto = Producto.getProductById(id_producto);
+  if (!producto || producto.id_user !== id_user_sesion) {
+    return res.status(403).send("No autorizado para crear una puja en este producto.");
+  }
+
+  const pujasExistentes = Puja.getPujaByProductId(id_producto);
+  if (pujasExistentes.length > 0) {
+    return res.redirect(`/pujas/puja/${pujasExistentes[0].id}`);
+  }
+
+  const nuevaPuja = Puja.crearPuja(id_user_sesion, id_producto, valor_max);
 
   if (nuevaPuja && nuevaPuja.id) {
-    logger.info(`Redirigiendo a: /pujas/puja/${nuevaPuja.id}`);
-    return res.redirect(`/pujas/puja/${nuevaPuja.id}`);
+    return res.redirect(`/pujas/misPujas`);
   }
 
   res.status(500).send("Error al crear la puja");
+}
+
+export function viewMisSubastas(req, res) {
+  const id_user = req.session.user_id;
+  const ahora = Date.now();
+
+  const propias = Puja.getPujaByUser(id_user)
+
+  const enriched = propias.map(puja => {
+    const producto = Producto.getProductById(puja.producto);
+    const imagen = Imagen.getImagenByProductId(puja.producto);
+    const tiempoRestante = Math.max(0, puja.fecha_limite - ahora);
+
+    return {
+      ...puja,
+      productName: producto.nombre,
+      productId: producto.id,
+      imagen: imagen,
+      tiempoRestante: Math.floor(tiempoRestante / 1000),
+    };
+  });
+
+  res.render("pagina", {
+    contenido: "paginas/pujas/misSubastas",
+    session: req.session,
+    subastas: enriched,
+  });
 }
 
 // Vista de una puja concreta

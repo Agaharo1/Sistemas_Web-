@@ -4,7 +4,8 @@ import {
   viewMisPujas,
   pujar,
   nuevaPuja,
-  eliminarPuja
+  eliminarPuja,
+  viewMisSubastas
 } from './controllers.js';
 import { autenticado } from '../middleware/auth.js';
 import { body } from 'express-validator';
@@ -16,6 +17,8 @@ pujaRouter.get('/puja/:id', viewPuja);
 
 // Ver todas las pujas del usuario actual (usa sesión, no necesita :id_u)
 pujaRouter.get('/misPujas', viewMisPujas);
+
+pujaRouter.get('/misSubastas', viewMisSubastas);
 
 // Crear una nueva puja para un producto
 pujaRouter.post('/nuevaPuja/:id_producto', nuevaPuja);
