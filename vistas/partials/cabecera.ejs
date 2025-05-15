@@ -5,19 +5,12 @@ function mostrarSaludo(session){
 		return `<a href="/usuarios/login">Inicia sesión</a></p>`;
 	}
 
-	return `<p>Bienvenido ${session.nombre}.</p>`;
+	return `<p>Bienvenido ${session.nombre}. <a href="/usuarios/logout">Salir</a></p>`;
 }
 function mostrarMenu(session){
 	if (session == null || ! session.login){
-		return `
-		<nav class="nav-container">
-			<p><a href="#" class = "boton icon"><span class="menu-icon">▶</span></a></p>
-			<ul class = "menu oculto">
-				<li><a href="/contenido/normal"class="nav-button-top">Mercado</a></li>
-				<li><a href="/usuarios/registro"class="nav-button-top">Registro</a></li>
-			</ul>
-
-		</nav>`;
+		return ''
+		
 	}
 
 	return `
@@ -28,8 +21,8 @@ function mostrarMenu(session){
 			<li><a href="/usuarios/profile" class="nav-button-top">Mi perfil</a></li>
 			<li><a href="/contenido/normal" class="nav-button-top">Mercado</a></li>
 			<li><a href="/productos/subir" class="nav-button-top">Subir producto</a></li>
-			<li><a href="/usuarios/baja" class="nav-button-top">Darme de baja</a></li>
-			<li><a href="/usuarios/logout" class="nav-button-top">Logout</a></li>
+			<li><a href="/usuarios/baja" class="nav-button-top">Elimina tu cuenta</a></li>
+
 		</ul>
 	</nav>`;
 }
@@ -63,9 +56,10 @@ function mostrarMenu(session){
 
 	</div>
 	<!-- Barra de navegación -->
+	<% if (session && session.login) { %>
 	<div class = "menu">
 		<%- mostrarMenu(session) %>
 	</div>
-
+	<% } %>
 </header>
 

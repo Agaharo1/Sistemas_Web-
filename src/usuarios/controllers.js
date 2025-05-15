@@ -1,4 +1,3 @@
-
 import { Usuario,RolesEnum } from './Usuario.js';
 import { render } from '../utils/render.js';
 import { logger } from '../logger.js';
@@ -161,7 +160,10 @@ export async function doLogin(req, res) {
         req.session.esAdmin = usuario.rol === RolesEnum.ADMIN;
         req.log.debug(`Usuario logueado: ${username}`);
         req.session.user_id = usuario.id;
-        return res.redirect('/usuarios/profile');
+        // Redirección inteligente tras login: guarda la accion original que el usuario queria hacer antes del login
+        const redirectTo = req.session.redirectTo || '/usuarios/profile';
+        delete req.session.redirectTo;
+        return res.redirect(redirectTo);
     } catch (e) {
 
         const datos = matchedData(req);

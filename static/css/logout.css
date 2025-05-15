@@ -1,0 +1,53 @@
+#logout-container {
+    max-width: 90%;
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+#logout-container img{
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7); /* Oscurece la imagen */
+}
+
+/*Enlaces de los banners*/
+.logout-overlay{
+    font-family: "DM Serif Text", serif;
+    font-size: 1.8rem; /* Cambia el tamaño de la letra usando em */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 2;
+    width: 50%;;
+    height: 30%;
+    min-width: 50px;
+    max-width: 90%; /* Evita que el texto se salga del contenedor */
+    overflow-wrap: break-word; /* Rompe palabras largas */
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.705); /* Fondo semitransparente para mejor contraste */
+}
+.logout-overlay a {
+    display: inline-block; 
+    color: black;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.3rem;
+    cursor: pointer;   
+
+    position: static;
+    background: #4ceb9b;
+    margin-top: 10px;
+}
+
+.logout-overlay a:hover{
+    background: #3caf76;
+}

@@ -1,3 +1,40 @@
+<div id="banner">
+    <div class="slider" id="slider">
+        
+        <div class="banner-slide">
+            <img class="banner-img" src="/images/banner1.jpg" alt="Banner 1">
+            <div class="banner-overlay" id ="banner-overlay1">
+            <h3>Sube un producto y gana dinero con lo que no usas</h3>
+            <a href="/productos/subir" class="banner-button">Vender ahora</a>
+            </div>
+        </div>
+    
+        <div class="banner-slide">
+            <img class="banner-img" src="/images/banner2.jpg" alt="Banner 2">
+            <div class="banner-overlay" id ="banner-overlay2">
+                <h3>Sostenibilidad que nunca pasa de moda</h3>
+                <a href="/productos/subir" class="banner-button">Empieza a vender</a>
+            </div>
+        </div>
+        <div class="banner-slide">
+            <img class="banner-img" src="/images/banner3.jpg" alt="Banner 3">
+            <div class="banner-overlay" id ="banner-overlay3">
+                <h3>Objetos con historia, listos para la tuya</h3>
+                <a href="/productos/subir" class="banner-button">Sube un producto</a>
+            </div>
+        </div>
+        <div class="banner-slide">
+            <img class="banner-img" src="/images/banner1.jpg" alt="Banner 1 clone">
+            <div class="banner-overlay" id ="banner-overlay1">
+                <h3>Sube un producto y gana dinero con lo que no usas</h3>
+                <a href="/productos/subir" class="banner-button">Vender ahora</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div id="mercado">
     <h2 class="titulo-centrado">Productos</h2>
@@ -38,3 +75,29 @@
 </div>
 <script  src="/js/fetch.js"></script>
 <script  src="/js/mostradorProductos.js"></script>
+
+
+
+<script>
+    // Script para el slider automático del banner.
+    
+    const slider = document.getElementById('slider');
+    const total = slider.children.length;
+    let indice = 0;
+
+    function moverSlider() {
+        indice++;
+        slider.style.transition = 'transform 1s cubic-bezier(0.77,0,0.175,1)';
+        slider.style.transform = `translateX(-${indice * 100}%)`;
+
+        if (indice === total - 1) {
+            setTimeout(() => {
+                slider.style.transition = 'none';
+                slider.style.transform = 'translateX(0)';
+                indice = 0;
+            }, 1000); // igual al tiempo de transición (1s)
+        }
+    }
+
+    setInterval(moverSlider, 10000);
+</script>

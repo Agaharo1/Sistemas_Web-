@@ -10,7 +10,9 @@ export function autenticado(urlNoAutenticado = '/usuarios/login', urlAutenticado
             if (urlAutenticado != undefined) return res.redirect(urlAutenticado);
             return next();
         }
+        // Guardar la URL original a la que quería acceder
         if (urlNoAutenticado != undefined) {
+            req.session.redirectTo = req.originalUrl;
             return res.redirect(urlNoAutenticado);
         }
         next();
