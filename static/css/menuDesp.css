@@ -37,7 +37,7 @@ nav .menu li{
 	margin: 0;
 }
 
-nav a{
+.nav-container .menu a{
 	color: #1a2b2e;
 	text-align: left;
 	text-decoration: none;
@@ -51,7 +51,7 @@ nav a{
 	transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
 	margin: 0 0.2rem;
 }
-nav a:hover, nav a:focus{
+.nav-container .menu a:hover, .nav-container .menu a:focus{
 	background: linear-gradient(90deg, #57838a 0%, #a2d4db 100%);
 	color: #fff;
 	font-weight: bold;
