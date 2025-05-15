@@ -12,6 +12,70 @@
     gap: 20px;
 }
 
+.puja-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+}
+  
+.puja-item {
+    width: 80%;
+    max-width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.button-link {
+    background-color: #5cb397;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: inherit;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+  
+.button-link:hover {
+    background-color: #499d84;
+}
+  
+.button-link.danger {
+    background-color: #e74c3c;
+}
+  
+.button-link.danger:hover {
+    background-color: #c0392b;
+}
+  
+  
+.button-group form button {
+    all: unset; /* Quita estilos por defecto del botón */
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+}
+  
+.button-group form button:hover {
+    background-color: #c0392b;
+}
+
 .product-info {
     text-align: center;
 }

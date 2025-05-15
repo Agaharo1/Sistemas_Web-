@@ -10,10 +10,6 @@
         <p>Precio de salida: <%= subasta.precio_salida %> €</p>
         <p>Mayor puja: <%= subasta.valor_max %> €</p>
         <p>Tiempo restante: <%= subasta.tiempoRestante %> segundos</p>
-        <form action="/pujas/eliminarPujaPropietario/<%= subasta.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta puja?')">
-          <button type="submit" class="button-link danger">Eliminar Puja</button>
-        </form>
-
         <% if (subasta.valor_max > subasta.precio_salida && subasta.nombreGanador && subasta.tiempoRestante > 0) { %>
           <p><strong>Ganador actual:</strong> <%= subasta.nombreGanador %></p>
         <% } else if (subasta.valor_max == subasta.precio_salida && subasta.tiempoRestante <= 0) { %>
@@ -23,7 +19,13 @@
         <% } else { %>
           <p><em>Aún no hay pujas.</em></p>
         <% } %>
-        <a href="/pujas/puja/<%= subasta.id %>" class="button-link">Ver Puja</a>
+        <div class="button-group">
+          <form action="/pujas/eliminarPujaPropietario/<%= subasta.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta puja?')">
+            <button type="submit" class="button-link danger">Eliminar</button>
+          </form>
+        
+          <a href="/pujas/puja/<%= subasta.id %>" class="button-link">Ver Puja</a>
+        </div>
       </div>
     <% }); %>
   <% } else { %>

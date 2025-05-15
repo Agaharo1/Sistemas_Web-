@@ -169,7 +169,7 @@ export function pujar(req, res) {
   }
 
   Puja.pujar(id_puja, valor, id_u);
-  return res.redirect("/pujas/misPujas");
+  return res.redirect(`/pujas/puja/${id_puja}`);
 }
 
 
