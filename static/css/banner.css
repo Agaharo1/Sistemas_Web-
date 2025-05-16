@@ -103,3 +103,19 @@
 #banner-overlay3 a:hover{
     background: #2c5386;
 }
+
+/* Ajustes para pantallas estrechas (altura pequeña) */
+@media (max-height: 1000px) {
+    .banner-overlay {
+        height: auto; /* Ajusta la altura del contenedor */
+        padding: 10px; /* Reduce el espacio interno si es necesario */
+        font-size: 1.2rem; /* Reduce el tamaño del texto */
+    }
+
+    .banner-overlay a {
+        position: static; /* Elimina la posición absoluta */
+        margin-top: 10px; /* Agrega espacio entre el texto y el botón */
+        display: inline-block; /* Asegura que el botón se muestre correctamente */
+        font-size: 1rem; /* Reduce el tamaño del texto del botón */
+    }
+}
