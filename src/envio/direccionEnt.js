@@ -67,7 +67,6 @@ export class DirEnvio {
     if (result.changes === 0) {
         throw new DireccionNoEncontrada(id);
     }
-    console.log(`Dirección con ID ${id} eliminada correctamente.`);
     }
     static getDireccionById(id) {
         const direccion = this.#getByIdStmt.get({ id });
@@ -101,10 +100,8 @@ export class DirEnvio {
             const punto_recogida = direccion.punto_recogida;
             const datos = { usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida };
             
-            console.log("Datos a insertar:", datos);
             result = this.#insertStmt.run(datos);   
             direccion.#id = result.lastInsertRowid;
-            console.log("ID de la dirección insertada:", direccion.#id);
             return direccion;
         
     }

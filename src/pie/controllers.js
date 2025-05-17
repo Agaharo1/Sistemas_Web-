@@ -52,13 +52,8 @@ export async function mandarCorreo(req, res) {
                 Mensaje:
                 ${mensaje}
             `
-        };
-
-        
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Correo enviado: ' + info.response);
-
-        
+        };   
+        const info = await transporter.sendMail(mailOptions);   
         res.redirect('/?success=true');
     } catch (error) {
         console.error('Error al enviar el correo:', error);

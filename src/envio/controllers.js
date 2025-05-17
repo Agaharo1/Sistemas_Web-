@@ -10,11 +10,9 @@ import { body, validationResult, matchedData, ExpressValidator } from 'express-v
 
 
 export function mostrarHisVentas(req, res) {
- console.log("mostrarHistorialVentas");
+
  const usuario_id = req.session.user_id;
  const productos = Producto.getSoldProductByUserId(usuario_id);
-
- console.log("Productos vendidos:", productos);
 
  return res.render("pagina", {
    contenido: "paginas/envios/resumenVentas",
@@ -28,17 +26,11 @@ export function mostrarHisVentas(req, res) {
 
 
 export function mostarHistorial(req, res) {
-  console.log("mostarHistorial");
   const usuario_id = req.session.user_id;
   const historial = compra.getComprasByUsuarioId(usuario_id);
   const nombresProductos = historial.map(compra => {
     return Producto.getProductNameById(compra.producto_id);
   });
-
-  console.log("Historial de compras:", historial);
-  console.log("Nombres de productos:", nombresProductos);
-
-
   return res.render("pagina", {
     contenido: "paginas/envios/resumenCompras",
     historial, 
@@ -76,16 +68,12 @@ export async function mostrarTicket(req, res) {
 export async function confirmacionCompra(req, res) {
   const { id } = req.params;
   const { direccionSeleccionada, tarjetaSeleccionada, costoEntrega, total } = req.body;
-  console.log("tarjetaSeleccionada:", tarjetaSeleccionada);
-  console.log("direccionSeleccionada:", direccionSeleccionada);
   if (!direccionSeleccionada || !tarjetaSeleccionada) {
-    console.log("Faltan datos de dirección o tarjeta");
     return res.redirect(`/envios/resumenProducto/${id}`);
   }
   const usuario_id = req.session.user_id;
   const producto = await Producto.getProductById(id);
   if(producto.vendido) {
-    console.log("El producto ya ha sido vendido");
     return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
   }
   const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
@@ -117,14 +105,12 @@ export async function eliminarDireccion(req, res) {
     res.setFlash('Dirección eliminada con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (error) {
-    console.error("Error al eliminar la dirección:", error);
     return res.status(500).send("Error al eliminar la dirección.");
   }
 }
 
 export function mostrarPuntoRecogida(req, res) {
   const { puntoId, productoId } = req.body;
-  console.log("Producto ID recibido:", productoId);
   try {
     const puntoRecogida = PuntoRecogida.getPuntoRecogidaByOneId(puntoId);
     req.session.puntoRecogidaSeleccionado = puntoRecogida;
@@ -159,8 +145,6 @@ export function mostrarTarjetas(req, res) {
   const { id } = req.params;
   const usuario_id = req.session.user_id;
   const tarjetas = Tarjeta.getTarjetasByUsuarioId(usuario_id);
-  console.log("Tarjetas:", tarjetas);
-
   return res.render("pagina", {
     contenido: "paginas/envios/deleteformTarjeta",
     session: req.session,
@@ -191,8 +175,6 @@ export function editarDireccion(req, res) {
 
 export function formularioPuntoRecogida(req, res) {
   const { id } = req.params;
-  console.log("ID del producto recibido:", id);
-
   const puntoRecogida = PuntoRecogida.getPuntoRecogidaById(id);
   const params = {
     contenido: "paginas/envios/formPuntoRecogida",
@@ -302,7 +284,6 @@ export async function crearPuntoRecogida(req, res) {
     res.setFlash('Punto de recogida añadido con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (e) {
-    console.error("Error al crear la dirección:", e.message);
     return res.status(500).send("Error al crear la dirección.");
   }
 }
@@ -334,7 +315,6 @@ export async function crearDireccion(req, res) {
     res.setFlash('Direccion añadida con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (e) {
-    console.error("Error al crear la dirección:", e.message);
     return res.status(500).send("Error al crear la dirección.");
   }
 }
@@ -364,7 +344,6 @@ export async function crearTarjeta(req, res) {
     res.setFlash('Tarjeta añadida con éxito.');
     return res.redirect(`/envios/resumenProducto/${req.params.id}`);
   } catch (e) {
-    console.error("Error al crear la tarjeta:", e.message);
     return res.status(500).send("Error al crear la dirección.");
   }
 }

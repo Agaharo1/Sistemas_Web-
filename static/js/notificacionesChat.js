@@ -11,10 +11,6 @@ document.addEventListener('DOMContentLoaded', init);
  * Inicializa la página
  */
 function init() {
-   
-   
-
-    
     const messageForm = document.querySelector('form.message-form'); // Selecciona el formulario de mensajes
     const messagesContainer = document.querySelector('.messages'); // Selecciona el contenedor de mensajes
     const chatId = messageForm.querySelector('input[name="id_chat"]').value; // Obtiene el ID del chat desde el formulario

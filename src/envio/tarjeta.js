@@ -53,7 +53,7 @@ export class Tarjeta {
     if (result.changes === 0) {
         throw new TarjetaNoEncontrada(tarjeta_id);
     }
-    console.log(`Tarjeta con ID ${tarjeta_id} eliminada correctamente.`);
+
 }
 
     static getIdTargetaById(usuario_id) {
@@ -85,7 +85,6 @@ export class Tarjeta {
                 const codigo_seguridad = tarjeta.codigo_seguridad;
                 const nombre_titular = tarjeta.nombre_titular;
                 const datos = { usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular };
-                console.log("Datos a insertar:", datos);
                 result = this.#insertStmt.run(datos);
                 tarjeta.#id = result.lastInsertRowid;
                 return tarjeta;
