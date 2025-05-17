@@ -122,7 +122,6 @@ export async function eliminarDireccion(req, res) {
   }
 }
 
-
 export function mostrarPuntoRecogida(req, res) {
   const { puntoId, productoId } = req.body;
   console.log("Producto ID recibido:", productoId);
@@ -212,6 +211,25 @@ export function formularioPuntoRecogida(req, res) {
   res.render("pagina", params);
 
 }
+
+
+export async function formularioEditarDireccion(req,res) {
+  const { direccion_id } = req.query;
+     const direccion = await DirEnvio.getDireccionById(direccion_id);
+  const params = {
+    contenido: "paginas/envios/formEditarDireccion",
+    session: req.session,
+    direccion,
+    datos: {},
+    errores: {},
+    helpers: {
+      error: (errores, campo) => errores[campo]?.msg || "",
+    },
+
+  };
+  res.render("pagina", params);
+}
+
 
 
 

@@ -5,6 +5,8 @@
             <input type="hidden" name="productoId" value="<%= id %>">
             <input type="hidden" name="punto_recogida" value="1">
             <input type="hidden" id="direccion_entrega" name="direccion_entrega" value="<%= puntoRecogida.length > 0 ? puntoRecogida[0].direccion : '' %>">
+
+            <h3 style="text-align: center;">Datos del Destinatario</h3>
             <p>
                 <label for="puntoId">Selecciona:</label>
                 <select name="puntoId" id="puntoId" required onchange="updateDireccionEntrega()">
@@ -19,7 +21,7 @@
                     <% } %>
                 </select>
             </p>
-            <h3 style="text-align: center;">Datos del Destinatario</h3>
+            
             <p>
                 <label for="nombre">Nombre Completo:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" value="<%= datos.nombre %>">
@@ -34,7 +36,7 @@
 
             <p>
                 <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" placeholder="Teléfono de contacto" value="<%= datos.telefono %>">
+                <input type="text" id="telefono" name="telefono" placeholder="Teléfono de contacto" value="<%= datos.telefono %>">
                 <%- helpers.error(errores, 'telefono') %>
             </p>
 

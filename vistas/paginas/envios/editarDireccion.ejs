@@ -4,7 +4,7 @@
         <form action="/envios/editarDireccion/<%= id %>" method="POST">
             <input type="hidden" name="productoId" value="<%= id %>">
             <div class="form-group">
-                <h3>Selecciona dirección para editar:</h3>
+                <h3>Selecciona dirección para editar/eliminar:</h3>
                 <select id="direccion_seleccionada" name="direccion_id" class="form-input" required>
                     <% if (direcciones && direcciones.length > 0) { %>
                         <% direcciones.forEach(direccion => { %>
@@ -19,11 +19,21 @@
             </div>
             <% if (direcciones && direcciones.length > 0) { %>
                 <div class="form-group">
+                    <a id="enlace-editar" href="/envios/formEditarDireccion?direccion_id=<%= direcciones[0].id %>" class="btn-editar">Editar Dirección</a>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn-editar">Eliminar Dirección</button>
                 </div>
             <% } %>
         </form>
-
-        
     </div>
 </section>
+<script>
+    const select = document.getElementById('direccion_seleccionada');
+    const enlace = document.getElementById('enlace-editar');
+    if(select && enlace) {
+        select.addEventListener('change', function() {
+            enlace.href = '/envios/formEditarDireccion?direccion_id=' + this.value;
+        });
+    }
+</script>

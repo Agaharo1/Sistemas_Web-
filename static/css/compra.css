@@ -1,18 +1,18 @@
 
 .button-link {
-    background-color: #5cb397; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin bordes */
-    border-radius: 4px; /* Bordes redondeados */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    padding: 2%; /* Espaciado interno */
-    margin-left: 5px; /* Espaciado a la izquierda */
-    margin-top: 5px; /* Espaciado superior */
-    width: 25%; /* Ancho del botón */
-    flex-shrink: 0; /* Evita que el botón se reduzca */
-    text-align: center; /* Centra el texto dentro del botón */
-    text-decoration: none; /* Quita el subrayado del enlace */
-    display: inline-block; /* Permite que el ancho tenga efecto */
+    background-color: #5cb397; 
+    color: white; 
+    border: none;
+    border-radius: 4px; 
+    cursor: pointer; 
+    padding: 2%; 
+    margin-left: 5px; 
+    margin-top: 5px; 
+    width: 25%;
+    flex-shrink: 0; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
     height: 10%;;
 }
 
@@ -21,21 +21,21 @@
 }
 
 .product-details button {
-    background-color: #5cb397; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin bordes */
-    border-radius: 4px; /* Bordes redondeados */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    padding: 5px; /* Espaciado interno */
-    margin-left: 5px; /* Espaciado a la izquierda */
-    margin-top: 5px; /* Espaciado superior */
-    width: 39%; /* Ancho del botón */
-    flex-shrink: 0; /* Evita que el botón se reduzca */
-    text-align: center; /* Centra el texto dentro del botón */
+    background-color: #5cb397; 
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    padding: 5px; 
+    margin-left: 5px; 
+    margin-top: 5px; 
+    width: 39%; 
+    flex-shrink: 0; 
+    text-align: center; 
 }
 
 .product-details button:hover {
-    background-color: #428d75; /* Color de fondo al pasar el ratón */
+    background-color: #428d75; 
 }
 
 .nav-button{
