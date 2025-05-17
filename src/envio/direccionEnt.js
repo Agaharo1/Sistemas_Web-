@@ -5,6 +5,7 @@ export class DirEnvio {
     static #getDniByUserIdStmt = null;
     static #getTelefonoByUserIdStmt = null;
     static #deleteByIdStmt = null;
+    static #updateStmt = null;
 
     #id;
     #usuario_id ;     
@@ -31,6 +32,14 @@ export class DirEnvio {
             INSERT INTO direccion (usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida)
             VALUES (@usuario_id, @nombre, @codigo_postal, @telefono, @dni, @direccion_entrega, @punto_recogida)
         `);
+        this.#updateStmt = db.prepare(`
+        UPDATE direccion SET nombre = @nombre,
+            codigo_postal = @codigo_postal,
+            telefono = @telefono,
+            dni = @dni,
+            direccion_entrega = @direccion_entrega
+        WHERE id = @id
+        `);
 
         this.#getByIdStmt = db.prepare(`
             SELECT * FROM direccion WHERE id = @id
@@ -50,6 +59,9 @@ export class DirEnvio {
     `);
     }
 
+    static updateDireccion(data) {
+        return this.#updateStmt.run(data);
+    }
     static eliminarDireccionById(id) {
     const result = this.#deleteByIdStmt.run({ id });
     if (result.changes === 0) {
