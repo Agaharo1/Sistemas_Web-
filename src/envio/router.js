@@ -21,10 +21,29 @@ envioRouter.get('/resumenVentas', autenticado('/usuarios/login'), mostrarHisVent
 
 
 //Posts
-envioRouter.post('/formEditarDireccion/:id', autenticado('/usuarios/login'), updateDireccion);
 envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
 envioRouter.post('/deleteformTarjeta/:id', autenticado('/usuarios/login'), eliminarTarjeta);
 envioRouter.post('/editarDireccion/:id',autenticado('/usuarios/login'), eliminarDireccion);
+envioRouter.post(
+    '/formEditarDireccion/:id',
+    [
+        autenticado('/usuarios/login'),
+    
+        body('nombre').notEmpty().withMessage('El nombre completo es obligatorio'),
+        body('codigo_postal')
+            .isPostalCode('ES')
+            .withMessage('El código postal no es válido'),
+        body('telefono')
+            .matches(/^[0-9]{9}$/)
+            .withMessage('El teléfono debe tener 9 dígitos'),
+        body('dni')
+            .matches(/^[0-9]{8}[A-Za-z]$/)
+            .withMessage('El DNI debe tener 8 números seguidos de una letra'),
+        body('direccion_entrega').notEmpty().withMessage('La dirección de entrega es obligatoria'),
+    
+    ],
+    updateDireccion
+);
 envioRouter.post('/formPuntoRecogida/:id',
     [
         autenticado('/usuarios/login'),

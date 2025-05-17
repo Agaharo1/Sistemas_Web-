@@ -15,6 +15,7 @@
                     placeholder="Calle, número, piso..."
                     <%= direccion && direccion.punto_recogida == 1 ? 'readonly' : '' %>
                 />
+                <%- helpers.error(errores, 'direccion_entrega') %>
                 <% if (direccion && direccion.punto_recogida == 1) { %>
                     <span style="color: #e67e22; font-weight: bold; display: block; margin-top: 8px;">
                         Esta dirección es un punto de recogida y no puede ser editada.
@@ -30,6 +31,7 @@
                     value="<%= direccion?.nombre || '' %>"
                     placeholder="Tu nombre"
                 />
+                <%- helpers.error(errores, 'nombre') %>
 
                 <h1>Código postal</h1>
                 <input 
@@ -40,6 +42,7 @@
                     value="<%= direccion?.codigo_postal || '' %>"
                     placeholder="xxxxx"
                 />
+                <%- helpers.error(errores, 'codigo_postal') %>
 
                 <h1>Teléfono</h1>
                 <input 
@@ -50,6 +53,7 @@
                     value="<%= direccion?.telefono || '' %>"
                     placeholder="Tu teléfono"
                 />
+                <%- helpers.error(errores, 'telefono') %>
 
                 <h1>DNI</h1>
                 <input 
@@ -60,6 +64,7 @@
                     value="<%= direccion?.dni || '' %>"
                     placeholder="Tu DNI"
                 />
+                <%- helpers.error(errores, 'dni') %>
             </p>
             <div style="text-align: center;">
                 <button type="submit">Guardar cambios</button>

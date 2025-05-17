@@ -231,21 +231,7 @@ export async function formularioEditarDireccion(req,res) {
   };
   res.render("pagina", params);
 }
-export async function updateDireccion(req, res) {
-    const { direccionId, nombre, codigo_postal, telefono, dni, direccion_entrega ,productoId} = req.body;
-   
-        await DirEnvio.updateDireccion({
-            id: direccionId,
-            nombre,
-            codigo_postal,
-            telefono,
-            dni,
-            direccion_entrega
-        });
-        
-       res.redirect(`/envios/resumenProducto/${productoId}`); 
-    
-}
+
 
 export function formularioEnvioProducto(req, res) {
   const { id } = req.params;
@@ -379,4 +365,35 @@ export async function crearTarjeta(req, res) {
     console.error("Error al crear la tarjeta:", e.message);
     return res.status(500).send("Error al crear la dirección.");
   }
+}
+
+export async function updateDireccion(req, res) {
+    const result = validationResult(req);
+    const { direccionId, nombre, codigo_postal, telefono, dni, direccion_entrega, productoId } = req.body;
+
+    if (!result.isEmpty()) {
+        const direccion = await DirEnvio.getDireccionById(direccionId);
+        return res.render("pagina", {
+            contenido: "paginas/envios/formEditarDireccion",
+            session: req.session,
+            direccion,
+            id: productoId,
+            datos: req.body,
+            errores: result.mapped(),
+            helpers: {
+                error: (errores, campo) => errores[campo]?.msg || "",
+            },
+        });
+    }
+
+    await DirEnvio.updateDireccion({
+        id: direccionId,
+        nombre,
+        codigo_postal,
+        telefono,
+        dni,
+        direccion_entrega
+    });
+
+    res.redirect(`/envios/resumenProducto/${productoId}`);
 }
