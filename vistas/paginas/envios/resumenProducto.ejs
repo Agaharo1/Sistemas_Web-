@@ -1,3 +1,10 @@
+<% if (mensaje) { %>
+  <div class="flash-message success">
+    <span><%= mensaje %></span>
+    <button onclick="this.parentElement.style.display='none'" class="close-btn">×</button>
+  </div>
+<% } %>
+
 <div class="send-container">
   <h1 class="titulo-centrado">Compra del Producto</h1>
   <div class="pay-summary">

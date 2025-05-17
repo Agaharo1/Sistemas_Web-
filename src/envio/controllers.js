@@ -50,11 +50,10 @@ export function mostarHistorial(req, res) {
   });
 }
 export async function mostrarTicket(req, res) {
-
   const { id } = req.params;
-  console.log("El id de la compra es: ", id)
-  const comp = compra.getCompraById(id);
+  const comp = await compra.getCompraById(id); 
   const producto = await Producto.getProductById(comp.producto_id);
+  const mensaje = res.locals.getAndClearFlash();
   return res.render("pagina", {
     contenido: "paginas/envios/confirmacionCompra",
     session: req.session,
@@ -65,11 +64,13 @@ export async function mostrarTicket(req, res) {
     },
     total: comp.precio,
     producto,
+    mensaje, 
     helpers: {
       error: (errores, campo) => errores[campo]?.msg || "",
     },
   });
 }
+
 
 
 export async function confirmacionCompra(req, res) {
@@ -88,33 +89,32 @@ export async function confirmacionCompra(req, res) {
     return res.redirect(`/`); //Esto deberia envia a mis pedidos o algo asi
   }
   const id_targeta = Tarjeta.getIdTargetaById(usuario_id);
- // const nombre = Tarjeta.getNombreById(usuario_id);
-  const tarjeta = Tarjeta.getTarjetaById(id_targeta);
-  //     this.numero_tarjeta = numero_tarjeta;
-  //     this.nombre_titular = nombre_titular;
 
+  const tarjeta = Tarjeta.getTarjetaById(id_targeta);
   const produ = producto;
   const dni = DirEnvio.getDniByUsuarioId(usuario_id);
   const telefono = DirEnvio.getTelefonoByUsuarioId(usuario_id);
   const direccionEntrega = direccionSeleccionada || "Dirección no especificada";
   Producto.venderProducto(id); // Para marcar el producto como vendido en la base de datos
   const compraId = await compra.crearCompra(produ.id, total, direccionEntrega, dni, telefono, tarjeta.nombre, usuario_id, id_targeta, tarjeta.numero_tarjeta, tarjeta.nombre_titular);
-  console.log("Compra id = ", compraId)
+  res.setFlash('Compra realizada con éxito.');
+
   return res.redirect(`/envios/confirmacionCompra/${compraId}`);
-
-
 }
+
+
 export async function eliminarTarjeta(req, res) {
     const { tarjeta_id, productoId, } = req.body;
     await Tarjeta.eliminarTarjetaById(tarjeta_id);
+    res.setFlash('Tarjeta eliminada con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
 }
 
 export async function eliminarDireccion(req, res) {
   const { direccion_id, productoId } = req.body;
-  console.log("ID de la dirección a eliminar:", direccion_id);
   try {
     await DirEnvio.eliminarDireccionById(direccion_id);
+    res.setFlash('Dirección eliminada con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (error) {
     console.error("Error al eliminar la dirección:", error);
@@ -178,8 +178,6 @@ export function editarDireccion(req, res) {
   const { id } = req.params;
   const usuario_id = req.session.user_id;
   const direcciones = DirEnvio.getDireccionesByUsuarioId(usuario_id);
-  console.log("Direcciones:", direcciones);
-
   return res.render("pagina", {
     contenido: "paginas/envios/editarDireccion",
     session: req.session,
@@ -255,7 +253,7 @@ export async function envioProducto(req, res) {
   const producto = await Producto.getProductById(id);
   const usuario = await Usuario.getUsuarioById(producto.id_user);
   const imagen = await Imagen.getImagenByProductId(id);
-
+  const mensaje = res.locals.getAndClearFlash();
   const puntoRecogida = req.session.puntoRecogidaSeleccionado;
 
   const direcciones = DirEnvio.getDireccionesByUsuarioId(req.session.user_id);
@@ -266,6 +264,7 @@ export async function envioProducto(req, res) {
     session: req.session,
     producto,
     usuario,
+    mensaje,
     imagen,
     puntoRecogida,
     direcciones,
@@ -300,6 +299,7 @@ export async function crearPuntoRecogida(req, res) {
   try {
     const usuario_id = req.session.user_id;
     await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
+    res.setFlash('Punto de recogida añadido con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (e) {
     console.error("Error al crear la dirección:", e.message);
@@ -331,6 +331,7 @@ export async function crearDireccion(req, res) {
     const usuario_id = req.session.user_id;
 
     await DirEnvio.crearDireccion(usuario_id, nombre, codigo_postal, telefono, dni, direccion_entrega, punto_recogida);
+    res.setFlash('Direccion añadida con éxito.');
     return res.redirect(`/envios/resumenProducto/${productoId}`);
   } catch (e) {
     console.error("Error al crear la dirección:", e.message);
@@ -360,6 +361,7 @@ export async function crearTarjeta(req, res) {
   try {
     const usuario_id = req.session.user_id;
     await Tarjeta.crearTarjeta(usuario_id, numero_tarjeta, fecha_expiracion, codigo_seguridad, nombre_titular);
+    res.setFlash('Tarjeta añadida con éxito.');
     return res.redirect(`/envios/resumenProducto/${req.params.id}`);
   } catch (e) {
     console.error("Error al crear la tarjeta:", e.message);
@@ -394,6 +396,7 @@ export async function updateDireccion(req, res) {
         dni,
         direccion_entrega
     });
+     res.setFlash('Direccion modificada con éxito.');
 
     res.redirect(`/envios/resumenProducto/${productoId}`);
 }
