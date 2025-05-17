@@ -1,5 +1,6 @@
 
 import bcrypt from "bcryptjs";
+import {Producto} from "../productos/Productos.js";
 
 export const RolesEnum = Object.freeze({
     USUARIO: 'U',
@@ -131,9 +132,20 @@ export class Usuario {
             if (!bcrypt.compareSync(password, usuario.#password)) {
                 throw new UsuarioOPasswordNoValido(username);
             }
-    
-            // Si la contraseña es correcta, proceder con la eliminación
-            this.#delete(usuario);
+            try{
+                //obtener productos del usuario
+                let productos = Producto.getProductByUserId(usuario.id);
+                //Eliminamos los productos del usuario
+                for (let i = 0; i < productos.length; i++) {
+                    Producto.eliminarProducto(productos[i].id);
+                }
+                // Si la contraseña es correcta, proceder con la eliminación
+                this.#delete(usuario);
+            }
+            catch (e) {
+                // Si no se puede eliminar el usuario, lanzar una excepción
+                throw new Error('Error al eliminar el usuario', { cause: e });
+            }
             
         } catch (e) {
             // Solo relanzamos el error si no es del tipo esperado
