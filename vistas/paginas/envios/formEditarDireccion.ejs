@@ -1,8 +1,8 @@
 <section class="formulario-section">
     <div class="formulario-container">
-        <form action="/envios/formEditarDireccion" method="POST" class="direccion-form">
-            <input type="hidden" name="id" value="<%= direccion?.id %>">
-
+        <form action="/envios/formEditarDireccion/<%= id %>" method="POST" class="direccion-form">
+            <input type="hidden" name="productoId" value="<%= id %>">
+            <input type="hidden" name="direccionId" value="<%= direccion?.id %>">
             <p>
                 <h2>Editar datos dirección de entrega</h2>
                 <h1>Dirección de entrega</h1>

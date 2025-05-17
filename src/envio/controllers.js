@@ -214,12 +214,14 @@ export function formularioPuntoRecogida(req, res) {
 
 
 export async function formularioEditarDireccion(req,res) {
-  const { direccion_id } = req.query;
-     const direccion = await DirEnvio.getDireccionById(direccion_id);
+  const direccionId = req.params.id;
+  const id = req.query.productoId;
+  const direccion = await DirEnvio.getDireccionById(direccionId);
   const params = {
     contenido: "paginas/envios/formEditarDireccion",
     session: req.session,
     direccion,
+    id,
     datos: {},
     errores: {},
     helpers: {
@@ -229,9 +231,21 @@ export async function formularioEditarDireccion(req,res) {
   };
   res.render("pagina", params);
 }
-
-
-
+export async function updateDireccion(req, res) {
+    const { direccionId, nombre, codigo_postal, telefono, dni, direccion_entrega ,productoId} = req.body;
+   
+        await DirEnvio.updateDireccion({
+            id: direccionId,
+            nombre,
+            codigo_postal,
+            telefono,
+            dni,
+            direccion_entrega
+        });
+        
+       res.redirect(`/envios/resumenProducto/${productoId}`); 
+    
+}
 
 export function formularioEnvioProducto(req, res) {
   const { id } = req.params;

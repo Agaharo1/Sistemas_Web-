@@ -1,14 +1,14 @@
 import express from 'express';
 
 import { config } from '../config.js';
-import {formularioEditarDireccion, eliminarDireccion,eliminarTarjeta,editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
+import {updateDireccion,formularioEditarDireccion, eliminarDireccion,eliminarTarjeta,editarDireccion,mostrarTarjetas,formularioPuntoRecogida,formularioEnvioProducto,envioProducto,mostarHistorial,formularioTarjeta,mostrarHisVentas,mostrarTicket,crearDireccion,crearPuntoRecogida,crearTarjeta,confirmacionCompra} from './controllers.js';
 import { autenticado } from '../middleware/auth.js'; 
 import { body } from 'express-validator';
 import asyncHandler from 'express-async-handler';
 const envioRouter = express.Router();
 
 //Gets
-envioRouter.get('/formEditarDireccion', autenticado('/usuarios/login'),formularioEditarDireccion);
+envioRouter.get('/formEditarDireccion/:id', autenticado('/usuarios/login'),formularioEditarDireccion);
 envioRouter.get('/formPuntoRecogida/:id', autenticado('/usuarios/login'), formularioPuntoRecogida);
 envioRouter.get('/formEnvioProducto/:id', autenticado('/usuarios/login'), formularioEnvioProducto);
 envioRouter.get('/editarDireccion/:id', autenticado('/usuarios/login'), editarDireccion);
@@ -21,6 +21,7 @@ envioRouter.get('/resumenVentas', autenticado('/usuarios/login'), mostrarHisVent
 
 
 //Posts
+envioRouter.post('/formEditarDireccion/:id', autenticado('/usuarios/login'), updateDireccion);
 envioRouter.post('/confirmacionCompra/:id', autenticado('/usuarios/login'), confirmacionCompra);
 envioRouter.post('/deleteformTarjeta/:id', autenticado('/usuarios/login'), eliminarTarjeta);
 envioRouter.post('/editarDireccion/:id',autenticado('/usuarios/login'), eliminarDireccion);
