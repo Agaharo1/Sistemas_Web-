@@ -59,6 +59,7 @@ export async function doEditarPerfil(req, res) {
 
     try {
         const user= await Usuario.editarPerfil(nombre, username, password, userId);
+        req.session.nombre = nombre;
         if (esAjax) {
             return res.status(200).json({ ok: true });
         }
