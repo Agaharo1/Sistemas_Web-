@@ -34,8 +34,8 @@
 .product-details {
     margin-top: 20px;
     font-family: "DM Serif Text", serif; /* Fuente elegante */
-    color: #333; /* Texto oscuro */
-    text-align: center; /* Centra el texto */
+    color: #000000; /* Texto oscuro */
+    
 }
 
 .product-details h3 {
@@ -45,7 +45,7 @@
 }
 
 .product-details p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #555; /* Texto gris */
     margin-bottom: 15px;
 }
@@ -83,3 +83,59 @@
     background-color: #2c5386; /* Azul más oscuro */
     transform: scale(1.05); /* Efecto de agrandamiento */
 }
+
+.producto-precio {
+    font-size: 1.2rem;
+    color: #4d81a3;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+    font-family: "DM Serif Text", serif;
+}
+
+.producto-nombre {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: "DM Serif Text", serif;
+}
+
+.producto-nombre a {
+    color: #2c5386;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.producto-nombre a:hover {
+    color: #4d81a3;
+    text-decoration: underline;
+}
+
+.producto-descripcion {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.boton-eliminar{
+   background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5em 1.2em;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(231,76,60,0.08); 
+}
+
+.precio-salida{
+    font-size: 1.2rem;
+    color: #333; /* Texto gris */
+    margin-bottom: 15px;
+    text-align: left;
+    white-space: nowrap;
+}
+

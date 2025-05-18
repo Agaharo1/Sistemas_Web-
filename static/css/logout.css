@@ -1,13 +1,15 @@
 #logout-container {
-    max-width: 90%;
-    width: 90%;
+    max-width: 100vw;
+    width: 100vw;
     margin: 0 auto;
     overflow: hidden;
     position: relative;
     min-height: 100vh;
+    height: 100vh;
 }
 #logout-container img{
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     display: block;
     filter: brightness(0.7); /* Oscurece la imagen */
@@ -24,14 +26,22 @@
     padding: 12px 20px;
     border-radius: 8px;
     z-index: 2;
-    width: 50%;;
+    width: 50%;
     height: 30%;
     min-width: 50px;
     max-width: 90%; /* Evita que el texto se salga del contenedor */
     overflow-wrap: break-word; /* Rompe palabras largas */
     box-sizing: border-box;
     background: rgba(255, 255, 255, 0.705); /* Fondo semitransparente para mejor contraste */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
+
+
+
 .logout-overlay a {
     display: inline-block; 
     color: black;

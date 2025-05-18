@@ -19,6 +19,8 @@
     padding: 2vh;
 }
 
+
+
 /* Estilo para el formulario */
 form {
     display: flex;
@@ -53,7 +55,8 @@ form select:focus {
 }
 
 /* Botones */
-form button,
+
+.form-button,
 .modDirec-button {
     padding: 12px 25px;
     background-color: #4d81a3; /* Azul principal */
@@ -112,7 +115,7 @@ form textarea {
 
 
 .btn-editar {
-     font-family:  serif; 
+    font-family:  serif; 
     display: inline-block;
     background-color: #5487a6;      
     color: #fff;                    
@@ -130,4 +133,10 @@ form textarea {
 
 .btn-editar:hover {
     background-color: #407093;      
+}
+
+.normal-link{
+    color: #5487a6;
+    text-decoration: underline;
+    font-weight: bold;
 }

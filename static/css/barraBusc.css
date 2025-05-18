@@ -13,18 +13,47 @@
 }
 
 .barra_busqueda button {
-	width: 15%; 
-	padding: 5px;
+	
 	background-color: #5cb397;
 	color: white;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+	margin-top: 0px;
 	margin-left: 5px; 
-	margin-top: 5px;
 	flex-shrink: 0;
+	min-width: max-content; /* El ancho mínimo será el del texto */
 }
 
 .barra_busqueda button:hover {
 	background-color: #428d75; 
+}
+
+.barra_busqueda input[type="text"],
+.barra_busqueda button {
+    height: 4vh;
+    box-sizing: border-box;
+}
+
+@media (max-width: 750px) {
+    .barra_busqueda {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .barra_busqueda input[type="text"] {
+        width: 100%;
+        
+    }
+    .barra_busqueda button {
+        min-width: max-content;
+        margin: 0;
+    }
+	.barra_busqueda input[type="text"],
+	.barra_busqueda button {
+		height: 4vh;
+		box-sizing: border-box;
+		margin-bottom: 8px;
+	}
 }

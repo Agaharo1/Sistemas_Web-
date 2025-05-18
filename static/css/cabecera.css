@@ -1,9 +1,22 @@
 /*@@author meriwen*/
 /*@@author dabarr02*/
 
-/*Estilos barra de busqueda y cabecera*/
+/*Estilos cabecera*/
+
+
+header .saludo a, header .saludo a:visited  {
+	color: black;
+	font-weight: 400;
+	text-decoration: none;
+} 
+
+header a:hover {
+	font-weight: 700;
+} 
 
 .contenido_cabecera {
+	padding-left: 2em;
+    padding-right: 2em;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -21,19 +34,35 @@
 	text-decoration: none;
 
 }
+.contenido_cabecera h1 a:hover{
+	font-weight: bold;
 
-
+}
 
 .saludo {
 	flex-shrink: 0;
-	white-space: nowrap;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 18px;
+    border: 2px solid #6bb88a;
+    border-radius: 6px;      /* poco redondeo para que sea recuadrado */
+    background-color: #f6fff9;
+    font-weight: 500;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(107,184,138,0.07);
 }
 
 @media (max-width: 750px) {
-	.contenido_cabecera {
-		flex-direction: column;
+	.saludo {
+		display: flex;
+        margin-bottom: 1em;
+		justify-content: center;
 	}
+	.contenido_cabecera {
+        flex-direction: column;
+    }
+
+	
 }

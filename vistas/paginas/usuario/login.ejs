@@ -14,14 +14,13 @@ function mostrarError(error){
                 <% if (locals.error) { %>
                     <p><strong><%= locals.error %></strong></p>
                 <% } %>
-                <legend>Correo y contraseña</legend>
+                <legend>Iniciar sesión</legend>
                 <p><label>Correo:</label> <input type="text" name="username" value="<%= datos.username %>" /><%- helpers.error(errores, 'username') %></p>
                 <p><label>Contraseña:</label> <input type="password" name="password" /><%- helpers.error(errores, 'password') %></p>
-                <p style="text-align: center;"><button type="submit">Enviar</button></p>
+                <p style="text-align: center;"><button type="submit" class="form-button">Enviar</button></p>
             </fieldset>
         </form>
         <p>¿Primera vez en TruequeHub? <a class = 'boton' href=/usuarios/registro>Regístrate</a></p>
-        <p>¿Problemas para iniciar sesión?</p>
-        <p>Si tienes dificultades para acceder a tu cuenta, por favor, contáctanos para ayudarte.</p>
+        <p>¿Problemas para iniciar sesión? Si tienes dificultades para acceder a tu cuenta, por favor, <a class="normal-link" href="/pie/contacto">contáctanos</a> para ayudarte.</p>
     </div>
 </section>

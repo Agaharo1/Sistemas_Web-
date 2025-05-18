@@ -74,14 +74,21 @@ function addProductos(productosPagina) {
             }
 
             // Nombre y precio
-            const productInfo = document.createElement('p');
-            productInfo.textContent = `Producto: ${producto.nombre} - Precio: ${producto.precio}`;
-            productoElement.appendChild(productInfo);
+            const precio = document.createElement('p');
+            precio.className = 'producto-precio';
+            precio.textContent = `${producto.precio}€`;
+            productoElement.appendChild(precio);
 
+            const nombre = document.createElement('p');
+            nombre.className = 'producto-nombre';
+            nombre.innerHTML = `<a href="/productos/producto/${producto.id}">${producto.nombre}</a>`;
+            productoElement.appendChild(nombre);
+            /*
             // Descripción
             const productDescription = document.createElement('p');
             productDescription.textContent = 'Descripción: ' + (producto.descripcion ? producto.descripcion : 'Este producto no tiene descripción.');
             productoElement.appendChild(productDescription);
+            */
 
             // Vendido o editar/eliminar
             if (producto.vendido) {

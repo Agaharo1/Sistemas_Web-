@@ -64,3 +64,17 @@
     color: #888;
     font-size: 1.1em;
 }
+
+.resumen-compras-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los items horizontalmente */
+}
+
+.resumen-compra-item {
+    width: 80%;           /* O el ancho que prefieras */
+    max-width: 800px;     /* Opcional: limita el ancho máximo */
+    margin-left: auto;
+    margin-right: auto;
+}
