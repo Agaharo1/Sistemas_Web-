@@ -1,6 +1,7 @@
 import { validationResult, matchedData } from 'express-validator';
 import { Usuario } from '../Usuario.js';
 import { pick } from 'lodash-es';
+import { parse } from 'dotenv';
 
 export async function listUsuarios(req, res) {
     const result = validationResult(req);
@@ -37,6 +38,18 @@ export async function checkUsername(req, res) {
     }
     const { username } = datos;
     const disponible = ! Usuario.existeUsername(username);
+
+    return res.status(200).json(disponible);
+}
+export async function checkUsernameEditar(req, res) {
+    const result = validationResult(req);
+    const datos = matchedData(req, { includeOptionals: true });
+    if (! result.isEmpty()) {
+        const errores = result.array();
+        return res.status(400).json({ status: 400, errores });
+    }
+    const { username } = datos;
+    const disponible =  Usuario.disponibleEditar(username,parseInt(req.session.user_id));
 
     return res.status(200).json(disponible);
 }

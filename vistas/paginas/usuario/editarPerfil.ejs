@@ -2,7 +2,7 @@
     <h2>Editar perfil</h2>
     
     <div class="formulario-container">
-        <form action="/usuarios/editarPerfil" method="POST" class="perfil-form">
+        <form action="/usuarios/editarPerfil" method="POST" class="perfil-form" id="editarPerfil">
             
             <p>
                 <label for="nombre">Nombre completo</label>
@@ -13,7 +13,8 @@
                     required 
                     value="<%= usuario?.nombre || '' %>"
                     placeholder="Tu nombre"
-                />
+                /><span class="error"></span> 
+                <%- helpers.error(errores, 'nombre') %>
             </p>
 
             <p>
@@ -25,7 +26,8 @@
                     required 
                     value="<%= usuario?.username || '' %>"
                     placeholder="ejemplo@correo.com"
-                />
+                /><span class="error"></span><span class="feedback"></span>
+                <%- helpers.error(errores, 'username') %>
             </p>
 
             <p>
@@ -36,7 +38,8 @@
                     name="password" 
                     minlength="6"
                     placeholder="••••••••"
-                />
+                /><span class="error"></span>
+                <%- helpers.error(errores, 'password') %>
             </p>
 
             <p>
@@ -48,6 +51,8 @@
                     minlength="6"
                     placeholder="Repite la contraseña"
                 />
+                <span class="error"></span>
+                <%- helpers.error(errores, 'passwordConfirmacion') %>
             </p>
 
             <div style="text-align: center;">
@@ -56,3 +61,5 @@
         </form>
     </div>
 </section>
+<script src="/js/fetch.js"></script>
+<script src="/js/editarPerfilValidar.js"></script>

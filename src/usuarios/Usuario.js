@@ -95,9 +95,13 @@ export class Usuario {
         this.#password = password;
     }
 
-    static async editarPerfil(nombre, username, password, id) {
+    static  editarPerfil(nombre, username, password, id) {
         console.log('Intentando editar el perifl con ID: ', id);
         const usuario = this.getUsuarioById(id);
+
+        if (!this.disponibleEditar(username,id)) {
+            throw new UsuarioYaExiste(username);
+        }
     
         if (!usuario) {
             throw new UsuarioNoEncontrado(id);
@@ -163,6 +167,20 @@ export class Usuario {
         } catch (e) {
             if (e instanceof UsuarioNoEncontrado) {
                 return false;
+            }
+            throw e;
+        }
+    }
+     static disponibleEditar(username,id) {
+        try {
+            const usuario= this.getUsuarioByUsername(username);
+            if(usuario.id != id){
+                return false;
+            }
+            return true;
+        } catch (e) {
+            if (e instanceof UsuarioNoEncontrado) {
+                return true;
             }
             throw e;
         }

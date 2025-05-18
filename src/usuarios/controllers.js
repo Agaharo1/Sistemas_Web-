@@ -30,21 +30,39 @@ export function viewEditarPerfil(req, res) {
         return redirige(req, res, '/usuarios/login');
     }
     const usuario = Usuario.getUsuarioById(id);
-    const params = {
-        contenido: "paginas/usuario/editarPerfil",
-        usuario,
-        session: req.session
-    };
-    res.render("pagina", params);
+    return render(req, res, 'paginas/usuario/editarPerfil', {
+            usuario,
+            session: req.session,
+            datos: {},
+            errores: {}
+        });
 }
 
-export function doEditarPerfil(req, res) {
+export async function doEditarPerfil(req, res) {
     const userId = parseInt(req.session.user_id);
-    const {nombre, username, password } = req.body;
+    const result = validationResult(req);
+    const datos = matchedData(req);
+    const {nombre, username, password } = datos;
+    const requestWith = req.get('X-Requested-With');
+    const esAjax = requestWith != undefined && ['xmlhttprequest', 'fetch'].includes(requestWith.toLowerCase());
+    if (! result.isEmpty()) {
+        const errores = result.mapped();
+        const datos = matchedData(req);
+        if (esAjax) {
+            return res.status(400).json({ status: 400, errores });
+        }
+       return render(req, res, 'paginas/usuario/editarPerfil', {
+            datos,
+            errores
+        });
+    }
+
     try {
-        console.log("Editando perfil:", userId, nombre, username, password);
-        Usuario.editarPerfil(nombre, username, password, userId);
-        res.redirect("/contenido/normal");
+        const user= await Usuario.editarPerfil(nombre, username, password, userId);
+        if (esAjax) {
+            return res.status(200).json({ ok: true });
+        }
+        res.redirect("/usuarios/index");
     } catch (e) {
         res.status(400).send(e.message);
     }
